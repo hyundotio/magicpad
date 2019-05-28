@@ -51,7 +51,8 @@ input[type="file"] {
   left:0;
   top:0;
   border-bottom:1px solid #DCDCDC;
-  background-color:#FFF;
+  background-color: #121212;
+  color: #FFF;
 }
 .tab.active::after {
   content:' ';
