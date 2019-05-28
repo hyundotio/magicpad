@@ -1,0 +1,196 @@
+<!--
+Error States for openpgp
+Electron
+!-->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>EasyOPGP</title>
+    <meta charset="utf-8">
+    <script src="./js_include/openpgp.min.js"></script>
+    <script src="./js_include/jquery-3.4.1.min.js"></script>
+    <link rel="stylesheet" href="./css/reset.css"/>
+    <link rel="stylesheet" href="./fonts/stylesheet.css"/>
+    <link rel="stylesheet" href="./css/main.css"/>
+  </head>
+  <body>
+    <nav class="main-nav">
+      <ul>
+        <li><a href="#" class="keys-tab tab active" data-tab="keys">Keys</a></li>
+        <li><a href="#" class="read-tab tab" data-tab="read">Read</a></li>
+        <li><a href="#" class="write-tab tab" data-tab="write">Write</a></li>
+        <li><a href="#" class="about-tab tab" data-tab="about">About</a></li>
+      </ul>
+    </nav>
+    <main>
+      <div class="lds-ring-small main-loader">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div class="lips">
+        <div class="online-flag lip">
+          You are currently online. For extra security, use an air-gapped computer.
+          <img class="icon-button lip-exit" src="./ui/exit-black.svg"/>
+        </div>
+        <div class="message-flag lip">
+          Error message.
+        </div>
+      </div>
+      <div class="popups">
+        <div class="popup-filter popup-exit"></div>
+        <div class="processed-output-window popup">
+          <div class="window-title">Processed output <div class="popup-expand icon-button"><img src="./ui/expand.svg"/></div><div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div></div>
+          <div class="popup-contents">
+            <textarea id="processed-output" class="processed-output" readonly>
+            </textarea>
+            <span class="copied">Copied to clipboard</span>
+            <div class="processed-aside"></div>
+            <section>
+            <button class="button-1 copy-processed">Copy</button>
+            <a href="#" class="button-1 save-processed">Save As</a>
+            </section>
+          </div>
+        </div>
+        <div class="create-key-window popup">
+        <div class="window-title">Create new key set <div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div></div>
+          <div class="popup-contents">
+
+          <ul class="pages">
+            <li class="key-new-form">
+              <div class="create-key-progress">
+                <div class="progress-container">
+                  <div class="lds-ring">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                  </div>
+                  <div>Generating keys...</div>
+                </div>
+              </div>
+              <section>
+              <h3>Identifier / Name</h3>
+              <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" class="form-name" placeholder="Edward Snowden"/>
+              </section>
+              <section>
+                <h3>Your e-mail</h3>
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="email" class="form-email" placeholder="edwardsnowden@protonmail.com"/>
+              </section>
+              <section>
+              <h3>Passphrase</h3>
+              <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="password" class="form-passphrase passphrase-box" placeholder="Strong passphrase"/>
+              </section>
+              <div class="pw-view-toggler">
+                <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
+              </div>
+              <section class="bottom-buttons">
+                <button class="button-1 key-generate" disabled>Generate</button>
+                <button class="button-2 popup-exit">Cancel</button>
+              </section>
+            </li>
+            <li>
+              <section>
+                <h3>New private key</h3>
+                <a href="#" class="button-1 key-private-download">Download</a>
+              </section>
+              <section>
+                <h3>New public key</h3>
+                <a href="#" class="button-1 key-public-download">Download</a>
+              </section>
+              <section>
+                <h3>Recreate keys</h3>
+                <button class="button-2 key-generate-reset">Restart</button>
+              </section>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+      </div>
+      <div class="tab-windows">
+      <div class="write tab-window">
+        <h2>Write</h2>
+        <section>
+          <h3>Your unencrypted message</h3>
+          <a href="#" class="b-link revert-encryption"><span class="show-enc">Show encrypted message</span><span class="show-dec">Show decrypted message</span></a>
+          <textarea autocomplete="off"class="text-write" placeholder="Write your message here"></textarea>
+        </section>
+        <section>
+          <h3>Your private key passphrase</h3>
+          <input class="passphrase-box text-write-passphrase" type="password" placeholder="Passphrase" />
+          <div class="pw-view-toggler">
+            <input type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
+          </div>
+        </section>
+        <section>
+          <button class="button-1 encrypt-message" disabled>Encrypt</button>
+          <button class="button-1 view-message-encrypted view-processed" disabled>View output</button>
+        </section>
+      </div>
+      <div class="keys tab-window active">
+        <h2>Keys</h2>
+        <section>
+          <a href="#" class="key-generate-start b-link">Create new private and public key set</a>
+        </section>
+        <section>
+          <h3>Your private key</h3>
+          <label for="key-priv-import" class="button-2 key-priv-import-label">Import</label>
+          <input id="key-priv-import" type="file" class="key-import key-priv-import" accept="asc"/>
+        </section>
+        <section>
+          <h3>Recipient/Sender public key</h3>
+          <label for="key-pub-import" class="button-2 key-pub-import-label">Import</label>
+          <input id="key-pub-import" type="file" class="key-import key-pub-import" accept="asc"/>
+        </section>
+        <section>
+          <h3>Recipient/Sender public key fingerprint</h3>
+          <div class="fingerprint">No public key imported</div>
+        </section>
+        <section>
+          <h3>Purge all keys from session</h3>
+          <button class="purge button-9">Purge</button>
+      </div>
+      <div class="read tab-window">
+        <h2>Read</h2>
+        <section>
+          <h3>Received encrypted message</h3>
+          <a href="#" class="b-link revert-encryption"><span class="show-enc">Show encrypted message</span><span class="show-dec">Show decrypted message</span></a>
+          <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-read" placeholder="Paste encrypted message here"></textarea>
+        </section>
+        <section>
+          <h3>Your private key passphrase</h3>
+          <input class="passphrase-box text-read-passphrase" type="password" placeholder="Passphrase" />
+          <div class="pw-view-toggler">
+            <input type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
+          </div>
+        </section>
+        <section>
+          <button class="button-1 decrypt-message" disabled>Decrypt</button>
+          <button class="button-1 view-message-decrypted view-processed" disabled>View output</button>
+        </section>
+      </div>
+      <div class="about tab-window">
+        <h2>EasyOPGP 0.0.1</h2>
+        <p>This project was created for people to encrypt and decrypt their messages easily using OpenPGP.</p>
+        <section>
+        <h3>Credits</h3>
+        <ul class="credits-list">
+          <li>Created by Hyun - Git</li>
+          <li>NodeJS (Electron, url, and path packages)</li>
+          <li>OpenPGP</li>
+          <li>Design language by IBM Design</li>
+        </ul>
+      </section>
+      <section>
+        <h3>License</h3>
+        None (public domain)
+      </section>
+      </div>
+    </div>
+    </main>
+  </body>
+  <script src="./js/main.js"></script>
+
+</html>

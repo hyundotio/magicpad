@@ -1,0 +1,21 @@
+{
+  "name": "easyopgp",
+  "version": "0.0.1",
+  "description": "Easy to use OpenPGP client.",
+  "main": "app.js",
+  "dependencies": {
+    "path": "^0.12.7",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "electron ."
+  },
+  "keywords": [
+    "openpgp",
+    "encryption",
+    "messaging"
+  ],
+  "author": "Hyun Kyu Seo",
+  "license": "MIT"
+}
