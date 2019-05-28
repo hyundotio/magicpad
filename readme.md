@@ -6,7 +6,7 @@ EasyOPGP is a OpenPGP encryption / decryption tool for beginners. It is designed
 
 You can run EasyOPGP three ways
 1. Run main.html via web browser
-2. Run executable
+2. Build and run executable
 ```
 npm install electron-packager -g
 electron-packager ./ EasyOPGP --electronVersion=5.0.2 --platform=darwin --arch=x64
