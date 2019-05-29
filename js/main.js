@@ -269,27 +269,27 @@ function decryptMessage(){
 
           }).catch(function(e){
             lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
-            $('.main-loader').removeClass('active');
+            $('body').removeClass('loading');
             console.log('decrypt msg'+e);
           });
         }).catch(function(e){
           lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
-          $('.main-loader').removeClass('active');
+          $('body').removeClass('loading');
           //console.log('parse msg'+e);
         });
       }).catch(function(e){
         lipAlert('The public key cannot be read. It may be corrupted.');
-        $('.main-loader').removeClass('active');
+        $('body').removeClass('loading');
         //console.log('read pubkey'+e);
       });
     }).catch(function(e){
       lipAlert('The private key passphrase is incorrect.');
-      $('.main-loader').removeClass('active');
+      $('body').removeClass('loading');
       //console.log('decrypt passphrase'+e);
     });
   }).catch(function(e){
     lipAlert('The private key cannot be read. It may be corrupted.');
-    $('.main-loader').removeClass('active');
+    $('body').removeClass('loading');
     //console.log('read privkey'+e);
   });
 }
@@ -314,16 +314,16 @@ function encryptMessage(msg,signedToggle){
           } else {
             $('.processed-aside').text('Message encrypted');
           }
-          $('.main-loader').removeClass('active');
+          $('body').removeClass('loading');
           session.running = false;
       }).catch(function(e){
         //console.log('encryptmsg'+e);
-        $('.main-loader').removeClass('active');
+        $('body').removeClass('loading');
         lipAlert('Cannot encrypt message. Try testing a different message and/or keys.');
       });
     }).catch(function(e){
       //console.log('read pubkey'+e);
-      $('.main-loader').removeClass('active');
+      $('body').removeClass('loading');
       lipAlert('The public key cannot be read. It may be corrupted.');
     });
   }
@@ -344,17 +344,17 @@ function signMessage(){
           encryptMessage(cleartext,true);
       }).catch(function(e){
         //console.log('sign msg'+e);
-        $('.main-loader').removeClass('active');
+        $('body').removeClass('loading');
         lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
       });
     }).catch(function(e){
       //console.log('unlock privkey'+e);
-      $('.main-loader').removeClass('active');
+      $('body').removeClass('loading');
       lipAlert('The private key passphrase is incorrect.');
     });
   }).catch(function(e){
     //console.log('readprivkey'+e);
-    $('.main-loader').removeClass('active');
+    $('body').removeClass('loading');
     lipAlert('The private key cannot be read. It may be corrupted.');
   });;
 }
@@ -381,19 +381,19 @@ function verifySignature(){
             $('.processed-aside').text('Unable to validate message signature with imported public key');
           }
           $('.view-message-decrypted').removeAttr('disabled');
-          $('.main-loader').removeClass('active');
+          $('body').removeClass('loading');
           session.running = false;
           viewDecMsg();
         }).catch(function(e){
-          $('.main-loader').removeClass('active');
+          $('body').removeClass('loading');
           lipAlert('The signature cannot be verified. It may be corrupted.');
         });
       }).catch(function(e){
-        $('.main-loader').removeClass('active');
+        $('body').removeClass('loading');
         lipAlert('The signature cannot be read. It maybe corrupted.');
       });
     }).catch(function(e){
-      $('.main-loader').removeClass('active');
+      $('body').removeClass('loading');
       lipAlert('The public key cannot be read. It may be corrupted.');
       //console.log('readpubkey'+e);
     });
@@ -456,7 +456,7 @@ $('.view-message-encrypted').bind('click',function(){
 //Encrypt Message Button
 $('.encrypt-message').bind('click',function(){
   if(!$(this).is(':disabled')){
-    $('.main-loader').addClass('active');
+    $('body').addClass('loading');
     if($(this).hasClass('sign-enabled')){
       signMessage();
     } else {
@@ -468,7 +468,7 @@ $('.encrypt-message').bind('click',function(){
 //Decrypt Message button
 $('.decrypt-message').bind('click',function(){
   if(!$(this).is(':disabled')){
-    $('.main-loader').addClass('active');
+    $('body').addClass('loading');
     decryptMessage();
   }
 })
