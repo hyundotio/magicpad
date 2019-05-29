@@ -235,7 +235,7 @@ function generateKeys(){
     session.privKey = key.privateKeyArmored.trim();
     session.pubKey = key.publicKeyArmored.trim();
     keyReady();
-  })).catch(function(e){
+  }).catch(function(e){
     lipAlert('Failed generating keys. Please try again.');
     newKeyReset();
   });
