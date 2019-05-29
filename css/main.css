@@ -46,7 +46,7 @@ input[type="file"] {
 }
 .popup-filter {
 	position:fixed;
-	top:0;
+	top: 3em;
 	left:0;
 	z-index:7;
 	height:100%;
