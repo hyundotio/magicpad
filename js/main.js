@@ -119,8 +119,8 @@ function purge(){
   $('.key-public-download').attr('href','#').removeAttr('download');
   $('.keys').find('.key-private-download').remove();
   $('.keys').find('.key-public-download').remove();
-  $('.key-pub-import-label').text('Import');
-  $('.key-priv-import-label').text('Import');
+  $('.key-pub-import-label').find('span').text('Import');
+  $('.key-priv-import-label').find('span').text('Import');
   $('.fingerprint').text('No public key imported');
   $('.encrypt-sign-checkbox').prop('checked', true);
   session.pubKey = '';
@@ -199,7 +199,7 @@ function writeKeyStatus(){
 //Import private key button function
 function importPrivKey(){
   //$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
-  $('.key-priv-import-label').text('Reimport');
+  $('.key-priv-import-label').find('span').text('Reimport');
   writeFormCheck();
   readFormCheck();
   writeKeyStatus();
@@ -212,7 +212,7 @@ function importPubKey(){
     const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
     session.pubKeyFingerprint = buf2hex(buffer);
     $('.fingerprint').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
-    $('.key-pub-import-label').text('Reimport');
+    $('.key-pub-import-label').find('span').text('Reimport');
     writeKeyStatus();
     writeFormCheck();
     readFormCheck();

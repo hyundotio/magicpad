@@ -70,6 +70,7 @@ input[type="file"] {
 .big-button-third span{
 	font-size: 1.75em;
 	line-height: 1.25em;
+	margin: -0.25em 0 1.625em 0;
 	display: block;
 }
 .big-button-third img {
@@ -270,6 +271,37 @@ a.big-button-third:last-child {
 .create-key-window.popup {
 	 padding: 3em 0 0 0;
 }
+.button-icon-img {
+	margin-bottom: -0.25em;
+	height: 1.5em;
+	width: 1.5em;
+	float: right;
+	margin-top: -0.25em;
+}
+.label-container label {
+	position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+	cursor:pointer;
+	z-index:2;
+}
+.label-container {
+	display:inline-block;
+	position:relative;
+}
+.label-icon-button {
+	height: 1.5em;
+  width: 1.5em;
+  z-index: 1;
+  position: absolute;
+  display: inline-block;
+  cursor: pointer;
+  right: 1em;
+  top: 1em;
+  margin-top: -0.25em;
+}
 .popup {
 	overflow:hidden;
 	visibility:hidden;
@@ -294,7 +326,6 @@ h1 {
 h2 {
 	position:relative;
 	font-size:1.75em;
-	font-weight:600;
 	margin-bottom:1.5em;
 }
 h2:after {
@@ -358,13 +389,13 @@ button, label {
 	transition:background-color 0.1s ease-out;
 	line-height:1em;
 	cursor:pointer;
-	padding:1em 2em 1em 1em;
+	padding:1em;
 	text-align: left;
 	box-sizing: border-box;
 	margin-right:1px;
 	float:left;
 	display:block;
-	min-width:8em;
+	min-width:10em;
 }
 input:focus,textarea:focus {
 	border:1px solid #3D3D3D;
@@ -391,7 +422,7 @@ textarea {
 textarea.text-read{
 	font-family:'IBM Plex Mono',monospace;
 }
-section:after {
+section:after, .label-container:after {
 	content: "";
 	display: table;
 	clear: both;
@@ -430,6 +461,12 @@ section {
 }
 .pages section:first-of-type {
 	margin-top:0;
+}
+button img {
+	transition:0.2s opacity ease-out;
+}
+button:disabled img,button[disabled] img{
+		opacity:0.3;
 }
 button:disabled,button[disabled],button:disabled:hover,button[disabled]:hover,button:disabled:active,button[disabled]:active,button:disabled:focus,button[disabled]:focus {
 	cursor:not-allowed;

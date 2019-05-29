@@ -51,8 +51,8 @@
                      <div class="processed-aside"></div>
                   </div>
                   <section>
-                     <button class="button-2 copy-processed">Copy</button>
-                     <a href="#" class="button-2 save-processed">Save As</a>
+                     <button class="button-2 copy-processed"><span>Copy</span><img src="./ui/copy.svg" class="button-icon-img"/></button>
+                     <a href="#" class="button-2 save-processed"><span>Save As</span><img src="./ui/save.svg" class="button-icon-img"/></a>
                   </section>
                </div>
             </div>
@@ -91,7 +91,7 @@
                            <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
                         </div>
                         <section class="bottom-buttons">
-                           <button class="button-1 key-generate" disabled>Generate</button>
+                           <button class="button-1 key-generate" disabled><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"/></button>
                            <button class="button-2 popup-exit">Cancel</button>
                         </section>
                      </li>
@@ -110,7 +110,6 @@
                <section>
                   <h3>Your unencrypted message</h3>
                   <div class="write-key-status key-status"></div>
-                  <a href="#" class="b-link revert-encryption"><span class="show-enc">Show encrypted message</span><span class="show-dec">Show decrypted message</span></a>
                   <textarea autocomplete="off"class="text-write" placeholder="Write your message here"></textarea>
                </section>
                <section>
@@ -126,8 +125,8 @@
                   </div>
                </section>
                <section>
-                  <button class="button-1 encrypt-message sign-enabled" disabled>Encrypt</button>
-                  <button class="button-2 view-message-encrypted view-processed" disabled>View output</button>
+                  <button class="button-1 encrypt-message sign-enabled" disabled><span>Encrypt</span><img src="./ui/encrypt.svg" class="button-icon-img"/></button>
+                  <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img src="./ui/popup.svg" class="button-icon-img"/></button>
                </section>
             </div>
             <div class="keys tab-window active">
@@ -137,12 +136,12 @@
                </section>
                <section>
                   <h3>Your private key <div class="key-status private-key-filename"></div></h3>
-                  <label for="key-priv-import" class="button-2 key-priv-import-label">Import</label>
+                  <div class="label-container button-2 key-priv-import-label"><label for="key-priv-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"/></div>
                   <input id="key-priv-import" type="file" class="key-import key-priv-import" accept="asc"/>
                </section>
                <section>
                   <h3>Recipient/Sender public key <div class="key-status public-key-filename"></div></h3>
-                  <label for="key-pub-import" class="button-2 key-pub-import-label">Import</label>
+                  <div class="label-container button-2 key-pub-import-label"><label for="key-pub-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"/></div>
                   <input id="key-pub-import" type="file" class="key-import key-pub-import" accept="asc"/>
                </section>
                <section>
@@ -151,14 +150,13 @@
                </section>
                <section>
                <h3>Purge all keys from session</h3>
-               <button class="purge button-9">Purge</button>
+               <button class="purge button-9"><span>Purge</span><img src="./ui/purge.svg" class="button-icon-img"/></button>
             </div>
             <div class="read tab-window">
                <h2>Read</h2>
                <section>
                   <h3>Received encrypted message</h3>
                   <div class="read-key-status key-status"></div>
-                  <a href="#" class="b-link revert-encryption"><span class="show-enc">Show encrypted message</span><span class="show-dec">Show decrypted message</span></a>
                   <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-read" placeholder="Paste encrypted message here"></textarea>
                </section>
                <section>
@@ -169,8 +167,8 @@
                   </div>
                </section>
                <section>
-                  <button class="button-1 decrypt-message" disabled>Decrypt</button>
-                  <button class="button-2 view-message-decrypted view-processed" disabled>View output</button>
+                  <button class="button-1 decrypt-message" disabled><span>Decrypt</span><img src="./ui/decrypt.svg" class="button-icon-img"/></button>
+                  <button class="button-2 view-message-decrypted view-processed" disabled><span>View output</span><img src="./ui/popup.svg" class="button-icon-img"/></button>
                </section>
             </div>
             <div class="about tab-window">
