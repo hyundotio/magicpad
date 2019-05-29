@@ -574,6 +574,7 @@ $('.tab').bind('click',function(e){
   $main.find('.tab-window').removeClass('active');
   $main.find('.tab-window').each(function(){
     if($(this).hasClass(nextTab)){
+      popupExit();
       $(this).addClass('active');
     }
   })
