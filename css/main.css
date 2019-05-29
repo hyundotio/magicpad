@@ -73,7 +73,7 @@ input[type="file"] {
 	width:100%;
 	height:3px;
 	background-color: transparent;
-	transition:background-color 0.3s ease-out;
+	transition:background-color 0.2s ease-out;
 	border-radius:6px;
 	left:0;
 	bottom:-2px;
@@ -151,6 +151,7 @@ input[type="file"] {
 	width:100%;
 	padding:4.75em 1em 1em 1em;
 	box-sizing:border-box;
+	transition:opacity 0.3s ease-out;
 }
 .tab-windows .tab-window.active {
 	display:block;
