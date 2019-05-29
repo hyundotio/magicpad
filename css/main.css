@@ -374,6 +374,9 @@ button:disabled,button[disabled],button:disabled:hover,button[disabled]:hover,bu
 .b-link:focus {
 	color:#0530AD;
 }
+.popup.expanded .processed-output {
+	height: calc(100% - 6.25em);
+}
 .processed-output {
 	padding:1em;
 	box-sizing:border-box;
