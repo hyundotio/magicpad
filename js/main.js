@@ -97,6 +97,7 @@ function readFormCheck(){
 
 //Resets all data in session
 function purge(){
+  $('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
   $('.create-key-progress').removeClass('active');
   $('.key-status').text('');
   $('input').val('').reset;
