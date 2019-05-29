@@ -153,8 +153,13 @@ function copyProcessed() {
 
 //Reset key generation form
 function newKeyReset(){
+  $('.create-key-window').find('a').each(function(){
+    $(this).attr('href','#');
+    $(this).removeAttr('download');
+  })
   $('.create-key-progress').removeClass('active');
-  $('.key-new-form').removeAttr('style').find('input').val('');
+  $('.key-new-form').find('input').val('');
+  $('.key-new-form').removeClass('next-page');
   $('.key-generate').attr('disabled','disabled');
 }
 
@@ -209,7 +214,7 @@ function keyReady(){
   $('.key-public-download').attr('download','public.asc');
   $('.key-private-download').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey));
   $('.key-private-download').attr('download','private.asc');
-  $('.pages').find('li').eq(0).css('margin-left','-50%');
+  $('.pages').find('li').eq(0).addClass('next-page');
   $('.create-key-progress').removeClass('active');
   session.running = false;
 }
@@ -230,7 +235,10 @@ function generateKeys(){
     session.privKey = key.privateKeyArmored.trim();
     session.pubKey = key.publicKeyArmored.trim();
     keyReady();
-  })
+  })).catch(function(e){
+    lipAlert('Failed generating keys. Please try again.');
+    newKeyReset();
+  });
 }
 
 //Decrypt messages
