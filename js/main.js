@@ -215,19 +215,19 @@ function decryptMessage(){
           openpgp.decrypt(options).then(plaintext => {
             session.lastDec = plaintext;
             verifySignature();
-          }).catch(e){
+          }).catch(function(e){
             console.log(e);
           });
-        }).catch(e){
+        }).catch(function(e){
           console.log(e);
         });
-      }).catch(e){
+      }).catch(function(e){
         console.log(e);
       });
-    }).catch(e){
+    }).catch(function(e){
       console.log(e);
     });
-  }).catch(e){
+  }).catch(function(e){
     console.log(e);
   });
 }
@@ -250,10 +250,10 @@ function encryptMessage(msg){
           $('.processed-aside').text('Message encrypted and signed');
           $('.main-loader').removeClass('active');
           session.running = false;
-      }).catch(e){
+      }).catch(function(e){
         console.log(e);
       });
-    }).catch(e){
+    }).catch(function(e){
       console.log(e);
     });
   }
@@ -272,10 +272,10 @@ function signMessage(){
       openpgp.sign(options).then(function(signed) {
           cleartext = signed.data.trim();
           encryptMessage(cleartext);
-      }).catch(e){
+      }).catch(function(e){
         console.log(e);
       });
-    }).catch(e){
+    }).catch(function(e){
       console.log(e);
     });
   });
@@ -306,10 +306,10 @@ function verifySignature(){
           $('.main-loader').removeClass('active');
           session.running = false;
           viewDecMsg();
-        }).catch(e){
+        }).catch(function(e){
           console.log(e);
         });
-      }).catch(e){
+      }).catch(function(e){
         console.log(e);
       });
     })
