@@ -205,7 +205,6 @@ function importPubKey(){
 
 //Function when key gneration is finished
 function keyReady(){
-  importPrivKey();
   $('.key-public-download').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.pubKey));
   $('.key-public-download').attr('download','public.asc');
   $('.key-private-download').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey));
