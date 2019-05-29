@@ -240,7 +240,7 @@ function decryptMessage(){
             console.log('decrypt msg'+e);
           });
         }).catch(function(e){
-          lipAlert('The encrypted message cannot be understood and/or is formatted incorrectly.');
+          lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
           $('.main-loader').removeClass('active');
           //console.log('parse msg'+e);
         });
@@ -408,32 +408,40 @@ $('.copy-processed').bind('click',function(){
 
 //Re-open Decrypted Message popup
 $('.view-message-decrypted').bind('click',function(){
-  viewDecMsg();
+  if(!$(this).is(':disabled')){
+    viewDecMsg();
+  }
 })
 
 //Re-open Encrypted Message popup
 $('.view-message-encrypted').bind('click',function(){
-  viewEncMsg();
+  if(!$(this).is(':disabled')){
+    viewEncMsg();
+  }
 })
 
 //Encrypt Message Button
 $('.encrypt-message').bind('click',function(){
-  $('.main-loader').addClass('active');
-  if($(this).hasClass('sign-enabled')){
-    signMessage();
-  } else {
-    encryptMessage($('.text-write').val(),false);
+  if(!$(this).is(':disabled')){
+    $('.main-loader').addClass('active');
+    if($(this).hasClass('sign-enabled')){
+      signMessage();
+    } else {
+      encryptMessage($('.text-write').val(),false);
+    }
   }
 })
 
 //Decrypt Message button
 $('.decrypt-message').bind('click',function(){
-  $('.main-loader').addClass('active');
-  decryptMessage();
+  if(!$(this).is(':disabled')){
+    $('.main-loader').addClass('active');
+    decryptMessage();
+  }
 })
 
 //Checks for input in Read form
-$('.read').keyup(function(){
+$('.read').keyup(function(e){
   readFormCheck()
 })
 
@@ -467,6 +475,9 @@ $('.key-import').change(function(){
   reader.readAsText(file);
 })
 
+$('body').keyup(function(e){
+  if (e.keyCode === 27)  $('.popup-filter').click();
+})
 //opens new key generation popup
 $('.key-generate-start').bind('click',function(e){
   $('.popup-filter').addClass('active');
@@ -475,7 +486,7 @@ $('.key-generate-start').bind('click',function(e){
     if (e.keyCode === 13 && $('.key-generate').is(':visible')) {
       $('.key-generate').click();
     }
-    if (e.keyCode === 27)  $('.popup-exit').click();   // esc
+
   });
 })
 
