@@ -5,7 +5,19 @@ html, body {
 }
 .pw-view-toggler {
 	margin: 0.75em 0 2em 0;
+
+}
+.checkbox-offset {
 	line-height:0.75em;
+}
+.sign-toggle {
+	float:right;
+	z-index: 2;
+	position:relative;
+	margin-top: 0.125em;
+}
+.sign-credentials.disabled {
+	opacity:0.5;
 }
 input[type="checkbox"]{
 	margin:0;
@@ -27,8 +39,6 @@ input[type="email"],input[type="text"],input[type="password"] {
 }
 input[type="file"] {
 	display: none;
-}
-.pw-view-toggler {
 }
 .popup-filter {
 	position:fixed;

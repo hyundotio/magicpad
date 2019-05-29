@@ -68,10 +68,18 @@ function popupExit(){
 
 //Checks for form in the Write tab
 function writeFormCheck(){
-  if($('.text-write').val().length > 0 && $('.text-write-passphrase').val().length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
-    $('.encrypt-message').removeAttr('disabled');
+  if($('.encrypt-message').hasClass('sign-enabled')){
+    if($('.text-write').val().length > 0 && $('.text-write-passphrase').val().length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
+      $('.encrypt-message').removeAttr('disabled');
+    } else {
+      $('.encrypt-message').attr('disabled','disabled');
+    }
   } else {
-    $('.encrypt-message').attr('disabled','disabled');
+    if($('.text-write').val().length > 0 && session.pubKey.length > 0){
+      $('.encrypt-message').removeAttr('disabled');
+    } else {
+      $('.encrypt-message').attr('disabled','disabled');
+    }
   }
 }
 
@@ -219,11 +227,17 @@ function decryptMessage(){
           }
           openpgp.decrypt(options).then(plaintext => {
             session.lastDec = plaintext;
-            verifySignature();
+            if((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1){
+              verifySignature();
+            } else {
+              $('.processed-aside').text('Message decrypted');
+              viewDecMsg();
+            }
+
           }).catch(function(e){
             lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
             $('.main-loader').removeClass('active');
-            //console.log('decrypt msg'+e);
+            console.log('decrypt msg'+e);
           });
         }).catch(function(e){
           lipAlert('The encrypted message cannot be understood and/or is formatted incorrectly.');
@@ -248,7 +262,7 @@ function decryptMessage(){
 }
 
 //Encrypt Message
-function encryptMessage(msg){
+function encryptMessage(msg,signedToggle){
   if(!session.running){
     session.running = true;
     openpgp.key.readArmored(session.pubKey).then(data => {
@@ -262,7 +276,11 @@ function encryptMessage(msg){
           session.lastEnc = encrypted;
           viewEncMsg();
           $('.view-message-encrypted').removeAttr('disabled');
-          $('.processed-aside').text('Message encrypted and signed');
+          if(signedToggle){
+            $('.processed-aside').text('Message encrypted and signed');
+          } else {
+            $('.processed-aside').text('Message encrypted');
+          }
           $('.main-loader').removeClass('active');
           session.running = false;
       }).catch(function(e){
@@ -290,7 +308,7 @@ function signMessage(){
       };
       openpgp.sign(options).then(function(signed) {
           cleartext = signed.data.trim();
-          encryptMessage(cleartext);
+          encryptMessage(cleartext,true);
       }).catch(function(e){
         //console.log('sign msg'+e);
         $('.main-loader').removeClass('active');
@@ -401,7 +419,11 @@ $('.view-message-encrypted').bind('click',function(){
 //Encrypt Message Button
 $('.encrypt-message').bind('click',function(){
   $('.main-loader').addClass('active');
-  signMessage();
+  if($(this).hasClass('sign-enabled')){
+    signMessage();
+  } else {
+    encryptMessage($('.text-write').val(),false);
+  }
 })
 
 //Decrypt Message button
@@ -474,6 +496,18 @@ $('.key-generate').bind('click',function(e){
   }
 })
 
+//Sign toggler
+$('.encrypt-sign-checkbox').change(function(){
+  if(this.checked){
+    $('.encrypt-message').addClass('sign-enabled');
+    $('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
+  } else {
+    $('.encrypt-message').removeClass('sign-enabled');
+    $('.sign-credentials').addClass('disabled').find('input').attr('disabled','disabled');
+  }
+  writeFormCheck()
+})
+
 //Password show toggler
 $('.pw-toggle').change(function() {
     if (this.checked) {
@@ -503,7 +537,7 @@ $('.key-generate-reset').bind('click',function(){
   newKeyReset();
 })
 
-//Bind form input checks
+//new key generation form input checks
 $('.key-new-form').find('input').each(function(){
   $(this).keyup(function(){
     let empty = false;
