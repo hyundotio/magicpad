@@ -263,7 +263,7 @@ function decryptMessage() {
 								verifySignature();
 							} else {
 								$('body').removeClass('loading');
-								$('.processed-aside').text('Message decrypted');
+								$('.processed-aside').text('Message decrypted.');
 								session.running = false;
 								viewDecMsg();
 							}
