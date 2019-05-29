@@ -293,6 +293,7 @@ h3 {
 	position:relative;
 }
 .copied {
+	margin-left:1em;
 	color:#A4A4A4;
 	font-family: 'IBM Plex Sans',sans-serif;
 	opacity: 0;
