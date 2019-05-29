@@ -44,8 +44,8 @@
 			<div class="processed-output-window popup">
 				<div class="window-title">
 					<span>Processed output</span>
-					<button class="popup-expand icon-button"><img src="./ui/expand.svg"></button>
-					<button class="icon-button popup-exit"><img src="./ui/exit.svg"></button>
+					<div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
+					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
 				</div>
 				<div class="popup-contents">
 					<textarea class="processed-output" id="processed-output" readonly></textarea>
@@ -61,7 +61,7 @@
 			<div class="create-key-window popup">
 				<div class="window-title">
 					<span>New key set</span>
-					<button class="icon-button popup-exit"><img src="./ui/exit.svg"></button>
+					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
 				</div>
 				<div class="popup-contents">
 					<div class="create-key-progress">
@@ -134,19 +134,21 @@
 					<a class="key-generate-start b-link" href="#">Create new private and public key set</a>
 				</section>
 				<section>
-					<h3>Your private key</h3>
-					<div class="key-status private-key-filename">
-						<h3></h3>
-					</div>
+          <div class="key-filename-container">
+  					<h3>Your private key</h3>
+  					<div class="key-status private-key-filename">
+  					</div>
+          </div>
 					<div>
 						<a class="label-container button-2 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
 					</div>
 				</section>
 				<section>
-					<h3>Recipient/Sender public key</h3>
-					<div class="key-status public-key-filename">
-						<h3></h3>
-					</div>
+          <div class="key-filename-container">
+  					<h3>Recipient/Sender public key</h3>
+  					<div class="key-status public-key-filename">
+  					</div>
+          </div>
 					<div>
 						<a class="label-container button-2 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file">
 					</div>
