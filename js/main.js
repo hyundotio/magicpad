@@ -116,6 +116,7 @@ function purge(){
   $('.key-pub-import-label').text('Import');
   $('.key-priv-import-label').text('Import');
   $('.fingerprint').text('No public key imported');
+  $('.encrypt-sign-checkbox').prop('checked', true);
   session.pubKey = '';
   session.privKey = '';
   session.pubKeyFingerprint = '';
