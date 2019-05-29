@@ -1,12 +1,12 @@
-# EasyOPGP
+# MagicPad
 
-EasyOPGP is an OpenPGP encryption / decryption tool for beginners. It is designed to be run standalone via the browser or as an executable (Electron).
+MagicPad is an OpenPGP encryption / decryption tool for beginners. It is designed to be run standalone via the browser or as an executable (Electron).
 
 ![](demo.gif)
 
 ## Installation
 
-You can run EasyOPGP three ways:
+You can run MagicPad three ways:
 1. Run `main.html` via web browser
 2. Build and run executable
 ```
