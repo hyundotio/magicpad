@@ -70,7 +70,7 @@ input[type="file"] {
 .key-new-form {
 	transition:0.2s margin ease-out;
 }
-.key-new-form.next-page {
+.key-new-form.next-page {F
 	margin-left:-50%;
 	transition:none;
 }
@@ -288,7 +288,6 @@ h3 {
 	font-weight:600;
 }
 .copied.active {
-	visibility:visible;
 	opacity:1;
 }
 .processed-output section {
@@ -297,9 +296,9 @@ h3 {
 .copied {
 	color:#A4A4A4;
 	font-family: 'IBM Plex Sans',sans-serif;
-	visibility: hidden;
 	opacity: 0;
 	float: right;
+	transition:0.5s opacity ease-out;
 }
 a {
 	font-family: 'IBM Plex Sans',sans-serif;
@@ -337,6 +336,7 @@ input:focus,textarea:focus {
 	border:1px solid #3D3D3D;
 }
 textarea {
+	transition:background-color 0.1s ease-out, border 0.1s ease-out;
 	resize: vertical;
 	outline:0;
 	border-radius:2px;
