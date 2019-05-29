@@ -1,6 +1,7 @@
 # EasyOPGP
 
 EasyOPGP is an OpenPGP encryption / decryption tool for beginners. It is designed to be run standalone via the browser or as an executable (Electron).
+
 ![](demo.gif)
 
 ## Installation
