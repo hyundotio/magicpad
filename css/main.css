@@ -386,7 +386,7 @@ button, label {
 	height:3em;
 }
 .button-1,.button-2,.button-9{
-	transition:background-color 0.1s ease-out;
+	transition:background-color 0.1s ease-out,color 0.1s ease-out;
 	line-height:1em;
 	cursor:pointer;
 	padding:1em;
@@ -472,6 +472,15 @@ button:disabled,button[disabled],button:disabled:hover,button[disabled]:hover,bu
 	cursor:not-allowed;
 	background-color:#BEBEBE;
 	color:#8C8C8C;
+}
+.button-1 img,.button-2 img,.button-9 img {
+	transition:0.2s opacity ease-out;
+}
+.button-1:active img,.button-2:active img,.button-9:active img {
+	opacity:0.66;
+}
+.button-1:active,.button-2:active,.button-9:active{
+	color:rgba(255,255,255,0.66);
 }
 .button-2{
 	color:#FFF;
