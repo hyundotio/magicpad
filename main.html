@@ -62,19 +62,19 @@
                   <div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div>
                </div>
                <div class="popup-contents">
+                 <div class="create-key-progress">
+                    <div class="progress-container">
+                       <div class="lds-ring">
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                          <div></div>
+                       </div>
+                       <div>Generating keys...</div>
+                    </div>
+                 </div>
                   <ul class="pages">
                      <li class="key-new-form">
-                        <div class="create-key-progress">
-                           <div class="progress-container">
-                              <div class="lds-ring">
-                                 <div></div>
-                                 <div></div>
-                                 <div></div>
-                                 <div></div>
-                              </div>
-                              <div>Generating keys...</div>
-                           </div>
-                        </div>
                         <section>
                            <h3>Identifier / Name</h3>
                            <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" class="form-name" placeholder="Edward Snowden"/>
@@ -87,7 +87,7 @@
                            <h3>Passphrase</h3>
                            <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="password" class="form-passphrase passphrase-box" placeholder="Strong passphrase"/>
                         </section>
-                        <div class="pw-view-toggler">
+                        <div class="pw-view-toggler checkbox-offset">
                            <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
                         </div>
                         <section class="bottom-buttons">
@@ -118,6 +118,7 @@
                <h2>Write</h2>
                <section>
                   <h3>Your unencrypted message</h3>
+                  <div class="write-key-status key-status"></div>
                   <a href="#" class="b-link revert-encryption"><span class="show-enc">Show encrypted message</span><span class="show-dec">Show decrypted message</span></a>
                   <textarea autocomplete="off"class="text-write" placeholder="Write your message here"></textarea>
                </section>
@@ -144,12 +145,12 @@
                   <a href="#" class="key-generate-start b-link">Create new private and public key set</a>
                </section>
                <section>
-                  <h3>Your private key</h3>
+                  <h3>Your private key <div class="key-status private-key-filename"></div></h3>
                   <label for="key-priv-import" class="button-2 key-priv-import-label">Import</label>
                   <input id="key-priv-import" type="file" class="key-import key-priv-import" accept="asc"/>
                </section>
                <section>
-                  <h3>Recipient/Sender public key</h3>
+                  <h3>Recipient/Sender public key <div class="key-status public-key-filename"></div></h3>
                   <label for="key-pub-import" class="button-2 key-pub-import-label">Import</label>
                   <input id="key-pub-import" type="file" class="key-import key-pub-import" accept="asc"/>
                </section>
@@ -165,6 +166,7 @@
                <h2>Read</h2>
                <section>
                   <h3>Received encrypted message</h3>
+                  <div class="read-key-status key-status"></div>
                   <a href="#" class="b-link revert-encryption"><span class="show-enc">Show encrypted message</span><span class="show-dec">Show decrypted message</span></a>
                   <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-read" placeholder="Paste encrypted message here"></textarea>
                </section>

@@ -54,7 +54,7 @@ function viewEncMsg(){
 //View decrypted message
 function viewDecMsg(){
   $('.popup-filter').addClass('active');
-  $('.processed-output-window').addClass('active');
+  $('.processed-output-window').addClass('active').removeClass('mono');
   $('.processed-output-window').find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
   $('.save-processed').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastDec.data)).attr('download','decrypted_message.txt');
 }
@@ -62,7 +62,6 @@ function viewDecMsg(){
 //Exits popup
 function popupExit(){
   $('.popup').removeClass('active');
-  $('.popup').removeClass('mono');
   $('.popup-filter').removeClass('active');
 }
 
@@ -98,6 +97,8 @@ function readFormCheck(){
 
 //Resets all data in session
 function purge(){
+  $('.create-key-progress').removeClass('active');
+  $('.key-status').text('');
   $('input').val('').reset;
   $('textarea').text('').val('').reset;
   $('.revert-encryption').removeAttr('active encrypted decrypted');
@@ -157,12 +158,35 @@ function newKeyReset(){
   $('.key-generate').attr('disabled','disabled');
 }
 
+//Input keystatus filenames
+function writeKeyStatus(){
+  let filename;
+  if($('.key-pub-import').val() != ''){
+    filename = $('.key-pub-import').val().split(/(\\|\/)/g).pop();
+    $('.public-key-filename').text(' - '+filename);
+  // $('.write-key-filename').text(' - '+filename);
+  //  $('.read-key-status').text(filename+' loaded');
+  }
+  if($('.key-priv-import').val() != ''){
+    filename = $('.key-priv-import').val().split(/(\\|\/)/g).pop();
+    //$('.read-key-status').text(filename+' loaded');
+    //$('.write-key-status').text(filename+' loaded');
+    $('.private-key-filename').text(' - '+filename);
+  }
+  if($('.key-priv-import').val() != '' && $('.key-pub-import').val() != ''){
+    filename = $('.key-priv-import').val().split(/(\\|\/)/g).pop()+' and '+$('.key-pub-import').val().split(/(\\|\/)/g).pop()+' loaded';
+    //$('.read-key-status').text(filename);
+    //$('.write-key-status').text(filename);
+  }
+}
+
 //Import private key button function
 function importPrivKey(){
   //$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
   $('.key-priv-import-label').text('Reimport');
   writeFormCheck();
   readFormCheck();
+  writeKeyStatus();
 }
 
 //Import public key button function
@@ -173,9 +197,10 @@ function importPubKey(){
     session.pubKeyFingerprint = buf2hex(buffer);
     $('.fingerprint').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
     $('.key-pub-import-label').text('Reimport');
+    writeKeyStatus();
+    writeFormCheck();
+    readFormCheck();
   })
-  writeFormCheck();
-  readFormCheck();
 }
 
 //Function when key gneration is finished
@@ -186,6 +211,7 @@ function keyReady(){
   $('.key-private-download').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey));
   $('.key-private-download').attr('download','private.asc');
   $('.pages').find('li').eq(0).css('margin-left','-50%');
+  $('.create-key-progress').removeClass('active');
   session.running = false;
 }
 
@@ -471,6 +497,7 @@ $('.key-import').change(function(){
         alert("Oops! This doesn't seem like a proper public key. Please choose a different file.");
       }
     }
+
   }
   if(file != undefined){
     reader.readAsText(file);
