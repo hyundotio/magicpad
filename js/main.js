@@ -220,11 +220,19 @@ $('.key-import').change(function(){
   let reader = new FileReader();
   reader.onload = function(e) {
     if($type.hasClass('key-priv-import')){
-      session.privKey = reader.result;
-      importPrivKey();
+      if(reader.result.search('PRIVATE KEY BLOCK') > -1){
+        session.privKey = reader.result;
+        importPrivKey();
+      } else {
+        alert("Oops! This doesn't seem like a proper private key. Please choose a different file.");
+      }
     } else {
-      session.pubKey = reader.result;
-      importPubKey();
+      if(reader.result.search('PUBLIC KEY BLOCK') > -1){
+        session.pubKey = reader.result;
+        importPubKey();
+      } else {
+        alert("Oops! This doesn't seem like a proper public key. Please choose a different file.");
+      }
     }
   }
   reader.readAsText(file);
