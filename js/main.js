@@ -46,6 +46,7 @@ window.addEventListener('offline', function(){
 //View Encrypted Message
 function viewEncMsg(){
   $('.popup-filter').addClass('active');
+  $('.processed-output-window').find('.window-title').find('span').text('Encrypted message');
   $('.processed-output-window').addClass('active mono');
   $('.processed-output-window').find('.processed-output').text(session.lastEnc).val(session.lastEnc);
   $('.save-processed').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastEnc)).attr('download','encrypted_message.txt');
@@ -54,6 +55,7 @@ function viewEncMsg(){
 //View decrypted message
 function viewDecMsg(){
   $('.popup-filter').addClass('active');
+  $('.processed-output-window').find('.window-title').find('span').text('Decrypted message');
   $('.processed-output-window').addClass('active').removeClass('mono');
   $('.processed-output-window').find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
   $('.save-processed').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastDec.data)).attr('download','decrypted_message.txt');
@@ -97,6 +99,9 @@ function readFormCheck(){
 
 //Resets all data in session
 function purge(){
+  $('.key-new-form').removeClass('next-page');
+  $('.key-new-done').removeClass('active');
+  $('.create-key-window').find('.window-title').find('span').text('New key set');
   $('.key-generate-start').text('Create new private and public key set');
   $('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
   $('.create-key-progress').removeClass('active');
@@ -157,6 +162,7 @@ function copyProcessed() {
 //Reset key generation form
 function newKeyReset(){
   $('.key-generate-start').text('Create new private and public key set');
+  $('.create-key-window').find('.window-title').find('span').text('New key set');
   $('.create-key-window').find('a').each(function(){
     $(this).attr('href','#');
     $(this).removeAttr('download');
@@ -164,6 +170,7 @@ function newKeyReset(){
   $('.create-key-progress').removeClass('active');
   $('.key-new-form').find('input').val('');
   $('.key-new-form').removeClass('next-page');
+  $('.key-new-done').removeClass('active');
   $('.key-generate').attr('disabled','disabled');
 }
 
@@ -218,9 +225,11 @@ function keyReady(){
   $('.key-public-download').attr('download','public.asc');
   $('.key-private-download').attr('href','data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey));
   $('.key-private-download').attr('download','private.asc');
-  $('.pages').find('li').eq(0).addClass('next-page');
+  $('.key-new-done').addClass('active');
+  $('.key-new-form').addClass('next-page');
   $('.create-key-progress').removeClass('active');
   $('.key-generate-start').text('View generated keys');
+  $('.create-key-window').find('.window-title').find('span').text('Generated keys');
   session.running = false;
 }
 
@@ -248,55 +257,59 @@ function generateKeys(){
 
 //Decrypt messages
 function decryptMessage(){
-  let privKeyObj;
-  let pbKeyObj;
-  let parsedMsg;
-  session.lastEncPaste = $('.text-read').val();
-  openpgp.key.readArmored(session.privKey).then(pvKeys => {
-    privKeyObj = pvKeys.keys[0];
-    privKeyObj.decrypt($('.text-read-passphrase').val()).then(output => {
-      openpgp.key.readArmored(session.pubKey).then(pbKeys => {
-        pbKeyObj = pbKeys.keys;
-        openpgp.message.readArmored(session.lastEncPaste).then(msg => {
-          let options = {
-            message: msg,
-            publicKeys: pbKeyObj,
-            privateKeys: [privKeyObj]
-          }
-          openpgp.decrypt(options).then(plaintext => {
-            session.lastDec = plaintext;
-            if((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1){
-              verifySignature();
-            } else {
-              $('.processed-aside').text('Message decrypted');
-              viewDecMsg();
+  if(!session.running){
+    let privKeyObj;
+    let pbKeyObj;
+    let parsedMsg;
+    session.lastEncPaste = $('.text-read').val();
+    openpgp.key.readArmored(session.privKey).then(pvKeys => {
+      privKeyObj = pvKeys.keys[0];
+      privKeyObj.decrypt($('.text-read-passphrase').val()).then(output => {
+        openpgp.key.readArmored(session.pubKey).then(pbKeys => {
+          pbKeyObj = pbKeys.keys;
+          openpgp.message.readArmored(session.lastEncPaste).then(msg => {
+            let options = {
+              message: msg,
+              publicKeys: pbKeyObj,
+              privateKeys: [privKeyObj]
             }
+            openpgp.decrypt(options).then(plaintext => {
+              session.lastDec = plaintext;
+              if((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1){
+                verifySignature();
+              } else {
+                $('body').removeClass('loading');
+                $('.processed-aside').text('Message decrypted');
+                session.running = false;
+                viewDecMsg();
+              }
 
+            }).catch(function(e){
+              lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
+              $('body').removeClass('loading');
+              console.log('decrypt msg'+e);
+            });
           }).catch(function(e){
-            lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
+            lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
             $('body').removeClass('loading');
-            console.log('decrypt msg'+e);
+            //console.log('parse msg'+e);
           });
         }).catch(function(e){
-          lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
+          lipAlert('The public key cannot be read. It may be corrupted.');
           $('body').removeClass('loading');
-          //console.log('parse msg'+e);
+          //console.log('read pubkey'+e);
         });
       }).catch(function(e){
-        lipAlert('The public key cannot be read. It may be corrupted.');
+        lipAlert('The private key passphrase is incorrect.');
         $('body').removeClass('loading');
-        //console.log('read pubkey'+e);
+        //console.log('decrypt passphrase'+e);
       });
     }).catch(function(e){
-      lipAlert('The private key passphrase is incorrect.');
+      lipAlert('The private key cannot be read. It may be corrupted.');
       $('body').removeClass('loading');
-      //console.log('decrypt passphrase'+e);
+      //console.log('read privkey'+e);
     });
-  }).catch(function(e){
-    lipAlert('The private key cannot be read. It may be corrupted.');
-    $('body').removeClass('loading');
-    //console.log('read privkey'+e);
-  });
+  }
 }
 
 //Encrypt Message
@@ -312,15 +325,15 @@ function encryptMessage(msg,signedToggle){
       openpgp.encrypt(options).then(ciphertext => {
           encrypted = ciphertext.data.trim() // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
           session.lastEnc = encrypted;
-          viewEncMsg();
           $('.view-message-encrypted').removeAttr('disabled');
           if(signedToggle){
-            $('.processed-aside').text('Message encrypted and signed');
+            $('.processed-aside').text('Message encrypted and signed.');
           } else {
-            $('.processed-aside').text('Message encrypted');
+            $('.processed-aside').text('Message encrypted.');
           }
           $('body').removeClass('loading');
           session.running = false;
+          viewEncMsg();
       }).catch(function(e){
         //console.log('encryptmsg'+e);
         $('body').removeClass('loading');
@@ -336,32 +349,34 @@ function encryptMessage(msg,signedToggle){
 
 //Sign message
 function signMessage(){
-  openpgp.key.readArmored(session.privKey).then(data => {
-    let options, cleartext, validity;
-    let privKeyObj = data.keys[0];
-    privKeyObj.decrypt($('.text-write-passphrase').val()).then(output => {
-      options = {
-          message: openpgp.cleartext.fromText($('.text-write').val()),
-          privateKeys: [privKeyObj]
-      };
-      openpgp.sign(options).then(function(signed) {
-          cleartext = signed.data.trim();
-          encryptMessage(cleartext,true);
+  if(!session.running){
+    openpgp.key.readArmored(session.privKey).then(data => {
+      let options, cleartext, validity;
+      let privKeyObj = data.keys[0];
+      privKeyObj.decrypt($('.text-write-passphrase').val()).then(output => {
+        options = {
+            message: openpgp.cleartext.fromText($('.text-write').val()),
+            privateKeys: [privKeyObj]
+        };
+        openpgp.sign(options).then(function(signed) {
+            cleartext = signed.data.trim();
+            encryptMessage(cleartext,true);
+        }).catch(function(e){
+          //console.log('sign msg'+e);
+          $('body').removeClass('loading');
+          lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
+        });
       }).catch(function(e){
-        //console.log('sign msg'+e);
+        //console.log('unlock privkey'+e);
         $('body').removeClass('loading');
-        lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
+        lipAlert('The private key passphrase is incorrect.');
       });
     }).catch(function(e){
-      //console.log('unlock privkey'+e);
+      //console.log('readprivkey'+e);
       $('body').removeClass('loading');
-      lipAlert('The private key passphrase is incorrect.');
-    });
-  }).catch(function(e){
-    //console.log('readprivkey'+e);
-    $('body').removeClass('loading');
-    lipAlert('The private key cannot be read. It may be corrupted.');
-  });;
+      lipAlert('The private key cannot be read. It may be corrupted.');
+    });;
+  }
 }
 
 //Verify signature of message
@@ -381,9 +396,9 @@ function verifySignature(){
         openpgp.verify(options).then(function(verified) {
           validity = verified.signatures[0].valid;
           if (validity) {
-            $('.processed-aside').text('Message signature validated with imported public key');
+            $('.processed-aside').text('Message decrypted. Signature validated.');
           } else {
-            $('.processed-aside').text('Unable to validate message signature with imported public key');
+            $('.processed-aside').text('Message decrypted. Signature not validated.');
           }
           $('.view-message-decrypted').removeAttr('disabled');
           $('body').removeClass('loading');
@@ -499,14 +514,14 @@ $('.key-import').change(function(){
         session.privKey = reader.result;
         importPrivKey();
       } else {
-        alert("Oops! This doesn't seem like a proper private key. Please choose a different file.");
+        alert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
       }
     } else {
       if(reader.result.search('PUBLIC KEY BLOCK') != -1){
         session.pubKey = reader.result;
         importPubKey();
       } else {
-        alert("Oops! This doesn't seem like a proper public key. Please choose a different file.");
+        alert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
       }
     }
 
@@ -586,7 +601,8 @@ $('.tab').bind('click',function(e){
 })
 
 //Reset key generation form
-$('.key-generate-reset').bind('click',function(){
+$('.key-generate-reset').bind('click',function(e){
+  e.preventDefault();
   newKeyReset();
 })
 

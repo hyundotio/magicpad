@@ -67,12 +67,42 @@ input[type="file"] {
 	background-color: #121212;
 	color: #FFF;
 }
+.big-button-third span{
+	font-size: 1.75em;
+	line-height: 1.25em;
+	display: block;
+}
+.big-button-third img {
+	display:block;
+}
+a.big-button-third {
+	font-weight:300;
+	height: 33.33%;
+	width: 100%;
+	padding:1em;
+	border-bottom: 1px solid #FFF;
+	box-sizing: border-box;
+}
+a.big-button-third:last-child {
+	border-bottom: 1px solid transparent;
+}
 .key-new-form {
+	padding:1.25em 1em 1em 1em;
+	box-sizing:border-box;
 	transition:0.2s margin ease-out;
 }
 .key-new-form.next-page {
 	margin-left:-50%;
 	transition:none;
+}
+.key-new-done.active {
+	visibility:visible;
+	opacity:1;
+}
+.key-new-done {
+	opacity:0;
+	visibility:hidden;
+	transition:visibility 0.2s ease-out,opacity 0.2s ease-out;
 }
 .tab::after{
 	content:' ';
@@ -225,10 +255,10 @@ input[type="file"] {
 	height:100%;
 	overflow: hidden;
 }
-.bottom-buttons {
+.key-new-form .bottom-buttons {
 	position: absolute;
-	bottom: 0;
-	left: 0;
+	bottom: 1em;
+  left: 1em;
 }
 .popup.expanded {
 	height: 92%;
@@ -237,7 +267,11 @@ input[type="file"] {
   bottom: 4%;
 	opacity:0;
 }
+.create-key-window.popup {
+	 padding: 3em 0 0 0;
+}
 .popup {
+	overflow:hidden;
 	visibility:hidden;
 	transition: 0.3s all ease-out;
 	box-shadow:0 0 0.5em rgba(0,0,0,0.3);
@@ -245,7 +279,7 @@ input[type="file"] {
 	right: 1em;
 	bottom: -37em;
 	height: 36em;
-	width: 32em;
+	width: 33em;
 	box-sizing: border-box;
 	position: fixed;
 	padding:4.25em 1.25em 1.25em 1.25em;
@@ -391,7 +425,7 @@ section {
 	left: 0;
 	top: 0;
 	width: 100%;
-	background-color: #3D3D3D;
+	background-color: #121212;
 	padding:1em;
 }
 .pages section:first-of-type {

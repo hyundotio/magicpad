@@ -39,7 +39,7 @@
             <div class="popup-filter popup-exit"></div>
             <div class="processed-output-window popup">
                <div class="window-title">
-                  Processed output
+                  <span>Processed output</span>
                   <div class="popup-expand icon-button"><img src="./ui/expand.svg"/></div>
                   <div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div>
                </div>
@@ -58,7 +58,7 @@
             </div>
             <div class="create-key-window popup">
                <div class="window-title">
-                  Create new key set
+                  <span>New key set</span>
                   <div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div>
                </div>
                <div class="popup-contents">
@@ -95,19 +95,10 @@
                            <button class="button-2 popup-exit">Cancel</button>
                         </section>
                      </li>
-                     <li>
-                        <section>
-                           <h3>New private key</h3>
-                           <a href="#" class="button-1 key-private-download">Download</a>
-                        </section>
-                        <section>
-                           <h3>New public key</h3>
-                           <a href="#" class="button-1 key-public-download">Download</a>
-                        </section>
-                        <section>
-                           <h3>Recreate keys</h3>
-                           <button class="button-2 key-generate-reset">Restart</button>
-                        </section>
+                     <li class="key-new-done">
+                           <a href="#" class="big-button-third button-1 key-private-download"><span>Download new<br>private key</span><img src="./ui/download.svg"/></a>
+                           <a href="#" class="big-button-third button-1 key-public-download"><span>Download new<br>public key</span><img src="./ui/download.svg"/></a>
+                           <a href="#" class="big-button-third button-2 key-generate-reset"><span>Clear keys<br>and restart</span><img src="./ui/restart.svg"/></a>
                      </li>
                   </ul>
                </div>
@@ -188,7 +179,7 @@
                <section>
                   <h3>Credits</h3>
                   <ul class="credits-list">
-                     <li>Created by <a href="https://www.hyun.io" target="_blank" class="b-link">Hyun</a> - <a class="b-link" href="https://github.com/hyundotio" target="_blank">GitHub</a></li>
+                     <li>Created by <a href="https://www.hyun.io" target="_blank" class="b-link">Hyun →</a>&nbsp;&nbsp;<a class="b-link" href="https://github.com/hyundotio" target="_blank">GitHub →</a></li>
                      <li>Node.js (Electron, url, and path packages)</li>
                      <li>OpenPGP.js</li>
                      <li>Design language and typeface by IBM</li>
@@ -196,7 +187,7 @@
                </section>
                <section>
                   <h3>Website</h3>
-                  <a href="https://www.magicpad.io" class="b-link" target="_blank">https://www.magicpad.io</a>
+                  <a href="https://www.magicpad.io" class="b-link" target="_blank">https://www.magicpad.io →</a>
                </section>
                <section>
                   <h3>License</h3>
