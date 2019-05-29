@@ -97,6 +97,7 @@ function readFormCheck(){
 
 //Resets all data in session
 function purge(){
+  $('.key-generate-start').text('Create new private and public key set');
   $('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
   $('.create-key-progress').removeClass('active');
   $('.key-status').text('');
@@ -155,6 +156,7 @@ function copyProcessed() {
 
 //Reset key generation form
 function newKeyReset(){
+  $('.key-generate-start').text('Create new private and public key set');
   $('.create-key-window').find('a').each(function(){
     $(this).attr('href','#');
     $(this).removeAttr('download');
@@ -218,6 +220,7 @@ function keyReady(){
   $('.key-private-download').attr('download','private.asc');
   $('.pages').find('li').eq(0).addClass('next-page');
   $('.create-key-progress').removeClass('active');
+  $('.key-generate-start').text('View generated keys');
   session.running = false;
 }
 

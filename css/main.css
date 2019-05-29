@@ -70,7 +70,7 @@ input[type="file"] {
 .key-new-form {
 	transition:0.2s margin ease-out;
 }
-.key-new-form.next-page {F
+.key-new-form.next-page {
 	margin-left:-50%;
 	transition:none;
 }
