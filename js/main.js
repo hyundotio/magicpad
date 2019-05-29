@@ -472,7 +472,9 @@ $('.key-import').change(function(){
       }
     }
   }
-  reader.readAsText(file);
+  if(file != undefined){
+    reader.readAsText(file);
+  }
 })
 
 $('body').keyup(function(e){
