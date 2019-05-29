@@ -1,199 +1,206 @@
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>MagicPad</title>
-      <meta charset="utf-8">
-      <script src="./js_include/openpgp.min.js"></script>
-      <script src="./js_include/jquery-3.4.1.min.js"></script>
-      <link rel="stylesheet" href="./css/reset.css"/>
-      <link rel="stylesheet" href="./fonts/stylesheet.css"/>
-      <link rel="stylesheet" href="./css/main.css"/>
-   </head>
-   <body>
-      <nav class="main-nav">
-         <ul>
-            <li><a href="#" class="keys-tab tab active" data-tab="keys">Keys</a></li>
-            <li><a href="#" class="read-tab tab" data-tab="read">Read</a></li>
-            <li><a href="#" class="write-tab tab" data-tab="write">Write</a></li>
-            <li><a href="#" class="about-tab tab" data-tab="about">About</a></li>
-         </ul>
-      </nav>
-      <main>
-         <div class="lds-ring-small main-loader">
-            <div></div>
-            <div></div>
-            <div></div>
-            <div></div>
-         </div>
-         <div class="lips">
-            <div class="online-flag lip">
-               You are currently online. For extra security, use an air-gapped computer.
-               <img class="icon-button lip-exit" src="./ui/exit-black.svg"/>
-            </div>
-            <div class="message-flag lip">
-               <span>Error message.</span>
-               <img class="icon-button lip-exit" src="./ui/exit-black.svg"/>
-            </div>
-         </div>
-         <div class="popups">
-            <div class="popup-filter popup-exit"></div>
-            <div class="processed-output-window popup">
-               <div class="window-title">
-                  <span>Processed output</span>
-                  <div class="popup-expand icon-button"><img src="./ui/expand.svg"/></div>
-                  <div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div>
-               </div>
-               <div class="popup-contents">
-                  <textarea id="processed-output" class="processed-output" readonly>
-            </textarea>
-                  <div>
-                     <span class="copied">Copied to clipboard</span>
-                     <div class="processed-aside"></div>
-                  </div>
-                  <section>
-                     <button class="button-2 copy-processed"><span>Copy</span><img src="./ui/copy.svg" class="button-icon-img"/></button>
-                     <a href="#" class="button-2 save-processed"><span>Save As</span><img src="./ui/save.svg" class="button-icon-img"/></a>
-                  </section>
-               </div>
-            </div>
-            <div class="create-key-window popup">
-               <div class="window-title">
-                  <span>New key set</span>
-                  <div class="icon-button popup-exit"><img src="./ui/exit.svg"/></div>
-               </div>
-               <div class="popup-contents">
-                 <div class="create-key-progress">
-                    <div class="progress-container">
-                       <div class="lds-ring">
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                          <div></div>
-                       </div>
-                       <div>Generating keys...</div>
-                    </div>
-                 </div>
-                  <ul class="pages">
-                     <li class="key-new-form">
-                        <section>
-                           <h3>Identifier / Name</h3>
-                           <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="text" class="form-name" placeholder="Edward Snowden"/>
-                        </section>
-                        <section>
-                           <h3>Your e-mail</h3>
-                           <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="email" class="form-email" placeholder="edwardsnowden@protonmail.com"/>
-                        </section>
-                        <section>
-                           <h3>Passphrase</h3>
-                           <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="password" class="form-passphrase passphrase-box" placeholder="Strong passphrase"/>
-                        </section>
-                        <div class="pw-view-toggler checkbox-offset">
-                           <input autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
-                        </div>
-                        <section class="bottom-buttons">
-                           <button class="button-1 key-generate" disabled><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"/></button>
-                           <button class="button-2 popup-exit">Cancel</button>
-                        </section>
-                     </li>
-                     <li class="key-new-done">
-                           <a href="#" class="big-button-third button-1 key-private-download"><span>Download new<br>private key</span><img src="./ui/download.svg"/></a>
-                           <a href="#" class="big-button-third button-1 key-public-download"><span>Download new<br>public key</span><img src="./ui/download.svg"/></a>
-                           <a href="#" class="big-button-third button-2 key-generate-reset"><span>Clear keys<br>and restart</span><img src="./ui/restart.svg"/></a>
-                     </li>
-                  </ul>
-               </div>
-            </div>
-         </div>
-         <div class="tab-windows">
-            <div class="write tab-window">
-               <h2>Write</h2>
-               <section>
-                  <h3>Your unencrypted message</h3>
-                  <div class="write-key-status key-status"></div>
-                  <textarea autocomplete="off"class="text-write" placeholder="Write your message here"></textarea>
-               </section>
-               <section>
-                  <div class="sign-toggle checkbox-offset">
-                    <input type="checkbox" checked class="encrypt-sign-checkbox"/>&nbsp;&nbsp;Sign message with private key
-                  </div>
-                  <div class="sign-credentials">
-                     <h3>Your private key passphrase</h3>
-                     <input class="passphrase-box text-write-passphrase" type="password" placeholder="Passphrase" />
-                     <div class="pw-view-toggler checkbox-offset">
-                        <input type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
-                     </div>
-                  </div>
-               </section>
-               <section>
-                  <button class="button-1 encrypt-message sign-enabled" disabled><span>Encrypt</span><img src="./ui/encrypt.svg" class="button-icon-img"/></button>
-                  <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img src="./ui/popup.svg" class="button-icon-img"/></button>
-               </section>
-            </div>
-            <div class="keys tab-window active">
-               <h2>Keys</h2>
-               <section>
-                  <a href="#" class="key-generate-start b-link">Create new private and public key set</a>
-               </section>
-               <section>
-                  <h3>Your private key <div class="key-status private-key-filename"></div></h3>
-                  <div class="label-container button-2 key-priv-import-label"><label for="key-priv-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"/></div>
-                  <input id="key-priv-import" type="file" class="key-import key-priv-import" accept="asc"/>
-               </section>
-               <section>
-                  <h3>Recipient/Sender public key <div class="key-status public-key-filename"></div></h3>
-                  <div class="label-container button-2 key-pub-import-label"><label for="key-pub-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"/></div>
-                  <input id="key-pub-import" type="file" class="key-import key-pub-import" accept="asc"/>
-               </section>
-               <section>
-                  <h3>Recipient/Sender public key fingerprint</h3>
-                  <div class="fingerprint">No public key imported</div>
-               </section>
-               <section>
-               <h3>Purge all keys from session</h3>
-               <button class="purge button-9"><span>Purge</span><img src="./ui/purge.svg" class="button-icon-img"/></button>
-            </div>
-            <div class="read tab-window">
-               <h2>Read</h2>
-               <section>
-                  <h3>Received encrypted message</h3>
-                  <div class="read-key-status key-status"></div>
-                  <textarea autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" class="text-read" placeholder="Paste encrypted message here"></textarea>
-               </section>
-               <section>
-                  <h3>Your private key passphrase</h3>
-                  <input class="passphrase-box text-read-passphrase" type="password" placeholder="Passphrase" />
-                  <div class="pw-view-toggler checkbox-offset">
-                     <input type="checkbox" name="pw-toggle" class="pw-toggle">&nbsp;&nbsp;Show passphrase<br>
-                  </div>
-               </section>
-               <section>
-                  <button class="button-1 decrypt-message" disabled><span>Decrypt</span><img src="./ui/decrypt.svg" class="button-icon-img"/></button>
-                  <button class="button-2 view-message-decrypted view-processed" disabled><span>View output</span><img src="./ui/popup.svg" class="button-icon-img"/></button>
-               </section>
-            </div>
-            <div class="about tab-window">
-               <h2>MagicPad 0.0.1</h2>
-               <p>This project was created for people to encrypt and decrypt their messages easily using Magic.</p>
-               <section>
-                  <h3>Credits</h3>
-                  <ul class="credits-list">
-                     <li>Created by <a href="https://www.hyun.io" target="_blank" class="b-link">Hyun →</a>&nbsp;&nbsp;<a class="b-link" href="https://github.com/hyundotio" target="_blank">GitHub →</a></li>
-                     <li>Node.js (Electron, url, and path packages)</li>
-                     <li>OpenPGP.js</li>
-                     <li>Design language and typeface by IBM</li>
-                  </ul>
-               </section>
-               <section>
-                  <h3>Website</h3>
-                  <a href="https://www.magicpad.io" class="b-link" target="_blank">https://www.magicpad.io →</a>
-               </section>
-               <section>
-                  <h3>License</h3>
-                  MIT
-               </section>
-            </div>
-         </div>
-      </main>
-   </body>
-   <script src="./js/main.js"></script>
+<head>
+	<title>MagicPad</title>
+	<meta charset="utf-8">
+	<script src="./js_include/openpgp.min.js">
+	</script>
+	<script src="./js_include/jquery-3.4.1.min.js">
+	</script>
+	<link href="./css/reset.css" rel="stylesheet">
+	<link href="./fonts/stylesheet.css" rel="stylesheet">
+	<link href="./css/main.css" rel="stylesheet">
+</head>
+<body>
+	<nav class="main-nav">
+		<ul>
+			<li>
+				<a class="keys-tab tab active" data-tab="keys" href="#">Keys</a>
+			</li>
+			<li>
+				<a class="read-tab tab" data-tab="read" href="#">Read</a>
+			</li>
+			<li>
+				<a class="write-tab tab" data-tab="write" href="#">Write</a>
+			</li>
+			<li>
+				<a class="about-tab tab" data-tab="about" href="#">About</a>
+			</li>
+		</ul>
+	</nav>
+	<main>
+		<div class="lds-ring-small main-loader">
+			<div></div>
+			<div></div>
+			<div></div>
+			<div></div>
+		</div>
+		<div class="lips">
+			<div class="online-flag lip">You are currently online. For extra security, use an air-gapped computer. <img class="icon-button lip-exit" src="./ui/exit-black.svg"></div>
+			<div class="message-flag lip"><span>Error message.</span> <img class="icon-button lip-exit" src="./ui/exit-black.svg"></div>
+		</div>
+		<div class="popups">
+			<div class="popup-filter popup-exit"></div>
+			<div class="processed-output-window popup">
+				<div class="window-title">
+					<span>Processed output</span>
+					<button class="popup-expand icon-button"><img src="./ui/expand.svg"></button>
+					<button class="icon-button popup-exit"><img src="./ui/exit.svg"></button>
+				</div>
+				<div class="popup-contents">
+					<textarea class="processed-output" id="processed-output" readonly></textarea>
+					<div>
+						<span class="copied">Copied to clipboard</span>
+						<div class="processed-aside"></div>
+					</div>
+					<section>
+						<button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-processed" href="#"><span>Save As</span><img class="button-icon-img" src="./ui/save.svg"></a>
+					</section>
+				</div>
+			</div>
+			<div class="create-key-window popup">
+				<div class="window-title">
+					<span>New key set</span>
+					<button class="icon-button popup-exit"><img src="./ui/exit.svg"></button>
+				</div>
+				<div class="popup-contents">
+					<div class="create-key-progress">
+						<div class="progress-container">
+							<div class="lds-ring">
+								<div></div>
+								<div></div>
+								<div></div>
+								<div></div>
+							</div>
+							<div>
+								Generating keys...
+							</div>
+						</div>
+					</div>
+					<ul class="pages">
+						<li class="key-new-form">
+							<section>
+								<h3>Identifier / Name</h3><input autocomplete="off" class="form-name" placeholder="Edward Snowden" spellcheck="false" type="text">
+							</section>
+							<section>
+								<h3>Your e-mail</h3><input autocomplete="off" class="form-email" placeholder="edwardsnowden@protonmail.com" spellcheck="false" type="email">
+							</section>
+							<section>
+								<h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
+							</section>
+							<div class="pw-view-toggler checkbox-offset">
+								<input autocomplete="off" class="pw-toggle" name="pw-toggle" spellcheck="false" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+							</div>
+							<section class="bottom-buttons">
+								<button class="button-1 key-generate" disabled><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"></button> <button class="button-2 popup-exit">Cancel</button>
+							</section>
+						</li>
+						<li class="key-new-done">
+							<a class="big-button-third button-1 key-private-download" href="#"><span>Download new<br>
+							private key</span><img src="./ui/download.svg"></a> <a class="big-button-third button-1 key-public-download" href="#"><span>Download new<br>
+							public key</span><img src="./ui/download.svg"></a> <a class="big-button-third button-2 key-generate-reset" href="#"><span>Clear keys<br>
+							and restart</span><img src="./ui/restart.svg"></a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="tab-windows">
+			<div class="write tab-window">
+				<h2>Write</h2>
+				<section>
+					<h3>Your unencrypted message</h3>
+					<div class="write-key-status key-status"></div>
+					<textarea class="text-write" placeholder="Write your message here"></textarea>
+				</section>
+				<section>
+					<div class="sign-toggle checkbox-offset">
+						<input checked class="encrypt-sign-checkbox" type="checkbox">&nbsp;&nbsp;Sign message with private key
+					</div>
+					<div class="sign-credentials">
+						<h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" placeholder="Passphrase" type="password">
+						<div class="pw-view-toggler checkbox-offset">
+							<input class="pw-toggle" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+						</div>
+					</div>
+				</section>
+				<section>
+					<button class="button-1 encrypt-message sign-enabled" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+				</section>
+			</div>
+			<div class="keys tab-window active">
+				<h2>Keys</h2>
+				<section>
+					<a class="key-generate-start b-link" href="#">Create new private and public key set</a>
+				</section>
+				<section>
+					<h3>Your private key</h3>
+					<div class="key-status private-key-filename">
+						<h3></h3>
+					</div>
+					<div>
+						<a class="label-container button-2 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
+					</div>
+				</section>
+				<section>
+					<h3>Recipient/Sender public key</h3>
+					<div class="key-status public-key-filename">
+						<h3></h3>
+					</div>
+					<div>
+						<a class="label-container button-2 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file">
+					</div>
+				</section>
+				<section>
+					<h3>Recipient/Sender public key fingerprint</h3>
+					<div class="fingerprint">
+						No public key imported
+					</div>
+				</section>
+				<section>
+					<h3>Purge all keys from session</h3><button class="purge button-9"><span>Purge</span><img class="button-icon-img" src="./ui/purge.svg"></button>
+				</section>
+			</div>
+			<div class="read tab-window">
+				<h2>Read</h2>
+				<section>
+					<h3>Received encrypted message</h3>
+					<div class="read-key-status key-status"></div>
+					<textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
+				</section>
+				<section>
+					<h3>Your private key passphrase</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" type="password">
+					<div class="pw-view-toggler checkbox-offset">
+						<input class="pw-toggle" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+					</div>
+				</section>
+				<section>
+					<button class="button-1 decrypt-message" disabled><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg"></button> <button class="button-2 view-message-decrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+				</section>
+			</div>
+			<div class="about tab-window">
+				<h2>MagicPad 0.0.1</h2>
+				<p>This project was created for people to encrypt and decrypt their messages easily using Magic.</p>
+				<section>
+					<h3>Credits</h3>
+					<ul class="credits-list">
+						<li>Created by <a class="b-link" href="https://www.hyun.io" target="_blank">Hyun →</a>&nbsp;&nbsp;<a class="b-link" href="https://github.com/hyundotio" target="_blank">GitHub →</a>
+						</li>
+						<li>Node.js (Electron, url, and path packages)</li>
+						<li>OpenPGP.js</li>
+						<li>Design language and typeface by IBM</li>
+					</ul>
+				</section>
+				<section>
+					<h3>Website</h3><a class="b-link" href="https://www.magicpad.io" target="_blank">https://www.magicpad.io →</a>
+				</section>
+				<section>
+					<h3>License</h3>MIT
+				</section>
+			</div>
+		</div>
+	</main>
+	<script src="./js/main.js">
+	</script>
+</body>
 </html>
