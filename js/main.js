@@ -216,19 +216,19 @@ function decryptMessage(){
             session.lastDec = plaintext;
             verifySignature();
           }).catch(function(e){
-            console.log(e);
+            console.log('decrypt msg'+e);
           });
         }).catch(function(e){
-          console.log(e);
+          console.log('parse msg'+e);
         });
       }).catch(function(e){
-        console.log(e);
+        console.log('read pubkey'+e);
       });
     }).catch(function(e){
-      console.log(e);
+      console.log('decrypt passphrase'+e);
     });
   }).catch(function(e){
-    console.log(e);
+    console.log('read privkey'+e);
   });
 }
 
@@ -251,10 +251,10 @@ function encryptMessage(msg){
           $('.main-loader').removeClass('active');
           session.running = false;
       }).catch(function(e){
-        console.log(e);
+        console.log('encryptmsg'+e);
       });
     }).catch(function(e){
-      console.log(e);
+      console.log('read pubkey'+e);
     });
   }
 }
@@ -273,10 +273,10 @@ function signMessage(){
           cleartext = signed.data.trim();
           encryptMessage(cleartext);
       }).catch(function(e){
-        console.log(e);
+        console.log('sign msg'+e);
       });
     }).catch(function(e){
-      console.log(e);
+      console.log('read privkey'+e);
     });
   });
 }
@@ -307,12 +307,14 @@ function verifySignature(){
           session.running = false;
           viewDecMsg();
         }).catch(function(e){
-          console.log(e);
+          console.log('verifysign'+e);
         });
       }).catch(function(e){
-        console.log(e);
+        console.log('readcleartext'+e);
       });
-    })
+    }).catch(function(e){
+      console.log('readpubkey'+e);
+    });
   }
 }
 
