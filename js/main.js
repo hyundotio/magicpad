@@ -89,7 +89,7 @@ function purge() {
 	$('.key-new-form').removeClass('next-page');
 	$('.key-new-done').removeClass('active');
 	$('.create-key-window').find('.window-title').find('span').text('New key set');
-	$('.key-generate-start').text('Create new private and public key set');
+	$('.key-generate-start').text('Create new private and public key set +');
 	$('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
 	$('.create-key-progress').removeClass('active');
 	$('.key-status').text('');
@@ -150,7 +150,7 @@ function copyProcessed() {
 }
 //Reset key generation form
 function newKeyReset() {
-	$('.key-generate-start').text('Create new private and public key set');
+	$('.key-generate-start').text('Create new private and public key set +');
 	$('.create-key-window').find('.window-title').find('span').text('New key set');
 	$('.create-key-window').find('a').each(function() {
 		$(this).attr('href', '#');
