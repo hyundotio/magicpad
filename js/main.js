@@ -30,6 +30,11 @@ init();
 // UI data handling functions
 // UI data handling functions
 
+//Alert notification
+function lipAlert(str){
+  $('.message-flag').addClass('active').find('span').text(str);
+}
+
 //Handles online notification lip
 window.addEventListener('online',  function(){
   $('.online-flag').addClass('active');
@@ -216,19 +221,29 @@ function decryptMessage(){
             session.lastDec = plaintext;
             verifySignature();
           }).catch(function(e){
-            console.log('decrypt msg'+e);
+            lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
+            $('.main-loader').removeClass('active');
+            //console.log('decrypt msg'+e);
           });
         }).catch(function(e){
-          console.log('parse msg'+e);
+          lipAlert('The encrypted message cannot be understood and/or is formatted incorrectly.');
+          $('.main-loader').removeClass('active');
+          //console.log('parse msg'+e);
         });
       }).catch(function(e){
-        console.log('read pubkey'+e);
+        lipAlert('The public key cannot be read. It may be corrupted.');
+        $('.main-loader').removeClass('active');
+        //console.log('read pubkey'+e);
       });
     }).catch(function(e){
-      console.log('decrypt passphrase'+e);
+      lipAlert('The private key passphrase is incorrect.');
+      $('.main-loader').removeClass('active');
+      //console.log('decrypt passphrase'+e);
     });
   }).catch(function(e){
-    console.log('read privkey'+e);
+    lipAlert('The private key cannot be read. It may be corrupted.');
+    $('.main-loader').removeClass('active');
+    //console.log('read privkey'+e);
   });
 }
 
@@ -251,10 +266,14 @@ function encryptMessage(msg){
           $('.main-loader').removeClass('active');
           session.running = false;
       }).catch(function(e){
-        console.log('encryptmsg'+e);
+        //console.log('encryptmsg'+e);
+        $('.main-loader').removeClass('active');
+        lipAlert('Cannot encrypt message. Try testing a different message and/or keys.');
       });
     }).catch(function(e){
-      console.log('read pubkey'+e);
+      //console.log('read pubkey'+e);
+      $('.main-loader').removeClass('active');
+      lipAlert('The public key cannot be read. It may be corrupted.');
     });
   }
 }
@@ -273,12 +292,20 @@ function signMessage(){
           cleartext = signed.data.trim();
           encryptMessage(cleartext);
       }).catch(function(e){
-        console.log('sign msg'+e);
+        //console.log('sign msg'+e);
+        $('.main-loader').removeClass('active');
+        lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
       });
     }).catch(function(e){
-      console.log('read privkey'+e);
+      //console.log('unlock privkey'+e);
+      $('.main-loader').removeClass('active');
+      lipAlert('The private key passphrase is incorrect.');
     });
-  });
+  }).catch(function(e){
+    //console.log('readprivkey'+e);
+    $('.main-loader').removeClass('active');
+    lipAlert('The private key cannot be read. It may be corrupted.');
+  });;
 }
 
 //Verify signature of message
@@ -307,13 +334,17 @@ function verifySignature(){
           session.running = false;
           viewDecMsg();
         }).catch(function(e){
-          console.log('verifysign'+e);
+          $('.main-loader').removeClass('active');
+          lipAlert('The signature cannot be verified. It may be corrupted.');
         });
       }).catch(function(e){
-        console.log('readcleartext'+e);
+        $('.main-loader').removeClass('active');
+        lipAlert('The signature cannot be read. It maybe corrupted.');
       });
     }).catch(function(e){
-      console.log('readpubkey'+e);
+      $('.main-loader').removeClass('active');
+      lipAlert('The public key cannot be read. It may be corrupted.');
+      //console.log('readpubkey'+e);
     });
   }
 }
@@ -396,14 +427,14 @@ $('.key-import').change(function(){
   let reader = new FileReader();
   reader.onload = function(e) {
     if($type.hasClass('key-priv-import')){
-      if(reader.result.search('PRIVATE KEY BLOCK') > -1){
+      if(reader.result.search('PRIVATE KEY BLOCK') != -1){
         session.privKey = reader.result;
         importPrivKey();
       } else {
         alert("Oops! This doesn't seem like a proper private key. Please choose a different file.");
       }
     } else {
-      if(reader.result.search('PUBLIC KEY BLOCK') > -1){
+      if(reader.result.search('PUBLIC KEY BLOCK') != -1){
         session.pubKey = reader.result;
         importPubKey();
       } else {

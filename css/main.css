@@ -131,6 +131,9 @@ input[type="file"] {
 .tab-windows .tab-window.active {
 	display:block;
 }
+.lip.online-flag.active {
+	display:none;
+}
 .lip {
 	z-index:10;
 	position: fixed;
