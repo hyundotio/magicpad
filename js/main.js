@@ -259,6 +259,7 @@ function decryptMessage() {
 		let privKeyObj;
 		let pbKeyObj;
 		let parsedMsg;
+		let $body = $('body');
 		session.lastEncPaste = $('.text-read').val();
 		openpgp.key.readArmored(session.privKey).then(pvKeys => {
 			privKeyObj = pvKeys.keys[0];
@@ -276,35 +277,30 @@ function decryptMessage() {
 							if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 								verifySignature();
 							} else {
-								$('body').removeClass('loading');
+								$body.removeClass('loading');
 								$('.processed-aside').text('Message decrypted.');
 								session.running = false;
 								viewDecMsg();
 							}
 						}).catch(function(e) {
 							lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
-							$('body').removeClass('loading');
-							console.log('decrypt msg' + e);
+							$body.removeClass('loading');
 						});
 					}).catch(function(e) {
 						lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
-						$('body').removeClass('loading');
-						//console.log('parse msg'+e);
+						$body.removeClass('loading');
 					});
 				}).catch(function(e) {
 					lipAlert('The public key cannot be read. It may be corrupted.');
-					$('body').removeClass('loading');
-					//console.log('read pubkey'+e);
+					$body.removeClass('loading');
 				});
 			}).catch(function(e) {
 				lipAlert('The private key passphrase is incorrect.');
-				$('body').removeClass('loading');
-				//console.log('decrypt passphrase'+e);
+				$body.removeClass('loading');
 			});
 		}).catch(function(e) {
 			lipAlert('The private key cannot be read. It may be corrupted.');
-			$('body').removeClass('loading');
-			//console.log('read privkey'+e);
+			$body.removeClass('loading');
 		});
 	}
 }
