@@ -22,6 +22,9 @@ html, body {
 .sign-credentials.disabled {
 	opacity: 0.5;
 }
+input[type="checkbox"]:hover {
+	border:1px solid #054ADA;
+}
 input[type="checkbox"]:focus {
 	border: 1px solid #0062FF;
 }
