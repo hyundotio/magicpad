@@ -22,7 +22,11 @@ html, body {
 .sign-credentials.disabled {
 	opacity: 0.5;
 }
+input[type="checkbox"]:focus {
+	border: 1px solid #0062FF;
+}
 input[type="checkbox"] {
+	outline:0;
 	-moz-appearance:none;
 	-webkit-appearance:none;
 	-ms-appearance:none;
@@ -157,8 +161,11 @@ a.big-button-third:last-child {
 .tab {
 	transition: color 0.2s ease-out;
 }
+.tab:active {
+	color: #252525;
+}
 .tab:hover {
-	color: #565656;
+	color: #A4A4A4;
 }
 .popup-expand {
 	position: absolute;
@@ -401,12 +408,14 @@ h3 {
 	transition: 0.5s opacity ease-out;
 }
 a {
+	outline:0;
 	font-family: 'IBM Plex Sans', sans-serif;
 	font-style: inherit;
 	color: inherit;
 	text-decoration: inherit;
 }
 button, label {
+	outline:0;
 	background-color:transparent;
 	font-size: 1em;
 	font-family: 'IBM Plex Sans';
