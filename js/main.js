@@ -37,13 +37,22 @@ window.addEventListener('online', function() {
 window.addEventListener('offline', function() {
 	$('.online-flag').removeClass('active');
 });
+//View Public Key
+function viewPubKey() {
+	let $processedOutputWindow = $('.processed-output-window');
+	$('.popup-filter').addClass('active');
+	$('.processed-aside').text('Viewing public key: '+getFilename($('.key-pub-import').val()));
+	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Imported public key');
+	$processedOutputWindow.find('.processed-output').text(session.pubKey).val(session.pubKey);
+	$('.save-processed').addClass('hidden');
+}
 //View Encrypted Message
 function viewEncMsg() {
 	let $processedOutputWindow = $('.processed-output-window');
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
-	$('.save-processed').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastEnc)).attr('download', 'encrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastEnc)).attr('download', 'encrypted_message.txt');
 }
 //View decrypted message
 function viewDecMsg() {
@@ -51,7 +60,7 @@ function viewDecMsg() {
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active').removeClass('mono').find('.window-title').find('span').text('Decrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
-	$('.save-processed').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastDec.data)).attr('download', 'decrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastDec.data)).attr('download', 'decrypted_message.txt');
 }
 //Exits popup
 function popupExit() {
@@ -77,10 +86,11 @@ function writeFormCheck() {
 }
 //Checks for form in the Read tab
 function readFormCheck() {
+	let $decryptMessage = $('.decrypt-message');
 	if ($('.text-read').val().length > 0 && $('.text-read-passphrase').val().length > 0 && session.privKey.length > 0) {
-		$('.decrypt-message').removeAttr('disabled');
+		$decryptMessage.removeAttr('disabled');
 	} else {
-		$('.decrypt-message').attr('disabled', 'disabled');
+		$decryptMessage.attr('disabled', 'disabled');
 	}
 }
 // Data processing functions
@@ -88,6 +98,7 @@ function readFormCheck() {
 // Data processing functions
 //Resets all data in session
 function purge() {
+	$('.view-pub-key').removeClass('active');
 	$('.key-new-form').removeClass('next-page');
 	$('.key-new-done').removeClass('active');
 	$('.create-key-window').find('.window-title').find('span').text('New key set');
@@ -203,6 +214,7 @@ function importPubKey() {
 		session.pubKeyFingerprint = buf2hex(buffer);
 		$('.fingerprint').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 		$('.key-pub-import-label').find('span').text('Reimport');
+		$('.view-pub-key').addClass('active');
 		writeKeyStatus();
 		writeFormCheck();
 		readFormCheck();
@@ -404,6 +416,10 @@ function verifySignature() {
 //UI Bindings
 //UI Bindings
 //UI Bindings
+//View pub key bind
+$('.view-pub-key').bind('click',function(){
+	viewPubKey();
+})
 //label container bind
 $('.label-container').bind('click', function(e) {
 	e.preventDefault();

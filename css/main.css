@@ -22,9 +22,45 @@ html, body {
 	opacity: 0.5;
 }
 input[type="checkbox"] {
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	-ms-appearance:none;
+	appearance:none;
 	margin: 0;
 	float: left;
 	display: block;
+	height: 14px;
+	width: 14px;
+	border: 1px solid #121212;
+	position:relative;
+	box-sizing:border-box;
+}
+button.view-pub-key.active {
+	opacity:1;
+	visibility:visible;
+}
+button.view-pub-key {
+	visibility:hidden;
+	opacity:0;
+}
+input[type="checkbox"]:after {
+	content: ' ';
+	background-color: transparent;
+	width: 8px;
+	height: 8px;
+	position: absolute;
+	left: 2px;
+	top: 2px;
+	border: 1px solid transparent;
+	box-sizing: border-box;
+	transition:0.1s background-color ease-out;
+}
+a.hidden, button.hidden {
+	visibility: hidden;
+	opacity:0;
+}
+input[type="checkbox"]:checked:after {
+	background-color: #0062ff;
 }
 input[type="email"].error {
 	border: 1px solid #EE538B;
@@ -379,7 +415,7 @@ button, label {
 	height: 3em;
 }
 .button-1, .button-2, .button-9 {
-	transition: background-color 0.1s ease-out, color 0.1s ease-out;
+	transition: background-color 0.1s ease-out, color 0.1s ease-out, visibility 0.1s ease-out, opacity 0.1s ease-out;
 	line-height: 1em;
 	cursor: pointer;
 	padding: 1em;
