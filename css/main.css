@@ -197,18 +197,18 @@ a.big-button-third:last-child {
 .lip {
 	z-index: 10;
 	position: fixed;
-	bottom: 0;
+	bottom: -3em;
 	left: 0;
 	width: 100%;
 	font-size: 1em;
 	height: 3em;
 	padding: 1em;
 	box-sizing: border-box;
+	transition: bottom 0.2s ease-out;
 	background-color: #FDD13A;
-	display: none;
 }
 .lip.active {
-	display: block;
+	bottom: 0;
 }
 .create-key-progress.active {
 	opacity: 1;

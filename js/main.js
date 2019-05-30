@@ -15,10 +15,11 @@ let session = {
 //Init Function
 function init() {
 	purge();
+	let $onlineFlag = $('.online-flag');
 	if (window.navigator.onLine) {
-		$('.online-flag').addClass('active');
+		$onlineFlag.addClass('active');
 	} else {
-		$('.online-flag').removeClass('active');
+		$onlineFlag.removeClass('active');
 	}
 }
 init();
@@ -38,18 +39,18 @@ window.addEventListener('offline', function() {
 });
 //View Encrypted Message
 function viewEncMsg() {
+	let $processedOutputWindow = $('.processed-output-window');
 	$('.popup-filter').addClass('active');
-	$('.processed-output-window').find('.window-title').find('span').text('Encrypted message');
-	$('.processed-output-window').addClass('active mono');
-	$('.processed-output-window').find('.processed-output').text(session.lastEnc).val(session.lastEnc);
+	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
+	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
 	$('.save-processed').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastEnc)).attr('download', 'encrypted_message.txt');
 }
 //View decrypted message
 function viewDecMsg() {
+	let $processedOutputWindow = $('.processed-output-window');
 	$('.popup-filter').addClass('active');
-	$('.processed-output-window').find('.window-title').find('span').text('Decrypted message');
-	$('.processed-output-window').addClass('active').removeClass('mono');
-	$('.processed-output-window').find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
+	$processedOutputWindow.addClass('active').removeClass('mono').find('.window-title').find('span').text('Decrypted message');
+	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
 	$('.save-processed').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastDec.data)).attr('download', 'decrypted_message.txt');
 }
 //Exits popup
@@ -59,17 +60,18 @@ function popupExit() {
 }
 //Checks for form in the Write tab
 function writeFormCheck() {
-	if ($('.encrypt-message').hasClass('sign-enabled')) {
+	let $encryptMessage = $('.encrypt-message');
+	if ($encryptMessage.hasClass('sign-enabled')) {
 		if ($('.text-write').val().length > 0 && $('.text-write-passphrase').val().length > 0 && session.privKey.length > 0 && session.pubKey.length > 0) {
-			$('.encrypt-message').removeAttr('disabled');
+			$encryptMessage.removeAttr('disabled');
 		} else {
-			$('.encrypt-message').attr('disabled', 'disabled');
+			$encryptMessage.attr('disabled', 'disabled');
 		}
 	} else {
 		if ($('.text-write').val().length > 0 && session.pubKey.length > 0) {
-			$('.encrypt-message').removeAttr('disabled');
+			$encryptMessage.removeAttr('disabled');
 		} else {
-			$('.encrypt-message').attr('disabled', 'disabled');
+			$encryptMessage.attr('disabled', 'disabled');
 		}
 	}
 }
@@ -110,13 +112,15 @@ function purge() {
 	$('.key-priv-import-label').find('span').text('Import');
 	$('.fingerprint').text('No public key imported');
 	$('.encrypt-sign-checkbox').prop('checked', true);
-	session.pubKey = '';
-	session.privKey = '';
-	session.pubKeyFingerprint = '';
-	session.running = false;
-	session.lastEnc = '';
-	session.lastDec = '';
-	session.lastEncPaste = '';
+	session = {
+		privKey: '',
+		pubKey: '',
+		pubKeyFingerprint: '',
+		running: false,
+		lastDec: '',
+		lastEnc: '',
+		lastEncPaste: ''
+	}
 }
 //Converts buffer to hex
 function buf2hex(buffer) {
@@ -143,44 +147,44 @@ function copyProcessed() {
 	$temp.val(content).select();
 	document.execCommand("copy");
 	$temp.remove();
-	$('.copied').addClass('active');
+	let $copied = $('.copied');
+	$copied.addClass('active');
 	setTimeout(function() {
-		$('.copied').removeClass('active');
+		$copied.removeClass('active');
 	}, 2000);
 }
 //Reset key generation form
 function newKeyReset() {
+	let $createKeyWindow = $('.create-key-window');
 	$('.key-generate-start').text('Create new private and public key set +');
-	$('.create-key-window').find('.window-title').find('span').text('New key set');
-	$('.create-key-window').find('a').each(function() {
-		$(this).attr('href', '#');
-		$(this).removeAttr('download');
+	$createKeyWindow.find('.window-title').find('span').text('New key set');
+	$createKeyWindow.find('a').each(function() {
+		$(this).attr('href', '#').removeAttr('download');
 	})
 	$('.create-key-progress').removeClass('active');
-	$('.key-new-form').find('input').val('');
-	$('.key-new-form').removeClass('next-page');
+	$('.key-new-form').removeClass('next-page').find('input').val('');
 	$('.key-new-done').removeClass('active');
 	$('.key-generate').attr('disabled', 'disabled');
+}
+//get filename
+function getFilename(str){
+	return str.split(/(\\|\/)/g).pop()
 }
 //Input keystatus filenames
 function writeKeyStatus() {
 	let filename;
-	if ($('.key-pub-import').val() != '') {
-		filename = $('.key-pub-import').val().split(/(\\|\/)/g).pop();
+	let pubImport = $('.key-pub-import').val();
+	let privImport = $('.key-priv-import').val();
+	if (pubImport != '') {
+		filename = getFilename(pubImport);
 		$('.public-key-filename').text(' - ' + filename);
-		// $('.write-key-filename').text(' - '+filename);
-		//  $('.read-key-status').text(filename+' loaded');
 	}
-	if ($('.key-priv-import').val() != '') {
-		filename = $('.key-priv-import').val().split(/(\\|\/)/g).pop();
-		//$('.read-key-status').text(filename+' loaded');
-		//$('.write-key-status').text(filename+' loaded');
+	if (privImport != '') {
+		filename = getFilename($('.key-priv-import').val());
 		$('.private-key-filename').text(' - ' + filename);
 	}
-	if ($('.key-priv-import').val() != '' && $('.key-pub-import').val() != '') {
-		filename = $('.key-priv-import').val().split(/(\\|\/)/g).pop() + ' and ' + $('.key-pub-import').val().split(/(\\|\/)/g).pop() + ' loaded';
-		//$('.read-key-status').text(filename);
-		//$('.write-key-status').text(filename);
+	if (privImport != '' && pubImport != '') {
+		filename = getFilename(privImport) + ' and ' + getFilename(pubImport) + ' loaded';
 	}
 }
 //Import private key button function
@@ -206,10 +210,8 @@ function importPubKey() {
 }
 //Function when key gneration is finished
 function keyReady() {
-	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.pubKey));
-	$('.key-public-download').attr('download', 'public.asc');
-	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey));
-	$('.key-private-download').attr('download', 'private.asc');
+	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.pubKey)).attr('download', 'public.asc');
+	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey)).attr('download', 'private.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active');
@@ -297,6 +299,8 @@ function decryptMessage() {
 //Encrypt Message
 function encryptMessage(msg, signedToggle) {
 	if (!session.running) {
+		let $processedAside = $('.processed-aside');
+		let $body = $('body');
 		session.running = true;
 		openpgp.key.readArmored(session.pubKey).then(data => {
 			let options, cleartext, validity;
@@ -309,21 +313,19 @@ function encryptMessage(msg, signedToggle) {
 				session.lastEnc = encrypted;
 				$('.view-message-encrypted').removeAttr('disabled');
 				if (signedToggle) {
-					$('.processed-aside').text('Message encrypted and signed.');
+					$processedAside.text('Message encrypted and signed.');
 				} else {
-					$('.processed-aside').text('Message encrypted.');
+					$processedAside.text('Message encrypted.');
 				}
-				$('body').removeClass('loading');
+				$body.removeClass('loading');
 				session.running = false;
 				viewEncMsg();
 			}).catch(function(e) {
-				//console.log('encryptmsg'+e);
-				$('body').removeClass('loading');
+				$body.removeClass('loading');
 				lipAlert('Cannot encrypt message. Try testing a different message and/or keys.');
 			});
 		}).catch(function(e) {
-			//console.log('read pubkey'+e);
-			$('body').removeClass('loading');
+			$body.removeClass('loading');
 			lipAlert('The public key cannot be read. It may be corrupted.');
 		});
 	}
@@ -331,6 +333,7 @@ function encryptMessage(msg, signedToggle) {
 //Sign message
 function signMessage() {
 	if (!session.running) {
+		let $body = $('body');
 		openpgp.key.readArmored(session.privKey).then(data => {
 			let options, cleartext, validity;
 			let privKeyObj = data.keys[0];
@@ -343,25 +346,24 @@ function signMessage() {
 					cleartext = signed.data.trim();
 					encryptMessage(cleartext, true);
 				}).catch(function(e) {
-					//console.log('sign msg'+e);
-					$('body').removeClass('loading');
+					$body.removeClass('loading');
 					lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
 				});
 			}).catch(function(e) {
-				//console.log('unlock privkey'+e);
-				$('body').removeClass('loading');
+				$body.removeClass('loading');
 				lipAlert('The private key passphrase is incorrect.');
 			});
 		}).catch(function(e) {
-			//console.log('readprivkey'+e);
-			$('body').removeClass('loading');
+			$body.removeClass('loading');
 			lipAlert('The private key cannot be read. It may be corrupted.');
-		});;
+		});
 	}
 }
 //Verify signature of message
 function verifySignature() {
 	if (!session.running) {
+		let $processedAside = $('.processed-aside');
+		let $body = $('body');
 		session.running = true;
 		let privKeyObj;
 		let pbKeyObj;
@@ -376,24 +378,24 @@ function verifySignature() {
 				openpgp.verify(options).then(function(verified) {
 					validity = verified.signatures[0].valid;
 					if (validity) {
-						$('.processed-aside').text('Message decrypted. Signature validated.');
+						$processedAside.text('Message decrypted. Signature validated.');
 					} else {
-						$('.processed-aside').text('Message decrypted. Signature not validated.');
+						$processedAside.text('Message decrypted. Signature not validated.');
 					}
 					$('.view-message-decrypted').removeAttr('disabled');
-					$('body').removeClass('loading');
+					$body.removeClass('loading');
 					session.running = false;
 					viewDecMsg();
 				}).catch(function(e) {
-					$('body').removeClass('loading');
+					$body.removeClass('loading');
 					lipAlert('The signature cannot be verified. It may be corrupted.');
 				});
 			}).catch(function(e) {
-				$('body').removeClass('loading');
+				$body.removeClass('loading');
 				lipAlert('The signature cannot be read. It maybe corrupted.');
 			});
 		}).catch(function(e) {
-			$('body').removeClass('loading');
+			$body.removeClass('loading');
 			lipAlert('The public key cannot be read. It may be corrupted.');
 			//console.log('readpubkey'+e);
 		});
@@ -424,14 +426,14 @@ $('.popup-exit').bind('click', function(e) {
 })
 //Expands popup
 $('.popup-expand').bind('click', function() {
-	if ($(this).hasClass('active')) {
-		$(this).removeClass('active');
-		$(this).parent().parent().removeClass('expanded');
-		$(this).find('img').attr('src', './ui/expand.svg');
+	let $this = $(this);
+	let $thisParPar = $this.parent().parent();
+	if ($this.hasClass('active')){
+		$this.removeClass('active').find('img').attr('src', './ui/expand.svg');
+		$thisParPar.removeClass('expanded');
 	} else {
-		$(this).addClass('active');
-		$(this).parent().parent().addClass('expanded');
-		$(this).find('img').attr('src', './ui/minimize.svg');
+		$this.addClass('active').find('img').attr('src', './ui/minimize.svg');
+		$thisParPar.addClass('expanded');
 	}
 })
 //Copy to clipboard button
@@ -452,9 +454,10 @@ $('.view-message-encrypted').bind('click', function() {
 })
 //Encrypt Message Button
 $('.encrypt-message').bind('click', function() {
-	if (!$(this).is(':disabled')) {
+	let $this = $(this);
+	if (!$this.is(':disabled')) {
 		$('body').addClass('loading');
-		if ($(this).hasClass('sign-enabled')) {
+		if ($this.hasClass('sign-enabled')) {
 			signMessage();
 		} else {
 			encryptMessage($('.text-write').val(), false);
@@ -507,20 +510,22 @@ $('body').keyup(function(e) {
 })
 //opens new key generation popup
 $('.key-generate-start').bind('click', function(e) {
+	let $keyGenerate = $('.key-generate');
 	$('.popup-filter').addClass('active');
-	$('.create-key-window').addClass('active');
-	$('.create-key-window').keyup(function(e) {
-		if (e.keyCode === 13 && $('.key-generate').is(':visible')) {
-			$('.key-generate').click();
+	$('.create-key-window').addClass('active').keyup(function(e) {
+		if (e.keyCode === 13 && $keyGenerate.is(':visible')) {
+			$keyGenerate.click();
 		}
 	});
 })
 //start key generation
 $('.key-generate').bind('click', function(e) {
 	if (!session.running) {
+		let $this = $(this);
 		let formFlag = false;
 		$('.key-new-form').find('input').each(function() {
-			if (!$(this).hasClass('pw-toggle') && $(this).val() == '') {
+			let $this = $(this);
+			if (!$this.hasClass('pw-toggle') && $this.val() == '') {
 				formFlag = true;
 			}
 		})
@@ -533,32 +538,35 @@ $('.key-generate').bind('click', function(e) {
 })
 //Sign toggler
 $('.encrypt-sign-checkbox').change(function() {
+	let $encryptMessage = $('.encrypt-message');
+	let $signCredentials = $('.sign-credentials');
 	if (this.checked) {
-		$('.encrypt-message').addClass('sign-enabled');
-		$('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
+		$encryptMessage.addClass('sign-enabled');
+		$signCredentials.removeClass('disabled').find('input').removeAttr('disabled');
 	} else {
-		$('.encrypt-message').removeClass('sign-enabled');
-		$('.sign-credentials').addClass('disabled').find('input').attr('disabled', 'disabled');
+		$encryptMessage.removeClass('sign-enabled');
+		$signCredentials.addClass('disabled').find('input').attr('disabled', 'disabled');
 	}
 	writeFormCheck()
 })
 //Password show toggler
 $('.pw-toggle').change(function() {
+	let $passphraseBox = $('.passphrase-box');
 	if (this.checked) {
-		$('.passphrase-box').attr('type', 'text');
+		$passphraseBox.attr('type', 'text');
 	} else {
-		$('.passphrase-box').attr('type', 'password');
+		$passphraseBox.attr('type', 'password');
 	}
 });
 //Tab changer
 $('.tab').bind('click', function(e) {
-	let $main = $('main');
 	e.preventDefault();
+	let $main = $('main');
+	let $tabWindow = $main.find('.tab-window');
 	let nextTab = $(this).attr('data-tab');
 	$('.main-nav').find('.active').removeClass('active');
 	$(this).addClass('active');
-	$main.find('.tab-window').removeClass('active');
-	$main.find('.tab-window').each(function() {
+	$tabWindow.removeClass('active').each(function() {
 		if ($(this).hasClass(nextTab)) {
 			popupExit();
 			$(this).addClass('active');
@@ -573,23 +581,25 @@ $('.key-generate-reset').bind('click', function(e) {
 //new key generation form input checks
 $('.key-new-form').find('input').each(function() {
 	$(this).keyup(function() {
+		let $keyGenerate = $('.key-generate');
 		let empty = false;
 		$('.key-new-form').find('input').each(function() {
-			if ($(this).val() == '' && !$(this).hasClass('pw-toggle')) {
+			let $this = $(this);
+			if ($this.val() == '' && !$this.hasClass('pw-toggle')) {
 				empty = true;
-				$(this).hasClass('empty')
+				$this.hasClass('empty')
 			}
-			if ($(this).hasClass('form-email') && !isEmail($(this).val()) && $(this).val() != '') {
+			if ($this.hasClass('form-email') && !isEmail($this.val()) && $this.val() != '') {
 				empty = true;
-				$(this).addClass('error');
+				$this.addClass('error');
 			} else {
-				$(this).removeClass('error');
+				$this.removeClass('error');
 			}
 		})
 		if (!empty) {
-			$('.key-generate').removeAttr('disabled');
+			$keyGenerate.removeAttr('disabled');
 		} else {
-			$('.key-generate').attr('disabled', 'disabled');
+			$keyGenerate.attr('disabled', 'disabled');
 		}
 	})
 })
