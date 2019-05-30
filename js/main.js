@@ -386,9 +386,9 @@ function verifySignature() {
 				openpgp.verify(options).then(function(verified) {
 					validity = verified.signatures[0].valid;
 					if (validity) {
-						$processedAside.text('Message decrypted. Signature validated.');
+						$processedAside.text('Message decrypted. Signature valid.');
 					} else {
-						$processedAside.text('Message decrypted. Signature not validated.');
+						$processedAside.text('Message decrypted. Signature not valid.');
 					}
 					$('.view-message-decrypted').removeAttr('disabled');
 					$body.removeClass('loading');

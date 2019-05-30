@@ -2,6 +2,7 @@ html, body {
 	font-family: 'IBM Plex Sans', sans-serif;
 	font-size: 14px;
 	width: 100%;
+	height:100%;
 }
 .pw-view-toggler {
 	margin: 0.75em 0 2em 0;
@@ -343,7 +344,7 @@ a.big-button-third:last-child {
 	right: 1em;
 	bottom: -37em;
 	height: 36em;
-	width: 33em;
+	width: 29em;
 	box-sizing: border-box;
 	position: fixed;
 	padding: 4.25em 1.25em 1.25em 1.25em;
@@ -436,13 +437,11 @@ textarea {
 	border-radius: 2px;
 	border: 1px solid #f3f3f3;
 	background-color: #F3F3F3;
-	min-width: 30em;
 	width: 100%;
 	max-width: 60em;
 	height: 16em;
 	font-family: 'IBM Plex Sans', sans-serif;
 	display: block;
-	margin-bottom: 0.5em;
 	clear: both;
 	padding: 0.5em 1em 1em 1em;
 	font-size: 1em;

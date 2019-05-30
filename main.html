@@ -50,7 +50,7 @@
 				<div class="popup-contents">
 					<textarea class="processed-output" id="processed-output" readonly></textarea>
 					<div>
-						<span class="copied">Copied to clipboard</span>
+						<span class="copied">Copied</span>
 						<div class="processed-aside"></div>
 					</div>
 					<section>
@@ -110,15 +110,15 @@
 				<h2>Write</h2>
 				<section>
 					<h3>Your unencrypted message</h3>
+					<div class="sign-toggle checkbox-offset">
+						<input checked class="encrypt-sign-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
+					</div>
 					<div class="write-key-status key-status"></div>
 					<textarea class="text-write" placeholder="Write your message here"></textarea>
 				</section>
 				<section>
-					<div class="sign-toggle checkbox-offset">
-						<input checked class="encrypt-sign-checkbox" type="checkbox">&nbsp;&nbsp;Sign message with private key
-					</div>
 					<div class="sign-credentials">
-						<h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" placeholder="Passphrase" type="password">
+						<h3>Your private key passphrase for signing the message</h3><input class="passphrase-box text-write-passphrase" placeholder="Passphrase" type="password">
 						<div class="pw-view-toggler checkbox-offset">
 							<input class="pw-toggle" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
 						</div>
@@ -172,7 +172,7 @@
 					<textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
 				</section>
 				<section>
-					<h3>Your private key passphrase</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" type="password">
+					<h3>Your private key passphrase for decryption</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" type="password">
 					<div class="pw-view-toggler checkbox-offset">
 						<input class="pw-toggle" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
 					</div>
