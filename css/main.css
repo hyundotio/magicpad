@@ -34,7 +34,6 @@ input[type="email"], input[type="text"], input[type="password"] {
 	font-family: 'IBM Plex Sans', sans-serif;
 	font-size: 1em;
 	padding: 0.5em 0.75em 0.75em 0.75em;
-	line-height: 1em;
 	border: 1px solid #f3f3f3;
 	outline: 0;
 	width: 100%;
