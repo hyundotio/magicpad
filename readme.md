@@ -10,13 +10,15 @@ You can run MagicPad three ways:
 1. Run `main.html` via web browser
 2. Build and run executable
 ```
+npm install electron -g
 npm install electron-packager -g
-electron-packager ./ EasyOPGP --electronVersion=5.0.2 --platform=darwin --arch=x64
-electron-packager ./ EasyOPGP --electronVersion=5.0.2 --platform=win32 --arch=x64
-electron-packager ./ EasyOPGP --electronVersion=5.0.2 --platform=linux --arch=x64
+electron-packager . --overwrite --electronVersion=5.0.2 --platform=darwin --arch=x64 --icon=./icons/appicon.icns
+electron-packager . --overwrite --electronVersion=5.0.2 --platform=win32 --arch=x64 --icon=./icons/msicon.ico
+electron-packager . --overwrite --electronVersion=5.0.2 --platform=linux --arch=x64 --icon=./icons/appicon.icns
 ```
 3. Run Electron via Node from terminal
 ```
+npm install electron -g
 npm install
 npm start
 ```

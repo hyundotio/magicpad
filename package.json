@@ -1,11 +1,11 @@
 {
-  "name": "easyopgp",
+  "name": "magicpad",
   "version": "0.0.1",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "dependencies": {
-    "path": "^0.12.7",
-    "url": "^0.11.0"
+    "electron": "^5.0.2",
+    "electron-packager": "^13.1.1"
   },
   "devDependencies": {},
   "scripts": {
@@ -17,5 +17,30 @@
     "messaging"
   ],
   "author": "Hyun Kyu Seo",
-  "license": "MIT"
+  "license": "MIT",
+  "optionalDependencies": {},
+  "build": {
+    "productName": "MagicPad",
+    "appId": "scripter.MagicPad",
+    "win": {
+      "target": [
+        "portable"
+      ]
+    },
+    "portable": {
+      "artifactName": "magicpad.exe"
+    },
+    "directories": {
+      "output": "/",
+      "app": "/"
+    }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hyundotio/easyopgp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hyundotio/easyopgp/issues"
+  },
+  "homepage": "https://github.com/hyundotio/easyopgp#readme"
 }

@@ -1,17 +1,19 @@
 const url = require('url');
 const path = require('path');
-
 const {app, BrowserWindow, Menu} = require('electron');
 
 let mainWindow;
-let addWindow;
 
 app.on('ready',function(){
+
   mainWindow = new BrowserWindow({
-    'minHeight':620,
-    'minWidth':604,
-    'height':620,
-    'width':604
+    minHeight:578,
+    minWidth:640,
+    height:578,
+    width:640,
+    'backgroundColor': '#FFFFFF',
+    title:'MagicPad',
+    icon: __dirname +  '/icons/appicon.icns'
   });
   mainWindow.setMenuBarVisibility(false)
   mainWindow.loadURL(url.format({
