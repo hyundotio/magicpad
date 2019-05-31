@@ -95,6 +95,9 @@ input[type="file"] {
 	width: 100%;
 	display: none;
 }
+.pubkey-input-window textarea {
+	height:26em;
+}
 .popup-filter.active {
 	display: block;
 }

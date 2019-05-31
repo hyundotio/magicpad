@@ -58,6 +58,18 @@
 					</section>
 				</div>
 			</div>
+			<div class="pubkey-input-window popup">
+				<div class="window-title">
+					<span>Public key input</span>
+					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+				</div>
+				<div class="popup-contents">
+					<textarea class="pubkey-input" id="pubkey-input" placeholder="Paste public key here"></textarea>
+					<section>
+						<button class="button-2 import-pubkey-str"><span>Import</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+					</section>
+				</div>
+			</div>
 			<div class="create-key-window popup">
 				<div class="window-title">
 					<span>New key set</span>
@@ -152,7 +164,7 @@
           </div>
 					<div>
 						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import</span><img class="label-icon-button" src="./ui/upload.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file">
-						<button class="button-2 view-pub-key"><span>View key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+						<button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 					</div>
 				</section>
 				<section>

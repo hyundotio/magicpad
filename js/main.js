@@ -100,7 +100,7 @@ function readFormCheck() {
 // Data processing functions
 //Resets all data in session
 function purge() {
-	$('.view-pub-key').removeClass('active');
+	//$('.view-pub-key').removeClass('active');
 	$('.key-new-form').removeClass('next-page');
 	$('.key-new-done').removeClass('active');
 	$('.create-key-window').find('.window-title').find('span').text('New key set');
@@ -216,13 +216,20 @@ function importPubKey() {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	openpgp.key.readArmored(session.pubKey).then(data => {
 		const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
+		let $pubkeyInputWindow = $('.pubkey-input-window');
 		session.pubKeyFingerprint = buf2hex(buffer);
 		$('.fingerprint').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 		$('.key-pub-import-label').find('span').text('Reimport');
-		$('.view-pub-key').addClass('active');
+		//$('.view-pub-key').addClass('active');
 		writeKeyStatus();
 		writeFormCheck();
 		readFormCheck();
+		if($pubkeyInputWindow.hasClass('active')){
+			$('.popup-filter').removeClass('active');
+			$pubkeyInputWindow.removeClass('active');
+		}
+	}).catch(function(e){
+		lipAlert('The public key cannot be read. It may be corrupted.');
 	})
 }
 //Function when key gneration is finished
@@ -414,9 +421,58 @@ function verifySignature() {
 		});
 	}
 }
+//paste pubkey from popup
+function importPubkeyStr(){
+	let $pubkeyInput = $('.pubkey-input');
+	let pubKeyPaste = $pubkeyInput.val().trim();
+	if (pubKeyPaste.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1 && pubKeyPaste.search('-----END PGP PUBLIC KEY BLOCK-----') != -1) {
+		session.pubKey = pubKeyPaste;
+		return true
+	} else {
+		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+	}
+}
+//key file importe
+function keyImport($type){
+		let file = $type[0].files[0];
+		let reader = new FileReader();
+		reader.onload = function(e) {
+			if ($type.hasClass('key-priv-import')) {
+				if (reader.result.search('-----BEGIN PGP PRIVATE KEY BLOCK-----') != -1 && reader.result.search('-----END PGP PRIVATE KEY BLOCK-----') != -1) {
+					session.privKey = reader.result;
+					importPrivKey();
+				} else {
+					lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+				}
+			} else {
+				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+					session.pubKey = reader.result;
+					importPubKey();
+				} else {
+					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+				}
+			}
+		}
+		if (file != undefined) {
+			reader.readAsText(file);
+		}
+}
 //UI Bindings
 //UI Bindings
 //UI Bindings
+
+//paste pub key button
+$('.import-pubkey-str').bind('click',function(){
+	if(importPubkeyStr()){
+		importPubKey();
+	}
+})
+
+//open pub key paste windows
+$('.pubkey-input-open').bind('click',function(){
+	$('.popup-filter').addClass('active');
+	$('.pubkey-input-window').addClass('active');
+})
 
 //copy generated public keys
 $('.copy-generated-public-key').bind('click',function(e){
@@ -425,9 +481,11 @@ $('.copy-generated-public-key').bind('click',function(e){
 	showCopied($(this).find('.copied'));
 })
 //View pub key bind
+/*
 $('.view-pub-key').bind('click',function(){
 	viewPubKey();
 })
+*/
 //label container bind
 $('.label-container').bind('click', function(e) {
 	e.preventDefault();
@@ -506,29 +564,7 @@ $('.write').keyup(function() {
 })
 //Checks for file imported by user in Private and Key import buttons
 $('.key-import').change(function() {
-	let $type = $(this);
-	let file = $type[0].files[0];
-	let reader = new FileReader();
-	reader.onload = function(e) {
-		if ($type.hasClass('key-priv-import')) {
-			if (reader.result.search('PRIVATE KEY BLOCK') != -1) {
-				session.privKey = reader.result;
-				importPrivKey();
-			} else {
-				alert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
-			}
-		} else {
-			if (reader.result.search('PUBLIC KEY BLOCK') != -1) {
-				session.pubKey = reader.result;
-				importPubKey();
-			} else {
-				alert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
-			}
-		}
-	}
-	if (file != undefined) {
-		reader.readAsText(file);
-	}
+	keyImport($(this))
 })
 $('body').keyup(function(e) {
 	if (e.keyCode === 27) $('.popup-filter').click();
@@ -543,7 +579,7 @@ $('.key-generate-start').bind('click', function(e) {
 		}
 	});
 })
-//start key generation
+//start key generation + key form check
 $('.key-generate').bind('click', function(e) {
 	if (!session.running) {
 		let $this = $(this);
