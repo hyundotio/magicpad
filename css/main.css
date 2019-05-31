@@ -109,13 +109,32 @@ input[type="file"] {
 	background-color: #121212;
 	color: #FFF;
 }
-.big-button-third span {
+.button-1.big-button-third-half:last-child {
+	border-right:1px solid transparent;
+}
+.button-1.big-button-third-half {
+	height: 33.33%;
+	width: 50%;
+	margin:0;
+	margin-right:0;
+	border-bottom: 1px solid #FFF;
+	border-right: 1px solid #FFF;
+	box-sizing: border-box;
+	font-weight: 300;
+	height: 33.33%;
+	padding: 1em;
+}
+.big-button-third span.copied {
+	font-size: 1em;
+	margin: -1.25em 0 0em 0;
+}
+.big-button-third span, .big-button-third-half span {
 	font-size: 1.75em;
 	line-height: 1.25em;
 	margin: -0.25em 0 1.625em 0;
 	display: block;
 }
-.big-button-third img {
+.big-button-third img, .big-button-third-half img {
 	display: block;
 }
 a.big-button-third {

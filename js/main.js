@@ -4,6 +4,8 @@
 let session = {
 	privKey: '',
 	pubKey: '',
+	generatedPubKey:'',
+	generatedPrivKey:'',
 	pubKeyFingerprint: '',
 	running: false,
 	lastDec: '',
@@ -126,6 +128,8 @@ function purge() {
 	session = {
 		privKey: '',
 		pubKey: '',
+		generatedPubKey:'',
+		generatedPrivKey:'',
 		pubKeyFingerprint: '',
 		running: false,
 		lastDec: '',
@@ -143,7 +147,7 @@ function isEmail(email) {
 	return regex.test(email);
 }
 //Copy to clipboard functions
-function copyProcessed() {
+function copyProcessed(content) {
 	let $temp = $("<textarea>");
 	$temp.css({
 		'opacity': 0.1,
@@ -153,12 +157,13 @@ function copyProcessed() {
 		'top': 0,
 		'left': 0
 	})
-	let content = $('.processed-output').text();
 	$("body").append($temp);
 	$temp.val(content).select();
 	document.execCommand("copy");
 	$temp.remove();
-	let $copied = $('.copied');
+}
+//Activate Copied word
+function showCopied($copied){
 	$copied.addClass('active');
 	setTimeout(function() {
 		$copied.removeClass('active');
@@ -222,12 +227,12 @@ function importPubKey() {
 }
 //Function when key gneration is finished
 function keyReady() {
-	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.pubKey)).attr('download', 'public.asc');
-	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.privKey)).attr('download', 'private.asc');
+	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', 'public.asc');
+	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', 'private.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active');
-	$('.key-generate-start').text('View generated keys');
+	$('.key-generate-start').text('Download generated keys');
 	$('.create-key-window').find('.window-title').find('span').text('Generated keys');
 	session.running = false;
 }
@@ -245,8 +250,8 @@ function generateKeys() {
 		passphrase: ($('.form-passphrase').val())
 	}
 	openpgp.generateKey(options).then(key => {
-		session.privKey = key.privateKeyArmored.trim();
-		session.pubKey = key.publicKeyArmored.trim();
+		session.generatedPrivKey = key.privateKeyArmored.trim();
+		session.generatedPubKey = key.publicKeyArmored.trim();
 		keyReady();
 	}).catch(function(e) {
 		lipAlert('Failed generating keys. Please try again.');
@@ -412,6 +417,13 @@ function verifySignature() {
 //UI Bindings
 //UI Bindings
 //UI Bindings
+
+//copy generated public keys
+$('.copy-generated-public-key').bind('click',function(e){
+	e.preventDefault();
+	copyProcessed(session.generatedPubKey);
+	showCopied($(this).find('.copied'));
+})
 //View pub key bind
 $('.view-pub-key').bind('click',function(){
 	viewPubKey();
@@ -450,7 +462,8 @@ $('.popup-expand').bind('click', function() {
 })
 //Copy to clipboard button
 $('.copy-processed').bind('click', function() {
-	copyProcessed();
+	copyProcessed($('.processed-output').text());
+	showCopied($('.processed-output-window').find('.copied'));
 })
 //Re-open Decrypted Message popup
 $('.view-message-decrypted').bind('click', function() {
