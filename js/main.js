@@ -102,6 +102,7 @@ function readFormCheck() {
 //Resets all data in session
 function purge() {
 	//$('.view-pub-key').removeClass('active');
+	$('.error').removeClass('error');
 	$('.key-new-form').removeClass('next-page');
 	$('.key-new-done').removeClass('active');
 	$('.create-key-window').find('.window-title').find('span').text('New key set');
