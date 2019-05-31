@@ -7,9 +7,9 @@ let mainWindow;
 app.on('ready',function(){
 
   mainWindow = new BrowserWindow({
-    minHeight:578,
+    minHeight:594,
     minWidth:660,
-    height:578,
+    height:594,
     width:660,
     'backgroundColor': '#FFFFFF',
     title:'MagicPad',
