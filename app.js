@@ -8,9 +8,9 @@ app.on('ready',function(){
 
   mainWindow = new BrowserWindow({
     minHeight:578,
-    minWidth:640,
+    minWidth:660,
     height:578,
-    width:640,
+    width:660,
     'backgroundColor': '#FFFFFF',
     title:'MagicPad',
     icon: __dirname +  '/icons/appicon.icns'

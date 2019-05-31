@@ -3,13 +3,14 @@
   "version": "0.0.1",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
-  "dependencies": {
-    "electron": "^5.0.2",
-    "electron-packager": "^13.1.1"
+  "dependencies": {},
+  "devDependencies": {
+    "electron-builder": "^20.41.0",
+    "electron": "^5.0.2"
   },
-  "devDependencies": {},
   "scripts": {
-    "start": "electron ."
+    "start": "npm install && electron .",
+    "dist": "build"
   },
   "keywords": [
     "openpgp",
@@ -22,25 +23,38 @@
   "build": {
     "productName": "MagicPad",
     "appId": "scripter.MagicPad",
+    "mac": {
+      "category": "public.app-category.productivity",
+      "target": [
+        "zip"
+      ]
+    },
+    "linux": {
+      "category": "Utility",
+      "description": "Text encryption tool",
+      "packageCategory": "Utility",
+      "target": [
+        "deb",
+        "rpm",
+        "zip"
+      ]
+    },
     "win": {
+      "icon": "/icons/1024x1024.png",
       "target": [
         "portable"
       ]
     },
     "portable": {
       "artifactName": "magicpad.exe"
-    },
-    "directories": {
-      "output": "/",
-      "app": "/"
     }
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hyundotio/easyopgp.git"
+    "url": "git+https://github.com/hyundotio/magicpad.git"
   },
   "bugs": {
-    "url": "https://github.com/hyundotio/easyopgp/issues"
+    "url": "https://github.com/hyundotio/magicpad/issues"
   },
-  "homepage": "https://github.com/hyundotio/easyopgp#readme"
+  "homepage": "https://github.com/hyundotio/magicpad#readme"
 }
