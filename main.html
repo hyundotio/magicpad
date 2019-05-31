@@ -13,6 +13,7 @@
 </head>
 <body>
 	<nav class="main-nav">
+		<button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg"/></button>
 		<ul>
 			<li>
 				<a class="keys-tab tab active" data-tab="keys" href="#">Keys</a>
@@ -22,6 +23,9 @@
 			</li>
 			<li>
 				<a class="write-tab tab" data-tab="write" href="#">Write</a>
+			</li>
+			<li>
+				<a class="tutorial-tab tab" data-tab="tutorial" href="#">Tutorial</a>
 			</li>
 			<li>
 				<a class="about-tab tab" data-tab="about" href="#">About</a>
@@ -124,7 +128,7 @@
 				<section>
 					<h3>Your unencrypted message</h3>
 					<div class="sign-toggle checkbox-offset">
-						<input checked class="encrypt-sign-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
+						<input class="encrypt-sign-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
 					</div>
 					<div class="write-key-status key-status"></div>
 					<textarea class="text-write" placeholder="Write your message here"></textarea>
@@ -176,6 +180,41 @@
 				<section>
 					<h3>Purge all keys from session</h3><button class="purge button-2"><span>Purge</span><img class="button-icon-img" src="./ui/purge.svg"></button>
 				</section>
+			</div>
+			<div class="tutorial tab-window">
+				<h2>Tutorial</h2>
+				<ul class="tutorial-selectors">
+					<li><a href="#" data-tutorial="generate-keys-tutorial" class="tutorial-selector b-link active">Generating a key pair</a></li>
+					<li><a href="#" data-tutorial="upload-tutorial" class="tutorial-selector b-link">Sharing your public key online</a></li>
+					<li><a href="#" data-tutorial="write-tutorial" class="tutorial-selector b-link">Writing a message</a></li>
+					<li><a href="#" data-tutorial="read-tutorial" class="tutorial-selector b-link">Reading a message</a></li>
+				</ul>
+				<ul class="tutorial-pages">
+					<li class="generate-keys-tutorial active">
+						<video controls>
+						 <source src="./tutorials/generatekeys.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+						</video>
+					</li>
+					<li class="upload-tutorial">
+						<video controls>
+						 <source src="./tutorials/upload.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+						</video>
+					</li>
+					<li class="write-tutorial">
+						<video controls>
+						 <source src="./tutorials/write.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+						</video>
+					</li>
+					<li class="read-tutorial">
+						<video controls>
+						 <source src="./tutorials/read.mp4" type="video/mp4">
+						Your browser does not support the video tag.
+						</video>
+					</li>
+				</ul>
 			</div>
 			<div class="read tab-window">
 				<h2>Read</h2>

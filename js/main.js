@@ -68,6 +68,7 @@ function viewDecMsg() {
 function popupExit() {
 	$('.popup').removeClass('active');
 	$('.popup-filter').removeClass('active');
+	$('.main-nav').removeClass('mobile-active');
 }
 //Checks for form in the Write tab
 function writeFormCheck() {
@@ -484,6 +485,18 @@ $('.copy-generated-public-key').bind('click',function(e){
 	copyProcessed(session.generatedPubKey);
 	showCopied($(this).find('.copied'));
 })
+//mobile menu Activate
+$('.mobile-menu').bind('click',function(){
+	let $mainNav = $('.main-nav');
+	let $popupFilter = $('.popup-filter');
+	if($mainNav.hasClass('mobile-active')){
+		$popupFilter.removeClass('active');
+		$mainNav.removeClass('mobile-active');
+	} else {
+		$popupFilter.addClass('active');
+		$mainNav.addClass('mobile-active');
+	}
+})
 //View pub key bind
 /*
 $('.view-pub-key').bind('click',function(){
@@ -638,6 +651,22 @@ $('.tab').bind('click', function(e) {
 		}
 	})
 })
+//Tutorial selector
+$('.tutorial-selectors').find('a').each(function(){
+	$(this).bind('click',function(e){
+		e.preventDefault();
+		let $this = $(this);
+		let $tutorialPages = $('.tutorial-pages');
+		let $tutorialPage = $tutorialPages.find('.'+$this.attr('data-tutorial'));
+		let $tutorialPageVideo = $tutorialPage.find('video');
+		$('.tutorial-selectors').find('.active').removeClass('active')
+		$this.addClass('active');
+		$tutorialPages.find('.active').removeClass('active');
+		$tutorialPage.addClass('active')
+		$tutorialPageVideo[0].currentTime = 0;
+	})
+})
+
 //Reset key generation form
 $('.key-generate-reset').bind('click', function(e) {
 	e.preventDefault();
