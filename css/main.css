@@ -48,7 +48,7 @@ html, body {
 .tutorial-selector.active {
 	font-weight:600;
 }
-.tutorial-pages li {
+.tutorial-pages > li {
 	width:100%;
 	position:absolute;
 	visibility:hidden;
@@ -56,11 +56,17 @@ html, body {
 	transition:0.2s opacity ease-out, 0.2s visibility ease-out;
 	z-index:1;
 }
-.tutorial-pages li.active {
+.tutorial-pages > li.active {
 	visibility: visible;
 	opacity:1;
 	z-index:2;
-
+}
+.tips-list {
+	list-style: decimal;
+}
+.tips-list li {
+	line-height: 1.25em;
+	margin-bottom:1em;
 }
 input[type="checkbox"]:hover {
 	border:1px solid #054ADA;

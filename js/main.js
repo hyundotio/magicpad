@@ -659,11 +659,13 @@ $('.tutorial-selectors').find('a').each(function(){
 		let $tutorialPages = $('.tutorial-pages');
 		let $tutorialPage = $tutorialPages.find('.'+$this.attr('data-tutorial'));
 		let $tutorialPageVideo = $tutorialPage.find('video');
+		if($tutorialPageVideo.length > 0){
+			$tutorialPageVideo[0].currentTime = 0;
+		}
 		$('.tutorial-selectors').find('.active').removeClass('active')
 		$this.addClass('active');
 		$tutorialPages.find('.active').removeClass('active');
 		$tutorialPage.addClass('active')
-		$tutorialPageVideo[0].currentTime = 0;
 	})
 })
 
