@@ -17,7 +17,7 @@
     "encryption",
     "messaging"
   ],
-  "author": "Hyun Kyu Seo",
+  "author": "Hyun Kyu Seo <hi@hyun.io>",
   "license": "MIT",
   "optionalDependencies": {},
   "build": {
