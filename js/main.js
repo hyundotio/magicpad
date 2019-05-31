@@ -187,10 +187,13 @@ function getFilename(str){
 	return str.split(/(\\|\/)/g).pop()
 }
 //Input keystatus filenames
-function writeKeyStatus() {
+function writeKeyStatus(pasted) {
 	let filename;
 	let pubImport = $('.key-pub-import').val();
 	let privImport = $('.key-priv-import').val();
+	if(pasted){
+		pubImport = 'pasted key'
+	}
 	if (pubImport != '') {
 		filename = getFilename(pubImport);
 		$('.public-key-filename').text(' - ' + filename);
@@ -198,9 +201,6 @@ function writeKeyStatus() {
 	if (privImport != '') {
 		filename = getFilename($('.key-priv-import').val());
 		$('.private-key-filename').text(' - ' + filename);
-	}
-	if (privImport != '' && pubImport != '') {
-		filename = getFilename(privImport) + ' and ' + getFilename(pubImport) + ' loaded';
 	}
 }
 //Import private key button function
@@ -221,12 +221,15 @@ function importPubKey() {
 		$('.fingerprint').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 		$('.key-pub-import-label').find('span').text('Reimport');
 		//$('.view-pub-key').addClass('active');
-		writeKeyStatus();
+
 		writeFormCheck();
 		readFormCheck();
 		if($pubkeyInputWindow.hasClass('active')){
+			writeKeyStatus(true);
 			$('.popup-filter').removeClass('active');
 			$pubkeyInputWindow.removeClass('active');
+		} else {
+			writeKeyStatus();
 		}
 	}).catch(function(e){
 		lipAlert('The public key cannot be read. It may be corrupted.');
@@ -234,8 +237,9 @@ function importPubKey() {
 }
 //Function when key gneration is finished
 function keyReady() {
-	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', 'public.asc');
-	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', 'private.asc');
+	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
+	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', formName+'_public.asc');
+	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', formName+'_private.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active');
