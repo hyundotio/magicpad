@@ -278,7 +278,7 @@ input[type="file"] {
 	display: none;
 }
 .pubkey-input-window textarea {
-	height:24.5em;
+	height:26em;
 }
 .popup-filter.active {
 	display: block;
@@ -519,6 +519,9 @@ a.big-button-third:last-child {
 	right: 4%;
 	bottom: 4%;
 	opacity: 0;
+}
+.create-key-window .popup-contents {
+	padding:0;
 }
 .create-key-window.popup {
 	padding: 3em 0 0 0;
