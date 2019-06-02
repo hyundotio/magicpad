@@ -97,19 +97,23 @@ option {
 	font-family: 'IBM Plex Sans', sans-serif;
 }
 select {
+	margin:0;
+	font-size:1em;
+	border-radius:0;
 	outline:0;
 	-moz-appearance:none;
 	-webkit-appearance:none;
 	-ms-appearance:none;
 	appearance:none;
-	padding:1em;
 	font-family: 'IBM Plex Sans', sans-serif;
+	font-size: 1em;
+	padding: 0.5em 0.75em 0.75em 0.75em;
 	box-sizing: border-box;
 	border: 1px solid transparent;
 	width:100%;
 	transition:0.1s border ease-out;
 	position:relative;
-	background:url('../ui/dropdown.svg') no-repeat calc(100% - 1em) calc(100% - 1em);
+	background:url('../ui/dropdown.svg') no-repeat calc(100% - 0.75em) calc(100% - 0.75em);
 	background-size: 1.5em 1.5em;
 	opacity:1;
 	transition:opacity 0.1s ease-out;
