@@ -68,7 +68,6 @@ function viewDecMsg() {
 function popupExit() {
 	$('.popup').removeClass('active');
 	$('.popup-filter').removeClass('active');
-	$('.main-nav').removeClass('mobile-active');
 }
 //Checks for form in the Write tab
 function writeFormCheck() {
@@ -102,7 +101,6 @@ function readFormCheck() {
 //Resets all data in session
 function purge() {
 	//$('.view-pub-key').removeClass('active');
-	$('.error').removeClass('error');
 	$('.key-new-form').removeClass('next-page');
 	$('.key-new-done').removeClass('active');
 	$('.create-key-window').find('.window-title').find('span').text('New key set');
@@ -123,8 +121,8 @@ function purge() {
 	$('.key-public-download').attr('href', '#').removeAttr('download');
 	$('.keys').find('.key-private-download').remove();
 	$('.keys').find('.key-public-download').remove();
-	$('.key-pub-import-label').find('span').text('Import');
-	$('.key-priv-import-label').find('span').text('Import');
+	$('.key-pub-import-label').find('span').text('Import key');
+	$('.key-priv-import-label').find('span').text('Import key');
 	$('.fingerprint').text('No public key imported');
 	$('.encrypt-sign-checkbox').prop('checked', true);
 	session = {
@@ -252,6 +250,16 @@ function keyReady() {
 //OpenPGP Functions
 //OpenPGP Functions
 //OpenPGP Functions
+//Lookup Public Key
+function lookupKey (query,server) {
+  //console.log(query)
+	let hkp = new openpgp.HKP(server);
+  return new Promise((resolve, reject) => {
+    hkp.lookup({ query: query }).then(function(keys) {
+      console.log(keys);
+    })
+  })
+}
 //Generate keys
 function generateKeys() {
 	let options = {
@@ -271,6 +279,15 @@ function generateKeys() {
 		newKeyReset();
 	});
 }
+function lookup (query,server) {
+  let hkp = new openpgp.HKP(server);
+  return new Promise((resolve, reject) => {
+    hkp.lookup({ query: query }).then(function(keys) {
+      console.log(keys);
+    }).catch(function(e){ alert('error'+e); })
+  })
+}
+//lookup('magicpadhyun@gmail.com','https://pgp.mit.edu');
 //Decrypt messages
 function decryptMessage() {
 	if (!session.running) {
@@ -466,7 +483,10 @@ function keyImport($type){
 //UI Bindings
 //UI Bindings
 //UI Bindings
-
+//autofocus out of select;
+$('select').change(function(){
+	$(this).blur();
+})
 //paste pub key button
 $('.import-pubkey-str').bind('click',function(){
 	if(importPubkeyStr()){
@@ -485,18 +505,6 @@ $('.copy-generated-public-key').bind('click',function(e){
 	e.preventDefault();
 	copyProcessed(session.generatedPubKey);
 	showCopied($(this).find('.copied'));
-})
-//mobile menu Activate
-$('.mobile-menu').bind('click',function(){
-	let $mainNav = $('.main-nav');
-	let $popupFilter = $('.popup-filter');
-	if($mainNav.hasClass('mobile-active')){
-		$popupFilter.removeClass('active');
-		$mainNav.removeClass('mobile-active');
-	} else {
-		$popupFilter.addClass('active');
-		$mainNav.addClass('mobile-active');
-	}
 })
 //View pub key bind
 /*
@@ -637,6 +645,18 @@ $('.pw-toggle').change(function() {
 		$passphraseBox.attr('type', 'password');
 	}
 });
+//popup tab-changer
+$('.popup-tabs').find('.popup-tab').each(function(){
+	$(this).bind('click',function(){
+		let $this = $(this);
+		let $thisParPar = $this.parent().parent();
+		let $popupTabContent = $thisParPar.parent().find('.popup-tab-content');
+		$thisParPar.find('.active').removeClass('active');
+		$this.addClass('active');
+		$popupTabContent.find('.active').removeClass('active');
+		$popupTabContent.find('.'+$this.attr('data-tab')).addClass('active');
+	})
+})
 //Tab changer
 $('.tab').bind('click', function(e) {
 	e.preventDefault();
@@ -652,24 +672,6 @@ $('.tab').bind('click', function(e) {
 		}
 	})
 })
-//Tutorial selector
-$('.tutorial-selectors').find('a').each(function(){
-	$(this).bind('click',function(e){
-		e.preventDefault();
-		let $this = $(this);
-		let $tutorialPages = $('.tutorial-pages');
-		let $tutorialPage = $tutorialPages.find('.'+$this.attr('data-tutorial'));
-		let $tutorialPageVideo = $tutorialPage.find('video');
-		if($tutorialPageVideo.length > 0){
-			$tutorialPageVideo[0].currentTime = 0;
-		}
-		$('.tutorial-selectors').find('.active').removeClass('active')
-		$this.addClass('active');
-		$tutorialPages.find('.active').removeClass('active');
-		$tutorialPage.addClass('active')
-	})
-})
-
 //Reset key generation form
 $('.key-generate-reset').bind('click', function(e) {
 	e.preventDefault();
