@@ -69,7 +69,7 @@ html, body {
 	margin-bottom:1em;
 }
 .pubkeyserver-upload textarea{
-	height:8.75em;
+	height:9.375em;
 }
 .paged-popup .popup-tab-content{
 	position:relative
@@ -368,10 +368,10 @@ a.big-button-third:last-child {
 .tab, .popup-tab {
 	transition: color 0.2s ease-out, font-weight 0.2s ease-out;
 }
-.tab:active {
+.tab:active, .popup-tab:active {
 	color: #252525;
 }
-.tab:hover {
+.tab:hover, .popup-tab:hover {
 	color: #A4A4A4;
 }
 .popup-expand {
@@ -622,12 +622,28 @@ h3 {
 	float: right;
 	transition: 0.5s opacity ease-out;
 }
+.search-results {
+	margin-top:0.75em;
+}
+.no-results, .not-started {
+	color: #8C8C8C;
+}
+.no-results,.search-results.active .not-started {
+	display:none;
+}
+.search-results.no-results .no-results {
+	display:block;
+}
 a {
 	outline:0;
 	font-family: 'IBM Plex Sans', sans-serif;
 	font-style: inherit;
 	color: inherit;
 	text-decoration: inherit;
+}
+button::-moz-focus-inner, input::-moz-focus-inner, textarea::-moz-focus-inner, a::-moz-focus-inner {
+	outline:0;
+	border:0;
 }
 button, label {
 	outline:0;
@@ -811,6 +827,9 @@ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover
 }
 .button-9:hover {
 	background-color: #A11950;
+}
+.fingerprint.active .no-pub-key {
+	display:none;
 }
 .fingerprint {
 	color: #3D3D3D;

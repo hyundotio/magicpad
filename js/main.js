@@ -10,13 +10,13 @@ let session = {
 	running: false,
 	lastDec: '',
 	lastEnc: '',
-	lastEncPaste: ''
+	lastEncPaste: '',
+	keyToUploadFile:''
 }
 //Init Function
 //Init Function
 //Init Function
 function init() {
-	purge();
 	let $onlineFlag = $('.online-flag');
 	if (window.navigator.onLine) {
 		$onlineFlag.addClass('active');
@@ -98,45 +98,6 @@ function readFormCheck() {
 // Data processing functions
 // Data processing functions
 // Data processing functions
-//Resets all data in session
-function purge() {
-	//$('.view-pub-key').removeClass('active');
-	$('.key-new-form').removeClass('next-page');
-	$('.key-new-done').removeClass('active');
-	$('.create-key-window').find('.window-title').find('span').text('New key set');
-	$('.key-generate-start').text('Create new private and public key set +');
-	$('.sign-credentials').removeClass('disabled').find('input').removeAttr('disabled');
-	$('.create-key-progress').removeClass('active');
-	$('.key-status').text('');
-	$('input').val('').reset;
-	$('textarea').text('').val('').reset;
-	$('.revert-encryption').removeAttr('active encrypted decrypted');
-	$('.save-processed').attr('href', '#').removeAttr('download');
-	$('.processed-output').html('');
-	$('.encrypt-message').attr('disabled', 'disabled');
-	$('.decrypt-message').attr('disabled', 'disabled');
-	$('.view-processed').attr('disabled', 'disabled');
-	$('.view-message-encrypted').attr('disabled', 'disabled');
-	$('.key-private-download').attr('href', '#').removeAttr('download');
-	$('.key-public-download').attr('href', '#').removeAttr('download');
-	$('.keys').find('.key-private-download').remove();
-	$('.keys').find('.key-public-download').remove();
-	$('.key-pub-import-label').find('span').text('Import key');
-	$('.key-priv-import-label').find('span').text('Import key');
-	$('.fingerprint').text('No public key imported');
-	$('.encrypt-sign-checkbox').prop('checked', true);
-	session = {
-		privKey: '',
-		pubKey: '',
-		generatedPubKey:'',
-		generatedPrivKey:'',
-		pubKeyFingerprint: '',
-		running: false,
-		lastDec: '',
-		lastEnc: '',
-		lastEncPaste: ''
-	}
-}
 //Converts buffer to hex
 function buf2hex(buffer) {
 	return Array.prototype.map.call(new Uint8Array(buffer), x => ('00' + x.toString(16)).slice(-2)).join('');
@@ -212,16 +173,27 @@ function importPrivKey() {
 	writeKeyStatus();
 }
 //Import public key button function
+function validatePubKeyUpload(){
+	openpgp.key.readArmored(session.pubKey).then(data => {
+		let $serverKeyPubImport = $('.server-key-pub-import');
+		let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
+		$h3Text.text($h3Text.text() + '  -  '+getFilename($('.server-key-pub-import').val()));
+		$serverKeyPubImport.find('span').text('Reselect file');
+		$('.server-key-pub-import-upload').removeAttr('disabled');
+	}).catch(function(e){
+		lipAlert('The public key cannot be read. It may be corrupted.');
+	})
+}
 function importPubKey() {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	openpgp.key.readArmored(session.pubKey).then(data => {
 		const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
 		let $pubkeyInputWindow = $('.pubkey-input-window');
 		session.pubKeyFingerprint = buf2hex(buffer);
-		$('.fingerprint').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
+		$('.fingerprint').addClass('active');
+		$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 		$('.key-pub-import-label').find('span').text('Reimport');
 		//$('.view-pub-key').addClass('active');
-
 		writeFormCheck();
 		readFormCheck();
 		if($pubkeyInputWindow.hasClass('active')){
@@ -254,12 +226,23 @@ function keyReady() {
 function lookupKey (query,server) {
   //console.log(query)
 	let hkp = new openpgp.HKP(server);
-  return new Promise((resolve, reject) => {
+  new Promise((resolve, reject) => {
     hkp.lookup({ query: query }).then(function(keys) {
-      console.log(keys);
+			alert(keys);
+			$('.search-results').addClass('active');
+			if (keys.length > 0){
+				let $newLi = $('<li/>');
+				$newLi.text(keys.join(''));
+				$('.search-results').append($newLi);
+			} else {
+				$('.search-results').addClass('no-results');
+			}
     })
-  })
+  }).catch(function(e){
+		lipAlert('e');
+	})
 }
+lookupKey('magicpadhyun@gmail.com','pgp.mit.edu')
 //Generate keys
 function generateKeys() {
 	let options = {
@@ -465,13 +448,30 @@ function keyImport($type){
 					session.privKey = reader.result;
 					importPrivKey();
 				} else {
+					$type.val('');
+					session.privKey = '';
+					$('.private-key-filename').text('');
 					lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+				}
+			} else if ($type.hasClass('server-key-pub-import')){
+				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+					session.keyToUploadFile = reader.result;
+					validatePubKeyUpload();
+				} else {
+					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+					$type.val('');
+					session.keyToUploadFile = '';
+					$('.public-key-upload-filename').text('');
+					$('.server-key-pub-import-upload').attr('disabled','disabled');
 				}
 			} else {
 				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
 					session.pubKey = reader.result;
 					importPubKey();
 				} else {
+					$type.val('');
+					session.pubKey = '';
+					$('.public-key-filename').text('');
 					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
 				}
 			}
@@ -480,10 +480,45 @@ function keyImport($type){
 			reader.readAsText(file);
 		}
 }
+function keyUpChecker($input,$target){
+	if($input.val().length > 0){
+		$target.removeAttr('disabled');
+	} else {
+		$target.attr('disabled','disabled');
+	}
+}
+function uploadKey(){
+	if(session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
+		$('.pubkeyserver-upload').find('.key-servers-list').val();
+	} else {
+		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+	}
+}
 //UI Bindings
 //UI Bindings
 //UI Bindings
-//autofocus out of select;
+//upload key file
+$('.upload-public-key-paste').bind('click',function(){
+	session.keyToUploadFile = $('.pubkey-upload-input').val();
+	uploadKey();
+})
+$('.server-key-pub-import-upload').bind('click',function(){
+	session.keyToUploadFile;
+	uploadKey();
+})
+//key import for uploading
+$('.server-key-pub-import').change(function(){
+	keyImport($(this));
+})
+//textarea for pubkey upload checker
+$('.pubkey-upload-input').keyup(function(){
+	keyUpChecker($(this),$('.upload-public-key-paste'));
+})
+//searchbox enabler
+$('.searchbox-pubkey').keyup(function(){
+	keyUpChecker($(this),$('.search-pubkey'));
+})
+//autofocus out of select + select processo
 $('select').change(function(){
 	$(this).blur();
 })
@@ -520,7 +555,7 @@ $('.label-container').bind('click', function(e) {
 })
 //Purge / reset functions
 $('.purge').bind('click', function() {
-	purge();
+	window.location.reload(true);
 })
 //Exits notification lip
 $('.lip-exit').bind('click', function() {
