@@ -89,9 +89,19 @@ html, body {
 }
 .search-wrapper .searchbox-pubkey{
 	width:calc(100% - 5.2em);
+	border:0;
+	border-left:1px solid #f3f3f3;
+	border-top:1px solid #f3f3f3;
+	border-bottom:1px solid #f3f3f3;
+	border-right:0;
 }
 .search-wrapper .search-pubkey{
+	padding: 0.75em 1em 1em 1em;
+	height:auto;
 	min-width: 5em;
+	margin:0;
+	float:right;
+	text-align:center;
 }
 option {
 	font-family: 'IBM Plex Sans', sans-serif;
@@ -113,7 +123,7 @@ select {
 	width:100%;
 	transition:0.1s border ease-out;
 	position:relative;
-	background:url('../ui/dropdown.svg') no-repeat calc(100% - 0.75em) calc(100% - 0.75em);
+	background:url('../ui/dropdown.svg') no-repeat calc(100% - 0.75em) calc(100% - 0.625em);
 	background-size: 1.5em 1.5em;
 	opacity:1;
 	transition:opacity 0.1s ease-out;
@@ -250,6 +260,7 @@ input[type="email"], input[type="text"], input[type="password"] {
 	outline: 0;
 	width: 100%;
 	box-sizing: border-box;
+	margin:0;
 }
 button {
 	cursor:pointer;
