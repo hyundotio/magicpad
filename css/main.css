@@ -88,11 +88,9 @@ html, body {
 	visibility: visible;
 }
 .search-wrapper .searchbox-pubkey{
-	width:calc(100% - 5.175em);
-	float:left;
+	width:calc(100% - 5.2em);
 }
 .search-wrapper .search-pubkey{
-	float:left;
 	min-width: 5em;
 }
 option {
@@ -104,14 +102,14 @@ select {
 	-webkit-appearance:none;
 	-ms-appearance:none;
 	appearance:none;
-	padding: 0.5em 0.875em 0.875em 0.875em;
+	padding:1em;
 	font-family: 'IBM Plex Sans', sans-serif;
 	box-sizing: border-box;
 	border: 1px solid transparent;
 	width:100%;
 	transition:0.1s border ease-out;
 	position:relative;
-	background:url('../ui/dropdown.svg') no-repeat calc(100% - 0.75em) calc(100% - 0.75em);
+	background:url('../ui/dropdown.svg') no-repeat calc(100% - 1em) calc(100% - 1em);
 	background-size: 1.5em 1.5em;
 	opacity:1;
 	transition:opacity 0.1s ease-out;
@@ -243,7 +241,7 @@ input[type="email"], input[type="text"], input[type="password"] {
 	transition: background-color 0.1s ease-out, border 0.1s ease-out;
 	font-family: 'IBM Plex Sans', sans-serif;
 	font-size: 1em;
-	padding: 0.5em 0.875em 0.875em 0.875em;
+	padding: 0.5em 0.75em 0.75em 0.75em;
 	border: 1px solid #f3f3f3;
 	outline: 0;
 	width: 100%;
