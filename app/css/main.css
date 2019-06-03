@@ -751,6 +751,9 @@ section {
 	cursor: pointer;
 	z-index: 2;
 }
+.force-hidden {
+	display:none;
+}
 .window-title {
 	font-family: 'IBM Plex Sans', sans-serif;
 	box-sizing: border-box;

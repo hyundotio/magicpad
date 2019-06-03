@@ -54,6 +54,7 @@ function viewPubKey() {
 }
 //View Encrypted Message
 function viewEncMsg() {
+	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
 	$processedAside.text(session.lastEncStatus);
 	$('.popup-filter').addClass('active');
@@ -312,6 +313,7 @@ function decryptMessage() {
 							privateKeys: [privKeyObj]
 						}
 						openpgp.decrypt(options).then(plaintext => {
+							let $processedAside = $('.processed-aside');
 							session.lastDec = plaintext;
 							session.running = false;
 							if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
@@ -319,7 +321,6 @@ function decryptMessage() {
 							} else {
 								$body.removeClass('loading');
 								session.lastDecStatus = 'Message decrypted.';
-								let $processedAside = $('.processed-aside');
 								$processedAside.text(session.lastDecStatus);
 								$('.view-message-decrypted').removeAttr('disabled');
 								session.running = false;
@@ -356,7 +357,7 @@ function decryptMessage() {
 function encryptMessage(msg, signedToggle) {
 	if (!session.running) {
 		session.running = true;
-		let $processedAside = $('.processed-aside');
+
 		let $body = $('body');
 		openpgp.key.readArmored(session.pubKey).then(data => {
 			let options, cleartext, validity;
@@ -365,12 +366,12 @@ function encryptMessage(msg, signedToggle) {
 				publicKeys: data.keys
 			}
 			openpgp.encrypt(options).then(ciphertext => {
+				let $processedAside = $('.processed-aside');
 				encrypted = ciphertext.data.trim() // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
 				session.lastEnc = encrypted;
 				$('.view-message-encrypted').removeAttr('disabled');
 				if (signedToggle) {
 					session.lastEncStatus = 'Message encrypted and signed.';
-
 				} else {
 					session.lastEncStatus = 'Message encrypted.';
 				}
@@ -428,7 +429,7 @@ function signMessage() {
 function verifySignature() {
 	if (!session.running) {
 		session.running = true;
-		let $processedAside = $('.processed-aside');
+
 		let $body = $('body');
 		let privKeyObj;
 		let pbKeyObj;
@@ -441,6 +442,7 @@ function verifySignature() {
 					publicKeys: pbKeyObj
 				}
 				openpgp.verify(options).then(function(verified) {
+					let $processedAside = $('.processed-aside');
 					validity = verified.signatures[0].valid;
 					if (validity) {
 						session.lastDecStatus = 'Message decrypted. Signature valid.';
@@ -755,6 +757,7 @@ $('.key-generate').bind('click', function(e) {
 		}
 	})
 	if (!formFlag) {
+		$this.attr('disabled','disabled');
 		$('.create-key-progress').addClass('active').find('span').text('Generating keys...');
 		generateKeys();
 	}
