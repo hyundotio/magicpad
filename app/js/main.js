@@ -748,8 +748,7 @@ $('body').keyup(function(e) {
 })
 //opens new key generation popup
 $('.key-generate-start').bind('click', function(e) {
-	let $keyGenerate = $('.key-generate');
-	$keyGenerate.addClass('active');
+	$('.create-key-window').addClass('active')
 	$('.popup-filter').addClass('active');
 })
 //start key generation + key form check
