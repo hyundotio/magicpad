@@ -958,6 +958,9 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.popup {
+		width:calc(100% - 2em);
+	}
 	.mobile-menu {
 		display:inline-block;
 	}

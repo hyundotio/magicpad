@@ -75,6 +75,7 @@ function viewDecMsg() {
 //Exits popup
 function popupExit() {
 	$('.popup').removeClass('active');
+	$('.main-nav').removeClass('mobile-active');
 	$('.popup-filter').removeClass('active');
 }
 //Checks for form in the Write tab
@@ -584,6 +585,11 @@ function uploadKey(type){
 //UI Bindings
 //UI Bindings
 //UI Bindings
+//mobile app Menu
+$('.mobile-menu').bind('click',function(){
+	$('.main-nav').addClass('mobile-active');
+	$('.popup-filter').addClass('active');
+})
 //open key servers
 $('.open-keybrowser').bind('click',function(){
 	$('.popup-filter').addClass('active');
