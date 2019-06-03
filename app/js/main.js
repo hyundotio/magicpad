@@ -587,8 +587,15 @@ function uploadKey(type){
 //UI Bindings
 //mobile app Menu
 $('.mobile-menu').bind('click',function(){
-	$('.main-nav').addClass('mobile-active');
-	$('.popup-filter').addClass('active');
+	let $mainNav = $('.main-nav');
+	let $popupFilter = $('.popup-filter');
+	if($mainNav.hasClass('mobile-active')){
+		$mainNav.removeClass('mobile-nav');
+		$popupFilter.removeClass('active');
+	} else {
+		$mainNav.addClass('mobile-active');
+		$popupFilter.addClass('active');
+	}
 })
 //open key servers
 $('.open-keybrowser').bind('click',function(){

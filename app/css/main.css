@@ -958,6 +958,17 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.button-1, .button-2, .button-9 {
+		min-width:7em;
+	}
+	.button-icon-img,.label-icon-button,.select-icon {
+		display:none;
+	}
+	.big-button-third span, .big-button-third-half span {
+		font-size: 1.125em;
+		line-height: 1.125em;
+		margin: -0.25em 0 3.875em 0;
+	}
 	.popup {
 		width:calc(100% - 2em);
 	}
