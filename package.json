@@ -3,7 +3,9 @@
   "version": "0.0.1",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
-  "dependencies": {},
+  "dependencies": {
+    "express": "^4.17.1"
+  },
   "devDependencies": {
     "electron-builder": "^20.41.0",
     "electron": "^5.0.2"

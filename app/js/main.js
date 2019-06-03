@@ -11,7 +11,8 @@ let session = {
 	lastDec: '',
 	lastEnc: '',
 	lastEncPaste: '',
-	keyToUploadFile:''
+	keyToUploadFile:'',
+	searchedKey:''
 }
 //Init Function
 //Init Function
@@ -167,7 +168,7 @@ function writeKeyStatus(pasted) {
 //Import private key button function
 function importPrivKey() {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
-	$('.key-priv-import-label').find('span').text('Reimport');
+	$('.key-priv-import-label').find('span').text('Reselect file');
 	writeFormCheck();
 	readFormCheck();
 	writeKeyStatus();
@@ -192,7 +193,7 @@ function importPubKey() {
 		session.pubKeyFingerprint = buf2hex(buffer);
 		$('.fingerprint').addClass('active');
 		$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
-		$('.key-pub-import-label').find('span').text('Reimport');
+		$('.key-pub-import-label').find('span').text('Reselect file');
 		//$('.view-pub-key').addClass('active');
 		writeFormCheck();
 		readFormCheck();
@@ -225,24 +226,34 @@ function keyReady() {
 //Lookup Public Key
 function lookupKey (query,server) {
   //console.log(query)
-	let hkp = new openpgp.HKP(server);
-  new Promise((resolve, reject) => {
-    hkp.lookup({ query: query }).then(function(keys) {
-			alert(keys);
-			$('.search-results').addClass('active');
-			if (keys.length > 0){
-				let $newLi = $('<li/>');
-				$newLi.text(keys.join(''));
-				$('.search-results').append($newLi);
-			} else {
-				$('.search-results').addClass('no-results');
-			}
-    })
-  }).catch(function(e){
-		lipAlert('e');
-	})
+	if(!session.running){
+		session.running = true;
+		let $searchResults = $('.search-results');
+		let $searchStatus = $('.search-status');
+		$searchStatus.text('Searching...');
+		let hkp = new openpgp.HKP(server);
+		new Promise((resolve, reject) => {
+			hkp.lookup({ query: query }).then(function(keys) {
+				if(keys != undefined){
+					if (keys.length > 0){
+						//copy keys
+						session.searchedKey = keys.trim();
+						$('.searched-key-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.searchedKey)).attr('download', 'searchedKey_public.asc');
+						$searchResults.addClass('search-complete');
+						$searchStatus.text('Key found');
+					}
+				} else {
+					//clear keys
+					$('.search-complete').removeClass('search-complete');
+					$searchStatus.text('Nothing found');
+				}
+				session.running = false;
+			})
+		}).catch(function(e){
+			lipAlert('Error in searching. Please try again.');
+		})
+	}
 }
-lookupKey('magicpadhyun@gmail.com','pgp.mit.edu')
 //Generate keys
 function generateKeys() {
 	let options = {
@@ -489,7 +500,10 @@ function keyUpChecker($input,$target){
 }
 function uploadKey(){
 	if(session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
-		$('.pubkeyserver-upload').find('.key-servers-list').val();
+		let hkp = new openpgp.HKP($('.upload-key-server-list').val());
+		hkp.upload(session.keyToUploadFile).then(function() {
+
+		});
 	} else {
 		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
 	}
@@ -497,13 +511,30 @@ function uploadKey(){
 //UI Bindings
 //UI Bindings
 //UI Bindings
+//open key servers
+$('.open-keybrowser').bind('click',function(){
+	$('.popup-filter').addClass('active');
+	let $keyServerBrowserWindow = $('.key-server-browser-window');
+	let $popupTabContent = $keyServerBrowserWindow.find('.popup-tab-content');
+	let $popupTab = $keyServerBrowserWindow.find('.popup-tabs');
+	$popupTab.find('.active').removeClass('active');
+	$popupTab.find('.popup-tab').eq(0).addClass('active');
+	let tabOpen = $popupTab.find('.active').attr('data-tab');
+	$popupTabContent.find('.active').removeClass('active');
+	$popupTabContent.find('.'+tabOpen).addClass('active');
+	$keyServerBrowserWindow.addClass('active');
+})
+//searched key copy
+$('.searched-key-copy').bind('click',function(){
+	copyProcessed(session.searchedKey);
+	showCopied($('.search-results').find('.copied'));
+})
 //upload key file
 $('.upload-public-key-paste').bind('click',function(){
 	session.keyToUploadFile = $('.pubkey-upload-input').val();
 	uploadKey();
 })
 $('.server-key-pub-import-upload').bind('click',function(){
-	session.keyToUploadFile;
 	uploadKey();
 })
 //key import for uploading
@@ -516,7 +547,14 @@ $('.pubkey-upload-input').keyup(function(){
 })
 //searchbox enabler
 $('.searchbox-pubkey').keyup(function(){
-	keyUpChecker($(this),$('.search-pubkey'));
+	let $this = $(this);
+	keyUpChecker($this,$('.search-pubkey'));
+})
+$('.search-pubkey').bind('click',function(){
+	let $this = $(this);
+	if(!$this.is(':disabled')){
+		lookupKey($('.searchbox-pubkey').val(),$('.search-key-server-list').val());
+	}
 })
 //autofocus out of select + select processo
 $('select').change(function(){
@@ -530,6 +568,9 @@ $('.import-pubkey-str').bind('click',function(){
 })
 
 //open pub key paste windows
+$('.pubkey-input').keyup(function(){
+	keyUpChecker($(this),$('.import-pubkey-str'));
+})
 $('.pubkey-input-open').bind('click',function(){
 	$('.popup-filter').addClass('active');
 	$('.pubkey-input-window').addClass('active');

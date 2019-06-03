@@ -62,7 +62,7 @@
 		</div>
 		<div class="popups">
 			<div class="popup-filter popup-exit"></div>
-			<div class="key-server-browser-window popup paged-popup active">
+			<div class="key-server-browser-window popup paged-popup">
 				<div class="window-title">
 					<span>Key server</span>
 					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
@@ -73,14 +73,12 @@
 						<li><button class="search-public-key-tab popup-tab" data-tab="pubkeyserver-search">Search</button></li>
 					</ul>
 					<div class="popup-tab-content">
-						<div class="pubkeyserver-upload popup-tab-page active">
+						<div class="pubkeyserver-upload popup-tab-page">
 							<h3>Key server</h3>
 							<div class="select-wrapper">
-								<select class="key-servers-list">
-									 <option value="pgp.mit.edu">pgp.mit.edu</option>
-									 <option value="pgp.key-server.io">pgp.key-server.io</option>
-									 <option value="keys.gnupg.net">keys.gnupg.net</option>
-									 <option value="jirk5u4osbsr34t5.onion">pgp.key-server.io - TOR</option>
+								<select class="upload-key-server-list">
+									 <option value="https://pgp.key-server.io">pgp.key-server.io</option>
+									 <option value="http://jirk5u4osbsr34t5.onion">pgp.key-server.io - TOR</option>
 								</select>
 							</div>
 							<section>
@@ -104,23 +102,21 @@
 						<div class="pubkeyserver-search popup-tab-page">
 							<h3>Key server</h3>
 							<div class="select-wrapper">
-								<select class="">
-									 <option value="pgp.mit.edu">pgp.mit.edu</option>
-									 <option value="pgp.key-server.io">pgp.key-server.io</option>
-									 <option value="keys.gnupg.net">keys.gnupg.net</option>
-									 <option value="jirk5u4osbsr34t5.onion">pgp.key-server.io - TOR</option>
+								<select class="search-key-server-list">
+									 <option value="https://pgp.key-server.io">pgp.key-server.io</option>
+									 <option value="http://jirk5u4osbsr34t5.onion">pgp.key-server.io - TOR</option>
 								</select>
 							</div>
 							<section class="search-wrapper">
 								<h3>Search</h3>
-								<input type="text" class="searchbox-pubkey" placeholder="johnsmith@email.com" />
-								<button class="button-1 search-pubkey" disabled>Search</button>
+								<input type="text" class="searchbox-pubkey" placeholder="Email, fingerprint, or Key ID" />
+								<button class="button-2 search-pubkey" disabled>Search</button>
 							</section>
 							<section>
-								<h3>Search results</h3>
+								<h3>Search result</h3>
 								<ul class="search-results">
-									<li class="no-results">No results</li>
-									<li class="not-started">Search not started</li>
+									<li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
+									<li class="search-result"><a class="button-1 searched-key-download" href="#"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"/></a><button class="button-1 searched-key-copy"><span>Copy key</span><img button class="button-icon-img" src="./ui/copy.svg"></button></li>
 								</ul>
 							</section>
 						</div>
@@ -152,7 +148,7 @@
 				<div class="popup-contents">
 					<textarea class="pubkey-input" id="pubkey-input" placeholder="Paste public key here"></textarea>
 					<section>
-						<button class="button-1 import-pubkey-str"><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+						<button class="button-1 import-pubkey-str" disabled><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
 					</section>
 				</div>
 			</div>
@@ -239,7 +235,7 @@
   					</div>
           </div>
 					<div>
-						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
+						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
 					</div>
 				</section>
 				<section>
@@ -249,7 +245,7 @@
   					</div>
           </div>
 					<div>
-						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file">
+						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file">
 						<button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 					</div>
 				</section>
@@ -261,7 +257,7 @@
 					</div>
 				</section>
 				<section>
-					<h3>Key server browser</h3>
+					<h3>Access key servers</h3>
 					<button class="open-keybrowser button-2"><span>Open</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 				</section>
 				<section>

@@ -625,14 +625,25 @@ h3 {
 .search-results {
 	margin-top:0.75em;
 }
-.no-results, .not-started {
+.search-status {
 	color: #8C8C8C;
 }
-.no-results,.search-results.active .not-started {
-	display:none;
+.search-result{
+	transition:0.2s visibility ease-out, 0.2s opacity ease-out;
+	margin-top: 0.5em;
+	visibility: hidden;
+	opacity:0;
 }
-.search-results.no-results .no-results {
-	display:block;
+.search-results.search-complete .search-result{
+	visibility: visible;
+	opacity: 1;
+}
+.search-result .button-1, .pubkeyserver-upload .label-container, .pubkeyserver-upload .button-1{
+	width:50%;
+	margin:0;
+}
+.search-result .button-1:first-of-type, .pubkeyserver-upload .label-container {
+	border-right:1px solid #FFF;
 }
 a {
 	outline:0;

@@ -1,24 +1,10 @@
-const url = require('url');
-const path = require('path');
-const {app, BrowserWindow, Menu} = require('electron');
+const express = require('express');
 
-let mainWindow;
+const app = express();
+const PORT = process.env.PORT = 3000;
 
-app.on('ready',function(){
+app.use('/',express.static(__dirname + '/app'));
 
-  mainWindow = new BrowserWindow({
-    minHeight:594,
-    minWidth:660,
-    height:594,
-    width:660,
-    'backgroundColor': '#FFFFFF',
-    title:'MagicPad',
-    icon: __dirname +  '/icons/appicon.icns'
-  });
-  mainWindow.setMenuBarVisibility(false)
-  mainWindow.loadURL(url.format({
-    pathname: path.join(__dirname, 'main.html'),
-    protocol:'file:',
-    slashes: true
-  }));
+app.listen(PORT, () => {
+  console.log('Server is running');
 })
