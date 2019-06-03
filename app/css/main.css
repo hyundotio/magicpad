@@ -913,7 +913,7 @@ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover
 .lds-ring div:nth-child(3) {
 	animation-delay: -0.15s;
 }
-body.loading, body.loading input, body.loading textarea {
+body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	cursor: wait;
 }
 .loading .lds-ring-small {

@@ -226,6 +226,7 @@ function keyReady() {
 	$('.create-key-progress').text('Keys generated').removeClass('active');
 	$('.key-generate-start').text('Download generated keys');
 	$('.create-key-window').find('.window-title').find('span').text('Generated keys');
+	$('body').removeClass('cursor-loading');
 	session.running = false;
 }
 //OpenPGP Functions
@@ -281,6 +282,7 @@ function lookupKey (query,server) {
 function generateKeys() {
 	if (!session.running) {
 		session.running = true;
+		$('body').addClass('cursor-loading');
 		let options = {
 			userIds: [{
 				name: ($('.form-name').val()),
