@@ -55,7 +55,6 @@ function viewPubKey() {
 //View Encrypted Message
 function viewEncMsg() {
 	let $processedOutputWindow = $('.processed-output-window');
-	let $processedOutputWindow = $('.processed-output-window');
 	$processedAside.text(session.lastEncStatus);
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
