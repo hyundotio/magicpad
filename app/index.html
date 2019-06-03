@@ -67,6 +67,19 @@
 					<span>Key server</span>
 					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
 				</div>
+				<div class="upload-progress">
+					<div class="progress-container">
+						<div class="lds-ring">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+						<span>
+							Uploading key...
+						</span>
+					</div>
+				</div>
 				<div class="popup-contents">
 					<ul class="popup-tabs">
 						<li><button class="upload-public-key-tab popup-tab active" data-tab="pubkeyserver-upload">Upload</button></li>
@@ -82,7 +95,7 @@
 								</select>
 							</div>
 							<section>
-								<h3>Upload by pasted key</h3>
+								<h3>Upload pasted public key</h3>
 								<!--
 								<input type="radio" name="upload-type" value="file" checked> File (.asc)
 								&nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
@@ -91,10 +104,12 @@
 							</section>
 							<section>
 								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+								<a class="key-link paste-upload-link b-link" href="#">Key link</a>
 							</section>
 							<section>
-								<h3>Upload by .asc key file<span class="public-key-upload-filename"></span></h3>
+								<h3>Upload .asc public key file<span class="public-key-upload-filename"></span></h3>
 								<a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file">
+								<a class="key-link import-upload-link b-link" href="#">Key link</a>
 								<button disabled class="button-1 server-key-pub-import-upload"><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
 							</section>
 							</section>
@@ -108,8 +123,8 @@
 								</select>
 							</div>
 							<section class="search-wrapper">
-								<h3>Search</h3>
-								<input type="text" class="searchbox-pubkey" placeholder="Email, fingerprint, or Key ID" />
+								<h3>Search for public key</h3>
+								<input type="text" class="searchbox-pubkey" placeholder="Email, fingerprint, or key ID" />
 								<button class="button-2 search-pubkey" disabled>Search</button>
 							</section>
 							<section>
@@ -166,9 +181,9 @@
 								<div></div>
 								<div></div>
 							</div>
-							<div>
+							<span>
 								Generating keys...
-							</div>
+							</span>
 						</div>
 					</div>
 					<ul class="pages">
@@ -182,18 +197,18 @@
 							<section>
 								<h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
 							</section>
-							<div class="pw-view-toggler checkbox-offset">
-								<input autocomplete="off" class="pw-toggle" name="pw-toggle" spellcheck="false" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+							<div class="pw-view-toggler styled-checkbox checkbox-offset">
+								<input autocomplete="off" class="pw-toggl styled-checkbox" name="pw-toggle" spellcheck="false" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
 							</div>
 							<section class="bottom-buttons">
 								<button class="button-1 key-generate" disabled><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"></button> <button class="button-2 popup-exit">Cancel</button>
 							</section>
 						</li>
 						<li class="key-new-done">
-							<a class="big-button-third-half button-1 key-private-download" href="#"><span>Download new<br>
-							private key</span><img src="./ui/download.svg"></a> <a class="big-button-third-half button-1 key-public-download" href="#"><span>Download new<br>
-							public key</span><img src="./ui/download.svg"></a><a class="big-button-third button-2 copy-generated-public-key" href="#"><span>Copy new public key<br>
-							 to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a> <a class="big-button-third button-2 key-generate-reset" href="#"><span>Clear keys<br>
+							<a class="big-button-third button-1 key-private-download" href="#"><span>Download<br>
+							private key</span><img src="./ui/download.svg"></a><a class="big-button-third-half button-1 key-public-download" href="#"><span>Download<br>
+							public key</span><img src="./ui/download.svg"></a><a class="big-button-third-half button-1 key-rev-download" href="#"><span>Download<br>
+							revocation key</span><img src="./ui/download.svg"></a><a class="big-button-third-half button-2 copy-generated-public-key" href="#"><span>Copy public key to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a> <a class="big-button-third-half button-2 key-generate-reset" href="#"><span>Clear keys<br>
 							and restart</span><img src="./ui/restart.svg"></a>
 						</li>
 					</ul>
@@ -204,23 +219,23 @@
 			<div class="write tab-window">
 				<h2>Write</h2>
 				<section>
-					<h3>Your unencrypted message</h3>
+					<h3>Your message</h3>
 					<div class="sign-toggle checkbox-offset">
-						<input class="encrypt-sign-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
+						<input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
 					</div>
 					<div class="write-key-status key-status"></div>
 					<textarea class="text-write" placeholder="Write your message here"></textarea>
 				</section>
 				<section>
-					<div class="sign-credentials">
-						<h3>Your private key passphrase for signing the message</h3><input class="passphrase-box text-write-passphrase" placeholder="Passphrase" type="password">
+					<div class="sign-credentials disabled">
+						<h3>Your private key passphrase for signing the message</h3><input disabled="disabled" class="passphrase-box text-write-passphrase" placeholder="Passphrase" type="password">
 						<div class="pw-view-toggler checkbox-offset">
-							<input class="pw-toggle" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+							<input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox" disabled="disabled">&nbsp;&nbsp;Show passphrase<br>
 						</div>
 					</div>
 				</section>
 				<section>
-					<button class="button-1 encrypt-message sign-enabled" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+					<button class="button-1 encrypt-message" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 				</section>
 			</div>
 			<div class="keys tab-window active">
@@ -320,7 +335,7 @@
 				<section>
 					<h3>Your private key passphrase for decryption</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" type="password">
 					<div class="pw-view-toggler checkbox-offset">
-						<input class="pw-toggle" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+						<input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
 					</div>
 				</section>
 				<section>

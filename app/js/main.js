@@ -6,10 +6,13 @@ let session = {
 	pubKey: '',
 	generatedPubKey:'',
 	generatedPrivKey:'',
+	generatedRevKey:'',
 	pubKeyFingerprint: '',
 	running: false,
 	lastDec: '',
 	lastEnc: '',
+	lastDecStatus: '',
+	lastEncStatus: '',
 	lastEncPaste: '',
 	keyToUploadFile:'',
 	searchedKey:''
@@ -52,6 +55,8 @@ function viewPubKey() {
 //View Encrypted Message
 function viewEncMsg() {
 	let $processedOutputWindow = $('.processed-output-window');
+	let $processedOutputWindow = $('.processed-output-window');
+	$processedAside.text(session.lastEncStatus);
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
@@ -59,7 +64,9 @@ function viewEncMsg() {
 }
 //View decrypted message
 function viewDecMsg() {
+	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
+	$processedAside.text(session.lastDecStatus);
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active').removeClass('mono').find('.window-title').find('span').text('Decrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
@@ -178,7 +185,7 @@ function validatePubKeyUpload(){
 	openpgp.key.readArmored(session.pubKey).then(data => {
 		let $serverKeyPubImport = $('.server-key-pub-import');
 		let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
-		$h3Text.text($h3Text.text() + '  -  '+getFilename($('.server-key-pub-import').val()));
+		$h3Text.text('  -  '+getFilename($('.server-key-pub-import').val()));
 		$serverKeyPubImport.find('span').text('Reselect file');
 		$('.server-key-pub-import-upload').removeAttr('disabled');
 	}).catch(function(e){
@@ -213,9 +220,10 @@ function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
 	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', formName+'_public.asc');
 	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', formName+'_private.asc');
+	$('.key-rev-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
-	$('.create-key-progress').removeClass('active');
+	$('.create-key-progress').text('Keys generated').removeClass('active');
 	$('.key-generate-start').text('Download generated keys');
 	$('.create-key-window').find('.window-title').find('span').text('Generated keys');
 	session.running = false;
@@ -248,43 +256,46 @@ function lookupKey (query,server) {
 					$searchStatus.text('Nothing found');
 				}
 				session.running = false;
+			}).catch(function(e){
+				session.running = false;
+				lipAlert('Error in parsing retrieved key. Please try again.');
 			})
 		}).catch(function(e){
+			session.running = false;
+			$('.create-key-progress').find('span').text('Failed generating keys').removeClass('active');
 			lipAlert('Error in searching. Please try again.');
 		})
 	}
 }
 //Generate keys
 function generateKeys() {
-	let options = {
-		userIds: [{
-			name: ($('.form-name').val()),
-			email: ($('.form-email').val())
-		}],
-		numBits: 4096,
-		passphrase: ($('.form-passphrase').val())
+	if (!session.running) {
+		session.running = true;
+		let options = {
+			userIds: [{
+				name: ($('.form-name').val()),
+				email: ($('.form-email').val())
+			}],
+			numBits: 4096,
+			passphrase: ($('.form-passphrase').val())
+		}
+		openpgp.generateKey(options).then(key => {
+			session.generatedPrivKey = key.privateKeyArmored.trim();
+			session.generatedPubKey = key.publicKeyArmored.trim();
+			session.generatedRevKey = key.revocationCertificate.trim();
+			keyReady();
+		}).catch(function(e) {
+			session.running = false;
+			lipAlert('Failed generating keys. Please try again.');
+			newKeyReset();
+		});
 	}
-	openpgp.generateKey(options).then(key => {
-		session.generatedPrivKey = key.privateKeyArmored.trim();
-		session.generatedPubKey = key.publicKeyArmored.trim();
-		keyReady();
-	}).catch(function(e) {
-		lipAlert('Failed generating keys. Please try again.');
-		newKeyReset();
-	});
-}
-function lookup (query,server) {
-  let hkp = new openpgp.HKP(server);
-  return new Promise((resolve, reject) => {
-    hkp.lookup({ query: query }).then(function(keys) {
-      console.log(keys);
-    }).catch(function(e){ alert('error'+e); })
-  })
 }
 //lookup('magicpadhyun@gmail.com','https://pgp.mit.edu');
 //Decrypt messages
 function decryptMessage() {
 	if (!session.running) {
+		session.running = true;
 		let privKeyObj;
 		let pbKeyObj;
 		let parsedMsg;
@@ -303,31 +314,40 @@ function decryptMessage() {
 						}
 						openpgp.decrypt(options).then(plaintext => {
 							session.lastDec = plaintext;
+							session.running = false;
 							if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 								verifySignature();
 							} else {
 								$body.removeClass('loading');
-								$('.processed-aside').text('Message decrypted.');
+								session.lastDecStatus = 'Message decrypted.';
+								let $processedAside = $('.processed-aside');
+								$processedAside.text(session.lastDecStatus);
+								$('.view-message-decrypted').removeAttr('disabled');
 								session.running = false;
 								viewDecMsg();
 							}
 						}).catch(function(e) {
+							session.running = false;
 							lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
 							$body.removeClass('loading');
 						});
 					}).catch(function(e) {
+						session.running = false;
 						lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
 						$body.removeClass('loading');
 					});
 				}).catch(function(e) {
+					session.running = false;
 					lipAlert('The public key cannot be read. It may be corrupted.');
 					$body.removeClass('loading');
 				});
 			}).catch(function(e) {
+				session.running = false;
 				lipAlert('The private key passphrase is incorrect.');
 				$body.removeClass('loading');
 			});
 		}).catch(function(e) {
+			session.running = false;
 			lipAlert('The private key cannot be read. It may be corrupted.');
 			$body.removeClass('loading');
 		});
@@ -336,9 +356,9 @@ function decryptMessage() {
 //Encrypt Message
 function encryptMessage(msg, signedToggle) {
 	if (!session.running) {
+		session.running = true;
 		let $processedAside = $('.processed-aside');
 		let $body = $('body');
-		session.running = true;
 		openpgp.key.readArmored(session.pubKey).then(data => {
 			let options, cleartext, validity;
 			options = {
@@ -350,18 +370,22 @@ function encryptMessage(msg, signedToggle) {
 				session.lastEnc = encrypted;
 				$('.view-message-encrypted').removeAttr('disabled');
 				if (signedToggle) {
-					$processedAside.text('Message encrypted and signed.');
+					session.lastEncStatus = 'Message encrypted and signed.';
+
 				} else {
-					$processedAside.text('Message encrypted.');
+					session.lastEncStatus = 'Message encrypted.';
 				}
+				$processedAside.text(session.lastEncStatus);
 				$body.removeClass('loading');
 				session.running = false;
 				viewEncMsg();
 			}).catch(function(e) {
+				session.running = false;
 				$body.removeClass('loading');
 				lipAlert('Cannot encrypt message. Try testing a different message and/or keys.');
 			});
 		}).catch(function(e) {
+			session.running = false;
 			$body.removeClass('loading');
 			lipAlert('The public key cannot be read. It may be corrupted.');
 		});
@@ -370,6 +394,7 @@ function encryptMessage(msg, signedToggle) {
 //Sign message
 function signMessage() {
 	if (!session.running) {
+		session.running = true;
 		let $body = $('body');
 		openpgp.key.readArmored(session.privKey).then(data => {
 			let options, cleartext, validity;
@@ -381,16 +406,20 @@ function signMessage() {
 				};
 				openpgp.sign(options).then(function(signed) {
 					cleartext = signed.data.trim();
+					session.running = false;
 					encryptMessage(cleartext, true);
 				}).catch(function(e) {
+					session.running = false;
 					$body.removeClass('loading');
 					lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
 				});
 			}).catch(function(e) {
+				session.running = false;
 				$body.removeClass('loading');
 				lipAlert('The private key passphrase is incorrect.');
 			});
 		}).catch(function(e) {
+			session.running = false;
 			$body.removeClass('loading');
 			lipAlert('The private key cannot be read. It may be corrupted.');
 		});
@@ -399,9 +428,9 @@ function signMessage() {
 //Verify signature of message
 function verifySignature() {
 	if (!session.running) {
+		session.running = true;
 		let $processedAside = $('.processed-aside');
 		let $body = $('body');
-		session.running = true;
 		let privKeyObj;
 		let pbKeyObj;
 		let parsedMsg;
@@ -415,23 +444,27 @@ function verifySignature() {
 				openpgp.verify(options).then(function(verified) {
 					validity = verified.signatures[0].valid;
 					if (validity) {
-						$processedAside.text('Message decrypted. Signature valid.');
+						session.lastDecStatus = 'Message decrypted. Signature valid.';
 					} else {
-						$processedAside.text('Message decrypted. Signature not valid.');
+						session.lastDecStatus = 'Message decrypted. Signature not valid.';
 					}
+					$processedAside.text(session.lastDecStatus);
 					$('.view-message-decrypted').removeAttr('disabled');
 					$body.removeClass('loading');
 					session.running = false;
 					viewDecMsg();
 				}).catch(function(e) {
+					session.running = false;
 					$body.removeClass('loading');
 					lipAlert('The signature cannot be verified. It may be corrupted.');
 				});
 			}).catch(function(e) {
+				session.running = false;
 				$body.removeClass('loading');
 				lipAlert('The signature cannot be read. It maybe corrupted.');
 			});
 		}).catch(function(e) {
+			session.running = false;
 			$body.removeClass('loading');
 			lipAlert('The public key cannot be read. It may be corrupted.');
 			//console.log('readpubkey'+e);
@@ -498,14 +531,41 @@ function keyUpChecker($input,$target){
 		$target.attr('disabled','disabled');
 	}
 }
-function uploadKey(){
-	if(session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
-		let hkp = new openpgp.HKP($('.upload-key-server-list').val());
-		hkp.upload(session.keyToUploadFile).then(function() {
-
-		});
-	} else {
-		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+function uploadKey(type){
+	if(!session.running){
+		session.running = true;
+		$('.upload-progress').addClass('active').find('span').text('Uploading key...');
+		if(session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
+			let hkp = new openpgp.HKP($('.upload-key-server-list').val());
+			hkp.upload(session.keyToUploadFile).then(function() {
+				//downloadlink
+				openpgp.key.readArmored(session.keyToUploadFile).then(data => {
+					const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
+					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
+					if(type !== 'import'){
+						//paste
+						$('.paste-upload-link').addClass('active').attr('href',downloadLink);
+					} else {
+						$('.import-upload-link').addClass('active').attr('href',downloadLink);
+						//import
+					}
+					$('.upload-progress').removeClass('active').find('span').text('Upload complete');
+					session.running = false;
+				}).catch(function(e){
+					$('.upload-progress').removeClass('active').find('span').text('Upload failed');
+					lipAlert("The fingerprint could not be generated from the uploaded key. Please try again.");
+					session.running = false;
+				})
+			}).catch(function(e){
+				$('.upload-progress').removeClass('active').find('span').text('Upload failed');
+				lipAlert('The public key could not be uploaded. Please try again.');
+				session.running = false;
+			});
+		} else {
+			$('.upload-progress').removeClass('active').find('span').text('Upload failed');
+			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+			session.running = false;
+		}
 	}
 }
 //UI Bindings
@@ -520,7 +580,7 @@ $('.open-keybrowser').bind('click',function(){
 	$popupTab.find('.active').removeClass('active');
 	$popupTab.find('.popup-tab').eq(0).addClass('active');
 	let tabOpen = $popupTab.find('.active').attr('data-tab');
-	$popupTabContent.find('.active').removeClass('active');
+	$popupTabContent.find('.popup-tab-page.active').removeClass('active');
 	$popupTabContent.find('.'+tabOpen).addClass('active');
 	$keyServerBrowserWindow.addClass('active');
 })
@@ -531,11 +591,15 @@ $('.searched-key-copy').bind('click',function(){
 })
 //upload key file
 $('.upload-public-key-paste').bind('click',function(){
-	session.keyToUploadFile = $('.pubkey-upload-input').val();
-	uploadKey();
+	if(!$(this).is(':disabled')){
+		session.keyToUploadFile = $('.pubkey-upload-input').val();
+		uploadKey('paste');
+	}
 })
 $('.server-key-pub-import-upload').bind('click',function(){
-	uploadKey();
+	if(!$(this).is(':disabled')){
+		uploadKey('import');
+	}
 })
 //key import for uploading
 $('.server-key-pub-import').change(function(){
@@ -683,20 +747,17 @@ $('.key-generate-start').bind('click', function(e) {
 })
 //start key generation + key form check
 $('.key-generate').bind('click', function(e) {
-	if (!session.running) {
+	let $this = $(this);
+	let formFlag = false;
+	$('.key-new-form').find('input').each(function() {
 		let $this = $(this);
-		let formFlag = false;
-		$('.key-new-form').find('input').each(function() {
-			let $this = $(this);
-			if (!$this.hasClass('pw-toggle') && $this.val() == '') {
-				formFlag = true;
-			}
-		})
-		if (!formFlag) {
-			session.running = true;
-			$('.create-key-progress').addClass('active');
-			generateKeys();
+		if (!$this.hasClass('pw-toggle') && $this.val() == '') {
+			formFlag = true;
 		}
+	})
+	if (!formFlag) {
+		$('.create-key-progress').addClass('active').find('span').text('Generating keys...');
+		generateKeys();
 	}
 })
 //Sign toggler

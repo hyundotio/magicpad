@@ -42,7 +42,7 @@
       ]
     },
     "win": {
-      "icon": "/icons/1024x1024.png",
+      "icon": "/build/icons/1024x1024.png",
       "target": [
         "portable"
       ]
