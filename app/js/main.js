@@ -268,7 +268,7 @@ function lookupKey (query,server) {
 				session.running = false;
 			}).catch(function(e){
 				session.running = false;
-				lipAlert('Error in parsing retrieved key. Please try again.');
+				lipAlert('Error in retrieving key. Please try again.');
 			})
 		}).catch(function(e){
 			session.running = false;

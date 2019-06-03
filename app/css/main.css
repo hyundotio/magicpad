@@ -655,8 +655,7 @@ h3 {
 	visibility: visible;
 	opacity: 1;
 }
-.search-result .button-1 {
-	width:50%;
+.search-result .button-1, .search-result .button-2 {
 	margin:0;
 }
 .search-result .button-1:first-of-type {
