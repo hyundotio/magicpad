@@ -10,27 +10,27 @@
 	<link href="./css/reset.css" rel="stylesheet">
 	<link href="./fonts/stylesheet.css" rel="stylesheet">
 	<link href="./css/main.css" rel="stylesheet">
-	<link rel="apple-touch-icon" sizes="57x57" href="./favicon/apple-icon-57x57.png">
-	<link rel="apple-touch-icon" sizes="60x60" href="./favicon/apple-icon-60x60.png">
-	<link rel="apple-touch-icon" sizes="72x72" href="./favicon/apple-icon-72x72.png">
-	<link rel="apple-touch-icon" sizes="76x76" href="./favicon/apple-icon-76x76.png">
-	<link rel="apple-touch-icon" sizes="114x114" href="./favicon/apple-icon-114x114.png">
-	<link rel="apple-touch-icon" sizes="120x120" href="./favicon/apple-icon-120x120.png">
-	<link rel="apple-touch-icon" sizes="144x144" href="./favicon/apple-icon-144x144.png">
-	<link rel="apple-touch-icon" sizes="152x152" href="./favicon/apple-icon-152x152.png">
-	<link rel="apple-touch-icon" sizes="180x180" href="./favicon/apple-icon-180x180.png">
-	<link rel="icon" type="image/png" sizes="192x192"  href="./favicon/android-icon-192x192.png">
-	<link rel="icon" type="image/png" sizes="32x32" href="./favicon/favicon-32x32.png">
-	<link rel="icon" type="image/png" sizes="96x96" href="./favicon/favicon-96x96.png">
-	<link rel="icon" type="image/png" sizes="16x16" href="./favicon/favicon-16x16.png">
-	<link rel="manifest" href="./favicon/manifest.json">
-	<meta name="msapplication-TileColor" content="#000000">
-	<meta name="msapplication-TileImage" content="./favicon/ms-icon-144x144.png">
-	<meta name="theme-color" content="#000000">
+	<link href="./favicon/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
+	<link href="./favicon/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
+	<link href="./favicon/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
+	<link href="./favicon/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
+	<link href="./favicon/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
+	<link href="./favicon/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
+	<link href="./favicon/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
+	<link href="./favicon/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
+	<link href="./favicon/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
+	<link href="./favicon/android-icon-192x192.png" rel="icon" sizes="192x192" type="image/png">
+	<link href="./favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
+	<link href="./favicon/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
+	<link href="./favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+	<link href="./favicon/manifest.json" rel="manifest">
+	<meta content="#000000" name="msapplication-TileColor">
+	<meta content="./favicon/ms-icon-144x144.png" name="msapplication-TileImage">
+	<meta content="#000000" name="theme-color">
 </head>
 <body>
 	<nav class="main-nav">
-		<button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg"/></button>
+		<button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg"></button>
 		<ul>
 			<li>
 				<a class="keys-tab tab active" data-tab="keys" href="#">Keys</a>
@@ -74,10 +74,7 @@
 							<div></div>
 							<div></div>
 							<div></div>
-						</div>
-						<span>
-							Uploading key...
-						</span>
+						</div><span>Uploading key...</span>
 					</div>
 				</div>
 				<div class="popup-contents">
@@ -90,48 +87,50 @@
 							<h3>Key server</h3>
 							<div class="select-wrapper">
 								<select class="upload-key-server-list">
-									 <option value="https://pgp.key-server.io">pgp.key-server.io</option>
-									 <option value="http://jirk5u4osbsr34t5.onion">pgp.key-server.io - TOR</option>
+									<option value="https://pgp.key-server.io">
+										pgp.key-server.io
+									</option>
+									<option value="http://jirk5u4osbsr34t5.onion">
+										pgp.key-server.io - TOR
+									</option>
 								</select>
 							</div>
 							<section>
-								<h3>Upload pasted public key</h3>
-								<!--
-								<input type="radio" name="upload-type" value="file" checked> File (.asc)
-								&nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
-								!-->
+								<h3>Upload pasted public key</h3><!--
+                                <input type="radio" name="upload-type" value="file" checked> File (.asc)
+                                &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
+                                !-->
 								<textarea class="pubkey-upload-input" id="" placeholder="Paste public key here"></textarea>
 							</section>
 							<section>
-								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
-								<a class="key-link paste-upload-link b-link" href="#">Key link</a>
+								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Key link</a>
 							</section>
 							<section>
-								<h3>Upload .asc public key file<span class="public-key-upload-filename"></span></h3>
-								<a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file">
-								<a class="key-link import-upload-link b-link" href="#">Key link</a>
-								<button disabled class="button-1 server-key-pub-import-upload"><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
-							</section>
+								<h3>Upload .asc public key file<span class="public-key-upload-filename"></span></h3><a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file"> <a class="key-link import-upload-link b-link" href="#">Key link</a> <button class="button-1 server-key-pub-import-upload" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
 							</section>
 						</div>
 						<div class="pubkeyserver-search popup-tab-page">
 							<h3>Key server</h3>
 							<div class="select-wrapper">
 								<select class="search-key-server-list">
-									 <option value="https://pgp.key-server.io">pgp.key-server.io</option>
-									 <option value="http://jirk5u4osbsr34t5.onion">pgp.key-server.io - TOR</option>
+									<option value="https://pgp.key-server.io">
+										pgp.key-server.io
+									</option>
+									<option value="http://jirk5u4osbsr34t5.onion">
+										pgp.key-server.io - TOR
+									</option>
 								</select>
 							</div>
 							<section class="search-wrapper">
-								<h3>Search for public key</h3>
-								<input type="text" class="searchbox-pubkey" placeholder="Email, fingerprint, or key ID" />
-								<button class="button-2 search-pubkey" disabled>Search</button>
+								<h3>Search for public key</h3><input class="searchbox-pubkey" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-2 search-pubkey" disabled>Search</button>
 							</section>
 							<section>
 								<h3>Search result</h3>
 								<ul class="search-results">
 									<li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
-									<li class="search-result"><a class="button-1 searched-key-download" href="#"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"/></a><button class="button-1 searched-key-copy"><span>Copy key</span><img button class="button-icon-img" src="./ui/copy.svg"></button></li>
+									<li class="search-result">
+										<a class="button-1 searched-key-download" href="#"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"></a><button class="button-1 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg"></button>
+									</li>
 								</ul>
 							</section>
 						</div>
@@ -180,10 +179,7 @@
 								<div></div>
 								<div></div>
 								<div></div>
-							</div>
-							<span>
-								Generating keys...
-							</span>
+							</div><span>Generating keys...</span>
 						</div>
 					</div>
 					<ul class="pages">
@@ -205,10 +201,10 @@
 							</section>
 						</li>
 						<li class="key-new-done">
-							<a class="big-button-third-half button-1 key-private-download" href="#"><span>Download<br>
-							private key</span><img src="./ui/download.svg"></a><a class="big-button-third-half button-1 key-public-download" href="#"><span>Download<br>
+							<a class="big-button-third button-1 key-private-download" href="#"><span>Download<br>
+							private key</span><img src="./ui/download.svg"></a><a class="big-button-third button-1 key-public-download" href="#"><span>Download<br>
 							public key</span><img src="./ui/download.svg"></a><a class="big-button-third-half button-1 key-rev-download force-hidden" href="#"><span>Download<br>
-							revocation key</span><img src="./ui/download.svg"></a><a class="big-button-third button-2 copy-generated-public-key" href="#"><span>Copy public key to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a> <a class="big-button-third button-2 key-generate-reset" href="#"><span>Clear keys<br>
+							revocation key</span><img src="./ui/download.svg"></a><a class="big-button-third-half button-2 copy-generated-public-key" href="#"><span>Copy public key to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a> <a class="big-button-third-half button-2 key-generate-reset" href="#"><span>Clear keys<br>
 							and restart</span><img src="./ui/restart.svg"></a>
 						</li>
 					</ul>
@@ -228,9 +224,9 @@
 				</section>
 				<section>
 					<div class="sign-credentials disabled">
-						<h3>Your private key passphrase for signing the message</h3><input disabled="disabled" class="passphrase-box text-write-passphrase" placeholder="Passphrase" type="password">
+						<h3>Your private key passphrase for signing the message</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" type="password">
 						<div class="pw-view-toggler checkbox-offset">
-							<input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox" disabled="disabled">&nbsp;&nbsp;Show passphrase<br>
+							<input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
 						</div>
 					</div>
 				</section>
@@ -244,36 +240,31 @@
 					<a class="key-generate-start b-link" href="#">Create new private and public key set +</a>
 				</section>
 				<section>
-          <div class="key-filename-container">
-  					<h3>Your private key</h3>
-  					<div class="key-status private-key-filename">
-  					</div>
-          </div>
+					<div class="key-filename-container">
+						<h3>Your private key</h3>
+						<div class="key-status private-key-filename"></div>
+					</div>
 					<div>
 						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
 					</div>
 				</section>
 				<section>
-          <div class="key-filename-container">
-  					<h3>Recipient/Sender public key</h3>
-  					<div class="key-status public-key-filename">
-  					</div>
-          </div>
+					<div class="key-filename-container">
+						<h3>Recipient/Sender public key</h3>
+						<div class="key-status public-key-filename"></div>
+					</div>
 					<div>
-						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file">
-						<button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 					</div>
 				</section>
 				<section>
 					<h3>Recipient/Sender public key fingerprint</h3>
 					<div class="fingerprint">
-						<span class="no-pub-key">No public key imported</span>
-						<span class="fingerprint-str"></span>
+						<span class="no-pub-key">No public key imported</span> <span class="fingerprint-str"></span>
 					</div>
 				</section>
 				<section>
-					<h3>Access key servers</h3>
-					<button class="open-keybrowser button-2"><span>Open</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+					<h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Open</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 				</section>
 				<section>
 					<h3>Restart session</h3><button class="purge button-2"><span>Restart</span><img class="button-icon-img" src="./ui/purge.svg"></button>
@@ -282,36 +273,34 @@
 			<div class="tutorial tab-window">
 				<h2>Tutorial</h2>
 				<ul class="tutorial-selectors">
-					<li><a href="#" data-tutorial="generate-keys-tutorial" class="tutorial-selector b-link active">Generating a key pair</a></li>
-					<li><a href="#" data-tutorial="upload-tutorial" class="tutorial-selector b-link">Sharing your public key online</a></li>
-					<li><a href="#" data-tutorial="write-tutorial" class="tutorial-selector b-link">Writing a message</a></li>
-					<li><a href="#" data-tutorial="read-tutorial" class="tutorial-selector b-link">Reading a message</a></li>
-					<li><a href="#" data-tutorial="tips-tutorial" class="tutorial-selector b-link">Tips</a></li>
+					<li>
+						<a class="tutorial-selector b-link active" data-tutorial="generate-keys-tutorial" href="#">Generating a key pair</a>
+					</li>
+					<li>
+						<a class="tutorial-selector b-link" data-tutorial="upload-tutorial" href="#">Sharing your public key online</a>
+					</li>
+					<li>
+						<a class="tutorial-selector b-link" data-tutorial="write-tutorial" href="#">Writing a message</a>
+					</li>
+					<li>
+						<a class="tutorial-selector b-link" data-tutorial="read-tutorial" href="#">Reading a message</a>
+					</li>
+					<li>
+						<a class="tutorial-selector b-link" data-tutorial="tips-tutorial" href="#">Tips</a>
+					</li>
 				</ul>
 				<ul class="tutorial-pages">
 					<li class="generate-keys-tutorial active">
-						<video controls>
-						 <source src="./tutorials/generatekeys.mp4" type="video/mp4">
-						Your browser does not support the video tag.
-						</video>
+						<video controls=""><source src="./tutorials/generatekeys.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
 					</li>
 					<li class="upload-tutorial">
-						<video controls>
-						 <source src="./tutorials/upload.mp4" type="video/mp4">
-						Your browser does not support the video tag.
-						</video>
+						<video controls=""><source src="./tutorials/upload.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
 					</li>
 					<li class="write-tutorial">
-						<video controls>
-						 <source src="./tutorials/write.mp4" type="video/mp4">
-						Your browser does not support the video tag.
-						</video>
+						<video controls=""><source src="./tutorials/write.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
 					</li>
 					<li class="read-tutorial">
-						<video controls>
-						 <source src="./tutorials/read.mp4" type="video/mp4">
-						Your browser does not support the video tag.
-						</video>
+						<video controls=""><source src="./tutorials/read.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
 					</li>
 					<li class="tips-tutorial">
 						<ol class="tips-list">
