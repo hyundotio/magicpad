@@ -725,10 +725,16 @@ textarea {
 textarea.text-read {
 	font-family: 'IBM Plex Mono', monospace;
 }
-section:after, .label-container:after {
+section:after, .label-container:after, .downloaded-fingerprint-container {
 	content: "";
 	display: table;
 	clear: both;
+}
+.downloaded-fingerprint-container {
+	margin-bottom:0.5em;
+}
+.downloaded-fingerprint {
+	font-family:'IBM Plex Mono',monospace;
 }
 .read h3, .write h3 {
 	float: left;

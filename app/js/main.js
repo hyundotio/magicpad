@@ -246,12 +246,22 @@ function lookupKey (query,server) {
 					if (keys.length > 0){
 						//copy keys
 						session.searchedKey = keys.trim();
-						$('.searched-key-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.searchedKey)).attr('download', 'searchedKey_public.asc');
-						$searchResults.addClass('search-complete');
-						$searchStatus.text('Key found');
+						openpgp.key.readArmored(session.searchedKey).then(data => {
+							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
+							$('.searched-key-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.searchedKey)).attr('download', 'searchedKey_public.asc');
+							$('.downloaded-fingerprint').text(buf2hex(buffer));
+							$searchResults.addClass('search-complete');
+							$searchStatus.text('Key found');
+							session.running = false;
+						}).catch(function(e){
+							$('.search-status').text('Error');
+							lipAlert("Key retrieved but was unabled to read fingerprint. Please use another key.");
+							session.running = false;
+						})
 					}
 				} else {
 					//clear keys
+					session.running = false;
 					$('.search-complete').removeClass('search-complete');
 					$searchStatus.text('Nothing found');
 				}
