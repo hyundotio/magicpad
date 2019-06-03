@@ -589,10 +589,13 @@ function uploadKey(type){
 $('.mobile-menu').bind('click',function(){
 	let $mainNav = $('.main-nav');
 	let $popupFilter = $('.popup-filter');
+	let $this = $(this);
 	if($mainNav.hasClass('mobile-active')){
-		$mainNav.removeClass('mobile-nav');
+		$this.removeClass('active');
+		$mainNav.removeClass('mobile-active');
 		$popupFilter.removeClass('active');
 	} else {
+		$this.addClass('active');
 		$mainNav.addClass('mobile-active');
 		$popupFilter.addClass('active');
 	}
