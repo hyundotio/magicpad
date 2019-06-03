@@ -4,9 +4,9 @@
 let session = {
 	privKey: '',
 	pubKey: '',
-	generatedPubKey: '',
-	generatedPrivKey: '',
-	generatedRevKey: '',
+	generatedPubKey:'',
+	generatedPrivKey:'',
+	generatedRevKey:'',
 	pubKeyFingerprint: '',
 	running: false,
 	lastDec: '',
@@ -14,8 +14,8 @@ let session = {
 	lastDecStatus: '',
 	lastEncStatus: '',
 	lastEncPaste: '',
-	keyToUploadFile: '',
-	searchedKey: ''
+	keyToUploadFile:'',
+	searchedKey:''
 }
 //Init Function
 //Init Function
@@ -47,7 +47,7 @@ window.addEventListener('offline', function() {
 function viewPubKey() {
 	let $processedOutputWindow = $('.processed-output-window');
 	$('.popup-filter').addClass('active');
-	$('.processed-aside').text('Viewing public key: ' + getFilename($('.key-pub-import').val()));
+	$('.processed-aside').text('Viewing public key: '+getFilename($('.key-pub-import').val()));
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Imported public key');
 	$processedOutputWindow.find('.processed-output').text(session.pubKey).val(session.pubKey);
 	$('.save-processed').addClass('hidden');
@@ -132,7 +132,7 @@ function copyProcessed(content) {
 	$temp.remove();
 }
 //Activate Copied word
-function showCopied($copied) {
+function showCopied($copied){
 	$copied.addClass('active');
 	setTimeout(function() {
 		$copied.removeClass('active');
@@ -152,7 +152,7 @@ function newKeyReset() {
 	$('.key-generate').attr('disabled', 'disabled');
 }
 //get filename
-function getFilename(str) {
+function getFilename(str){
 	return str.split(/(\\|\/)/g).pop()
 }
 //Input keystatus filenames
@@ -160,7 +160,7 @@ function writeKeyStatus(pasted) {
 	let filename;
 	let pubImport = $('.key-pub-import').val();
 	let privImport = $('.key-priv-import').val();
-	if (pasted) {
+	if(pasted){
 		pubImport = 'pasted key'
 	}
 	if (pubImport != '') {
@@ -181,18 +181,17 @@ function importPrivKey() {
 	writeKeyStatus();
 }
 //Import public key button function
-function validatePubKeyUpload() {
+function validatePubKeyUpload(){
 	openpgp.key.readArmored(session.pubKey).then(data => {
 		let $serverKeyPubImport = $('.server-key-pub-import');
 		let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
-		$h3Text.text('  -  ' + getFilename($('.server-key-pub-import').val()));
+		$h3Text.text('  -  '+getFilename($('.server-key-pub-import').val()));
 		$serverKeyPubImport.find('span').text('Reselect file');
 		$('.server-key-pub-import-upload').removeAttr('disabled');
-	}).catch(function(e) {
+	}).catch(function(e){
 		lipAlert('The public key cannot be read. It may be corrupted.');
 	})
 }
-
 function importPubKey() {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	openpgp.key.readArmored(session.pubKey).then(data => {
@@ -205,23 +204,23 @@ function importPubKey() {
 		//$('.view-pub-key').addClass('active');
 		writeFormCheck();
 		readFormCheck();
-		if ($pubkeyInputWindow.hasClass('active')) {
+		if($pubkeyInputWindow.hasClass('active')){
 			writeKeyStatus(true);
 			$('.popup-filter').removeClass('active');
 			$pubkeyInputWindow.removeClass('active');
 		} else {
 			writeKeyStatus();
 		}
-	}).catch(function(e) {
+	}).catch(function(e){
 		lipAlert('The public key cannot be read. It may be corrupted.');
 	})
 }
 //Function when key gneration is finished
 function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', formName + '_public.asc');
-	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', formName + '_private.asc');
-	$('.key-rev-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedRevKey)).attr('download', formName + '_revoke.asc');
+	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', formName+'_public.asc');
+	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', formName+'_private.asc');
+	$('.key-rev-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').text('Keys generated').removeClass('active');
@@ -233,20 +232,18 @@ function keyReady() {
 //OpenPGP Functions
 //OpenPGP Functions
 //Lookup Public Key
-function lookupKey(query, server) {
-	//console.log(query)
-	if (!session.running) {
+function lookupKey (query,server) {
+  //console.log(query)
+	if(!session.running){
 		session.running = true;
 		let $searchResults = $('.search-results');
 		let $searchStatus = $('.search-status');
 		$searchStatus.text('Searching...');
 		let hkp = new openpgp.HKP(server);
 		new Promise((resolve, reject) => {
-			hkp.lookup({
-				query: query
-			}).then(function(keys) {
-				if (keys != undefined) {
-					if (keys.length > 0) {
+			hkp.lookup({ query: query }).then(function(keys) {
+				if(keys != undefined){
+					if (keys.length > 0){
 						//copy keys
 						session.searchedKey = keys.trim();
 						$('.searched-key-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.searchedKey)).attr('download', 'searchedKey_public.asc');
@@ -259,11 +256,11 @@ function lookupKey(query, server) {
 					$searchStatus.text('Nothing found');
 				}
 				session.running = false;
-			}).catch(function(e) {
+			}).catch(function(e){
 				session.running = false;
 				lipAlert('Error in parsing retrieved key. Please try again.');
 			})
-		}).catch(function(e) {
+		}).catch(function(e){
 			session.running = false;
 			$('.create-key-progress').find('span').text('Failed generating keys').removeClass('active');
 			lipAlert('Error in searching. Please try again.');
@@ -360,6 +357,7 @@ function decryptMessage() {
 function encryptMessage(msg, signedToggle) {
 	if (!session.running) {
 		session.running = true;
+
 		let $body = $('body');
 		openpgp.key.readArmored(session.pubKey).then(data => {
 			let options, cleartext, validity;
@@ -431,6 +429,7 @@ function signMessage() {
 function verifySignature() {
 	if (!session.running) {
 		session.running = true;
+
 		let $body = $('body');
 		let privKeyObj;
 		let pbKeyObj;
@@ -474,7 +473,7 @@ function verifySignature() {
 	}
 }
 //paste pubkey from popup
-function importPubkeyStr() {
+function importPubkeyStr(){
 	let $pubkeyInput = $('.pubkey-input');
 	let pubKeyPaste = $pubkeyInput.val().trim();
 	if (pubKeyPaste.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1 && pubKeyPaste.search('-----END PGP PUBLIC KEY BLOCK-----') != -1) {
@@ -485,82 +484,80 @@ function importPubkeyStr() {
 	}
 }
 //key file importe
-function keyImport($type) {
-	let file = $type[0].files[0];
-	let reader = new FileReader();
-	reader.onload = function(e) {
-		if ($type.hasClass('key-priv-import')) {
-			if (reader.result.search('-----BEGIN PGP PRIVATE KEY BLOCK-----') != -1 && reader.result.search('-----END PGP PRIVATE KEY BLOCK-----') != -1) {
-				session.privKey = reader.result;
-				importPrivKey();
+function keyImport($type){
+		let file = $type[0].files[0];
+		let reader = new FileReader();
+		reader.onload = function(e) {
+			if ($type.hasClass('key-priv-import')) {
+				if (reader.result.search('-----BEGIN PGP PRIVATE KEY BLOCK-----') != -1 && reader.result.search('-----END PGP PRIVATE KEY BLOCK-----') != -1) {
+					session.privKey = reader.result;
+					importPrivKey();
+				} else {
+					$type.val('');
+					session.privKey = '';
+					$('.private-key-filename').text('');
+					lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+				}
+			} else if ($type.hasClass('server-key-pub-import')){
+				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+					session.keyToUploadFile = reader.result;
+					validatePubKeyUpload();
+				} else {
+					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+					$type.val('');
+					session.keyToUploadFile = '';
+					$('.public-key-upload-filename').text('');
+					$('.server-key-pub-import-upload').attr('disabled','disabled');
+				}
 			} else {
-				$type.val('');
-				session.privKey = '';
-				$('.private-key-filename').text('');
-				lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
-			}
-		} else if ($type.hasClass('server-key-pub-import')) {
-			if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
-				session.keyToUploadFile = reader.result;
-				validatePubKeyUpload();
-			} else {
-				lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
-				$type.val('');
-				session.keyToUploadFile = '';
-				$('.public-key-upload-filename').text('');
-				$('.server-key-pub-import-upload').attr('disabled', 'disabled');
-			}
-		} else {
-			if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
-				session.pubKey = reader.result;
-				importPubKey();
-			} else {
-				$type.val('');
-				session.pubKey = '';
-				$('.public-key-filename').text('');
-				lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+					session.pubKey = reader.result;
+					importPubKey();
+				} else {
+					$type.val('');
+					session.pubKey = '';
+					$('.public-key-filename').text('');
+					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+				}
 			}
 		}
-	}
-	if (file != undefined) {
-		reader.readAsText(file);
-	}
+		if (file != undefined) {
+			reader.readAsText(file);
+		}
 }
-
-function keyUpChecker($input, $target) {
-	if ($input.val().length > 0) {
+function keyUpChecker($input,$target){
+	if($input.val().length > 0){
 		$target.removeAttr('disabled');
 	} else {
-		$target.attr('disabled', 'disabled');
+		$target.attr('disabled','disabled');
 	}
 }
-
-function uploadKey(type) {
-	if (!session.running) {
+function uploadKey(type){
+	if(!session.running){
 		session.running = true;
 		$('.upload-progress').addClass('active').find('span').text('Uploading key...');
-		if (session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+		if(session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
 			let hkp = new openpgp.HKP($('.upload-key-server-list').val());
 			hkp.upload(session.keyToUploadFile).then(function() {
 				//downloadlink
 				openpgp.key.readArmored(session.keyToUploadFile).then(data => {
 					const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
 					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
-					if (type !== 'import') {
+					if(type !== 'import'){
 						//paste
-						$('.paste-upload-link').addClass('active').attr('href', downloadLink);
+						$('.paste-upload-link').addClass('active').attr('href',downloadLink);
 					} else {
-						$('.import-upload-link').addClass('active').attr('href', downloadLink);
+						$('.import-upload-link').addClass('active').attr('href',downloadLink);
 						//import
 					}
 					$('.upload-progress').removeClass('active').find('span').text('Upload complete');
 					session.running = false;
-				}).catch(function(e) {
+				}).catch(function(e){
 					$('.upload-progress').removeClass('active').find('span').text('Upload failed');
 					lipAlert("The fingerprint could not be generated from the uploaded key. Please try again.");
 					session.running = false;
 				})
-			}).catch(function(e) {
+			}).catch(function(e){
 				$('.upload-progress').removeClass('active').find('span').text('Upload failed');
 				lipAlert('The public key could not be uploaded. Please try again.');
 				session.running = false;
@@ -576,7 +573,7 @@ function uploadKey(type) {
 //UI Bindings
 //UI Bindings
 //open key servers
-$('.open-keybrowser').bind('click', function() {
+$('.open-keybrowser').bind('click',function(){
 	$('.popup-filter').addClass('active');
 	let $keyServerBrowserWindow = $('.key-server-browser-window');
 	let $popupTabContent = $keyServerBrowserWindow.find('.popup-tab-content');
@@ -585,71 +582,73 @@ $('.open-keybrowser').bind('click', function() {
 	$popupTab.find('.popup-tab').eq(0).addClass('active');
 	let tabOpen = $popupTab.find('.active').attr('data-tab');
 	$popupTabContent.find('.popup-tab-page.active').removeClass('active');
-	$popupTabContent.find('.' + tabOpen).addClass('active');
+	$popupTabContent.find('.'+tabOpen).addClass('active');
 	$keyServerBrowserWindow.addClass('active');
 })
 //searched key copy
-$('.searched-key-copy').bind('click', function() {
+$('.searched-key-copy').bind('click',function(){
 	copyProcessed(session.searchedKey);
 	showCopied($('.search-results').find('.copied'));
 })
 //upload key file
-$('.upload-public-key-paste').bind('click', function() {
-	if (!$(this).is(':disabled')) {
+$('.upload-public-key-paste').bind('click',function(){
+	if(!$(this).is(':disabled')){
 		session.keyToUploadFile = $('.pubkey-upload-input').val();
 		uploadKey('paste');
 	}
 })
-$('.server-key-pub-import-upload').bind('click', function() {
-	if (!$(this).is(':disabled')) {
+$('.server-key-pub-import-upload').bind('click',function(){
+	if(!$(this).is(':disabled')){
 		uploadKey('import');
 	}
 })
 //key import for uploading
-$('.server-key-pub-import').change(function() {
+$('.server-key-pub-import').change(function(){
 	keyImport($(this));
 })
 //textarea for pubkey upload checker
-$('.pubkey-upload-input').keyup(function() {
-	keyUpChecker($(this), $('.upload-public-key-paste'));
-}).change(function() {
-	keyUpChecker($(this), $('.upload-public-key-paste'));
+$('.pubkey-upload-input').keyup(function(){
+	keyUpChecker($(this),$('.upload-public-key-paste'));
+}).change(function(){
+	keyUpChecker($(this),$('.upload-public-key-paste'));
 })
 //searchbox enabler
-$('.searchbox-pubkey').keyup(function() {
+$('.searchbox-pubkey').keyup(function(){
 	let $this = $(this);
-	keyUpChecker($this, $('.search-pubkey'));
-}).change(function() {
-	keyUpChecker($this, $('.search-pubkey'));
+	keyUpChecker($this,$('.search-pubkey'));
+}).change(function(){
+	keyUpChecker($this,$('.search-pubkey'));
 })
-$('.search-pubkey').bind('click', function() {
+$('.search-pubkey').bind('click',function(){
 	let $this = $(this);
-	if (!$this.is(':disabled')) {
-		lookupKey($('.searchbox-pubkey').val(), $('.search-key-server-list').val());
+	if(!$this.is(':disabled')){
+		lookupKey($('.searchbox-pubkey').val(),$('.search-key-server-list').val());
 	}
 })
 //autofocus out of select + select processo
-$('select').change(function() {
+$('select').change(function(){
 	$(this).blur();
 })
 //paste pub key button
-$('.import-pubkey-str').bind('click', function() {
-	if (importPubkeyStr()) {
+$('.import-pubkey-str').bind('click',function(){
+	if(importPubkeyStr()){
 		importPubKey();
 	}
 })
+
 //open pub key paste windows
-$('.pubkey-input').keyup(function() {
-	keyUpChecker($(this), $('.import-pubkey-str'));
-}).change(function() {
-	keyUpChecker($(this), $('.import-pubkey-str'));
+$('.pubkey-input').keyup(function(){
+	keyUpChecker($(this),$('.import-pubkey-str'));
+}).change(function(){
+	keyUpChecker($(this),$('.import-pubkey-str'));
 })
-$('.pubkey-input-open').bind('click', function() {
+$('.pubkey-input-open').bind('click',function(){
 	$('.popup-filter').addClass('active');
 	$('.pubkey-input-window').addClass('active');
 })
+
 //copy generated public keys
-$('.copy-generated-public-key').bind('click', function(e) {
+$('.copy-generated-public-key').bind('click',function(e){
 	e.preventDefault();
 	copyProcessed(session.generatedPubKey);
 	showCopied($(this).find('.copied'));
@@ -684,7 +683,7 @@ $('.popup-exit').bind('click', function(e) {
 $('.popup-expand').bind('click', function() {
 	let $this = $(this);
 	let $thisParPar = $this.parent().parent();
-	if ($this.hasClass('active')) {
+	if ($this.hasClass('active')){
 		$this.removeClass('active').find('img').attr('src', './ui/expand.svg');
 		$thisParPar.removeClass('expanded');
 	} else {
@@ -731,13 +730,13 @@ $('.decrypt-message').bind('click', function() {
 //Checks for input in Read form
 $('.read').keyup(function(e) {
 	readFormCheck()
-}).change(function() {
+}).change(function(){
 	readFormCheck()
 })
 //Checks for input in Write form
 $('.write').keyup(function() {
 	writeFormCheck()
-}).change(function() {
+}).change(function(){
 	writeFormCheck()
 })
 //Checks for file imported by user in Private and Key import buttons
@@ -750,6 +749,7 @@ $('body').keyup(function(e) {
 //opens new key generation popup
 $('.key-generate-start').bind('click', function(e) {
 	let $keyGenerate = $('.key-generate');
+	$keyGenerate.addClass('active');
 	$('.popup-filter').addClass('active');
 })
 //start key generation + key form check
@@ -763,7 +763,7 @@ $('.key-generate').bind('click', function(e) {
 		}
 	})
 	if (!formFlag) {
-		$this.attr('disabled', 'disabled');
+		$this.attr('disabled','disabled');
 		$('.create-key-progress').addClass('active').find('span').text('Generating keys...');
 		generateKeys();
 	}
@@ -791,15 +791,15 @@ $('.pw-toggle').change(function() {
 	}
 });
 //popup tab-changer
-$('.popup-tabs').find('.popup-tab').each(function() {
-	$(this).bind('click', function() {
+$('.popup-tabs').find('.popup-tab').each(function(){
+	$(this).bind('click',function(){
 		let $this = $(this);
 		let $thisParPar = $this.parent().parent();
 		let $popupTabContent = $thisParPar.parent().find('.popup-tab-content');
 		$thisParPar.find('.active').removeClass('active');
 		$this.addClass('active');
 		$popupTabContent.find('.active').removeClass('active');
-		$popupTabContent.find('.' + $this.attr('data-tab')).addClass('active');
+		$popupTabContent.find('.'+$this.attr('data-tab')).addClass('active');
 	})
 })
 //Tab changer
@@ -818,29 +818,29 @@ $('.tab').bind('click', function(e) {
 	})
 })
 //Tutorial selector
-$('.tutorial-selectors').find('a').each(function() {
-	$(this).bind('click', function(e) {
-		e.preventDefault();
-		let $this = $(this);
-		let $tutorialPages = $('.tutorial-pages');
-		let $tutorialPage = $tutorialPages.find('.' + $this.attr('data-tutorial'));
-		let $tutorialPageVideo = $tutorialPage.find('video');
-		if ($tutorialPageVideo.length > 0) {
-			$tutorialPageVideo[0].currentTime = 0;
-		}
-		$('.tutorial-selectors').find('.active').removeClass('active')
-		$this.addClass('active');
-		$tutorialPages.find('.active').removeClass('active');
-		$tutorialPage.addClass('active')
-	})
+$('.tutorial-selectors').find('a').each(function(){
+    $(this).bind('click',function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let $tutorialPages = $('.tutorial-pages');
+        let $tutorialPage = $tutorialPages.find('.'+$this.attr('data-tutorial'));
+        let $tutorialPageVideo = $tutorialPage.find('video');
+        if($tutorialPageVideo.length > 0){
+            $tutorialPageVideo[0].currentTime = 0;
+        }
+        $('.tutorial-selectors').find('.active').removeClass('active')
+        $this.addClass('active');
+        $tutorialPages.find('.active').removeClass('active');
+        $tutorialPage.addClass('active')
+    })
 })
+
 //Reset key generation form
 $('.key-generate-reset').bind('click', function(e) {
 	e.preventDefault();
 	newKeyReset();
 })
-
-function newKeyFormCheck() {
+function newKeyFormCheck(){
 	let $keyGenerate = $('.key-generate');
 	let empty = false;
 	$('.key-new-form').find('input').each(function() {
@@ -866,7 +866,7 @@ function newKeyFormCheck() {
 $('.key-new-form').find('input').each(function() {
 	$(this).keyup(function() {
 		newKeyFormCheck();
-	}).change(function() {
+	}).change(function(){
 		newKeyFormCheck();
 	})
 })
