@@ -480,7 +480,8 @@ a.big-button-third:last-child {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	margin: -45px 0 0 -56px;
+	margin: -45px 0 0 -100px;
+	width:200px;
 }
 .progress-container span {
 	display:block;
@@ -961,6 +962,9 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.public-key-upload-filename, .key-status {
+		display:none;
+	}
 	.lip-exit {
 		top:0.5em;
 	}

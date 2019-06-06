@@ -188,7 +188,7 @@ function validatePubKeyUpload(){
 		let $serverKeyPubImport = $('.server-key-pub-import');
 		let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
 		$h3Text.text('  -  '+getFilename($('.server-key-pub-import').val()));
-		$serverKeyPubImport.find('span').text('Reselect file');
+		$serverKeyPubImport.prev('.label-container').find('span').text('Reselect file');
 		$('.server-key-pub-import-upload').removeAttr('disabled');
 	}).catch(function(e){
 		lipAlert('The public key cannot be read. It may be corrupted.');
@@ -225,7 +225,7 @@ function keyReady() {
 	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
-	$('.create-key-progress').text('Keys generated').removeClass('active');
+	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
 	$('.key-generate-start').text('Download generated keys');
 	$('.create-key-window').find('.window-title').find('span').text('Generated keys');
 	$('body').removeClass('cursor-loading');
