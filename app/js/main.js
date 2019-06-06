@@ -76,6 +76,7 @@ function viewDecMsg() {
 function popupExit() {
 	$('.popup').removeClass('active');
 	$('.main-nav').removeClass('mobile-active');
+	$('.mobile-menu').removeClass('active');
 	$('.popup-filter').removeClass('active');
 }
 //Checks for form in the Write tab
@@ -590,6 +591,7 @@ $('.mobile-menu').bind('click',function(){
 	let $mainNav = $('.main-nav');
 	let $popupFilter = $('.popup-filter');
 	let $this = $(this);
+	popupExit();
 	if($mainNav.hasClass('mobile-active')){
 		$this.removeClass('active');
 		$mainNav.removeClass('mobile-active');

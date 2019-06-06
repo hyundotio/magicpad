@@ -295,7 +295,7 @@ input[type="file"] {
 	display: block;
 }
 .main-nav {
-	z-index: 8;
+	z-index: 9;
 	height: 3em;
 	width: 100%;
 	position: fixed;
@@ -961,6 +961,10 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.cursor-loading .mobile-menu, .cursor-loading .mobile-menu.active{
+		visibility: hidden;
+		opacity:0;
+	}
 	.lip {
 		bottom:-5em;
 		height:4.5em;
@@ -1008,7 +1012,7 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		background-color:transparent;
 	}
 	.mobile-menu {
-		transition:0.1s opacity ease-out;
+		transition:0.1s opacity ease-out, 0.1s visibility ease-out;
 		padding:0.33em 0.33em 0.33em 0.75em;
 	}
 	.mobile-menu.active {
