@@ -117,10 +117,14 @@
 								<textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
 							</section>
 							<section>
-								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Key link</a>
+								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
 							</section>
 							<section>
-								<h3>Upload .asc public key file<span class="public-key-upload-filename"></span></h3><a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file"> <a class="key-link import-upload-link b-link" href="#">Key link</a> <button class="button-1 server-key-pub-import-upload" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+								<h3>Upload .asc public key file<span class="public-key-upload-filename"></span></h3>
+								<a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
+								<input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file">
+								<a class="key-link import-upload-link b-link" href="#">Link</a>
+								<button class="button-1 server-key-pub-import-upload" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
 							</section>
 						</div>
 						<div class="pubkeyserver-search popup-tab-page">
@@ -261,20 +265,20 @@
 				</section>
 				<section>
 					<div class="key-filename-container">
-						<h3>Your private key</h3>
-						<div class="key-status private-key-filename"></div>
+						<h3>Your private key <span class="key-status private-key-filename"></span></h3>
+
 					</div>
 					<div>
-						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
+						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
 					</div>
 				</section>
 				<section>
 					<div class="key-filename-container">
-						<h3>Recipient/Sender public key</h3>
-						<div class="key-status public-key-filename"></div>
+						<h3>Recipient/Sender public key <span class="key-status public-key-filename"></span></h3>
+
 					</div>
 					<div>
-						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 					</div>
 				</section>
 				<section>

@@ -27,6 +27,12 @@ function init() {
 	} else {
 		$onlineFlag.removeClass('active');
 	}
+	setTimeout(function () {
+      let viewheight = $(window).height();
+      let viewwidth = $(window).width();
+      let viewport = document.querySelector("meta[name=viewport]");
+      viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
+  }, 300);
 }
 init();
 // UI data handling functions
@@ -177,7 +183,7 @@ function writeKeyStatus(pasted) {
 //Import private key button function
 function importPrivKey() {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
-	$('.key-priv-import-label').find('span').text('Reselect file');
+	$('.key-priv-import-label').find('span').text('Reselect key');
 	writeFormCheck();
 	readFormCheck();
 	writeKeyStatus();
@@ -252,7 +258,7 @@ function lookupKey (query,server) {
 						openpgp.key.readArmored(session.searchedKey).then(data => {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
 							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;filename=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc');
-							$('.downloaded-fingerprint').text(buf2hex(buffer));
+							$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
 							session.running = false;
@@ -490,11 +496,12 @@ function verifySignature() {
 function importPubkeyStr(){
 	let $pubkeyInput = $('.pubkey-input');
 	let pubKeyPaste = $pubkeyInput.val().trim();
-	if (pubKeyPaste.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1 && pubKeyPaste.search('-----END PGP PUBLIC KEY BLOCK-----') != -1) {
+	if (testPubKey(pubKeyPaste)) {
 		session.pubKey = pubKeyPaste;
 		return true
 	} else {
 		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+		return false
 	}
 }
 //key file importe
@@ -503,7 +510,7 @@ function keyImport($type){
 		let reader = new FileReader();
 		reader.onload = function(e) {
 			if ($type.hasClass('key-priv-import')) {
-				if (reader.result.search('-----BEGIN PGP PRIVATE KEY BLOCK-----') != -1 && reader.result.search('-----END PGP PRIVATE KEY BLOCK-----') != -1) {
+				if (testPrivKey(reader.result)) {
 					session.privKey = reader.result;
 					importPrivKey();
 				} else {
@@ -511,7 +518,7 @@ function keyImport($type){
 					lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
 				}
 			} else if ($type.hasClass('server-key-pub-import')){
-				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+				if (testPubKey(reader.result)) {
 					session.keyToUploadFile = reader.result;
 					validatePubKeyUpload();
 				} else {
@@ -519,7 +526,7 @@ function keyImport($type){
 					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
 				}
 			} else {
-				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
+				if (testPubKey(reader.result)) {
 					session.pubKey = reader.result;
 					importPubKey();
 				} else {
@@ -539,11 +546,25 @@ function keyUpChecker($input,$target){
 		$target.attr('disabled','disabled');
 	}
 }
+function testPubKey(pubKey){
+	if(pubKey.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && pubKey.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
+		return true
+	} else {
+		return false
+	}
+}
+function testPrivKey(privKey){
+	if(privKey.search('-----END PGP PRIVATE KEY BLOCK-----') != -1 && privKey.search('-----BEGIN PGP PRIVATE KEY BLOCK-----') != -1){
+		return true
+	} else {
+		return false
+	}
+}
 function uploadKey(type){
 	if(!session.running){
 		session.running = true;
 		$('.upload-progress').addClass('active').find('span').text('Uploading key...');
-		if(session.keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && session.keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
+		if(testPubKey(session.keyToUploadFile)){
 			let hkp = new openpgp.HKP($('.upload-key-server-list').val());
 			hkp.upload(session.keyToUploadFile).then(function() {
 				//downloadlink
@@ -617,12 +638,8 @@ $('.searched-key-copy').bind('click',function(){
 $('.upload-public-key-paste').bind('click',function(){
 	if(!$(this).is(':disabled')){
 		let keyToUploadFile = $('.pubkey-upload-input').val();
-		if(keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
-			session.keyToUploadFile = keyToUploadFile;
-			uploadKey('paste');
-		} else {
-			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
-		}
+		session.keyToUploadFile = keyToUploadFile;
+		uploadKey('paste');
 	}
 })
 $('.server-key-pub-import-upload').bind('click',function(){
@@ -646,6 +663,7 @@ $('.searchbox-pubkey').keyup(function(){
 	let $this = $(this);
 	keyUpChecker($this,$('.search-pubkey'));
 }).change(function(){
+	let $this = $(this);
 	keyUpChecker($this,$('.search-pubkey'));
 })
 $('.search-pubkey').bind('click',function(){

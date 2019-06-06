@@ -96,12 +96,14 @@ html, body {
 	border-right:0;
 }
 .search-wrapper .search-pubkey{
-	padding: 0.75em 1em 1em 1em;
-	height:auto;
+	padding: 0.85em 1em 1em 1em;
+	height: auto;
 	min-width: 5em;
-	margin:0;
-	float:right;
-	text-align:center;
+	margin: 0;
+	float: right;
+	text-align: center;
+	height: 100%;
+	box-sizing: border-box;
 }
 option {
 	font-family: 'IBM Plex Sans', sans-serif;
@@ -185,6 +187,7 @@ input[type="checkbox"]:disabled:hover, input[type="checkbox"][disabled]:hover,
 input[type="checkbox"]:disabled:active, input[type="checkbox"][disabled]:active,
 input[type="checkbox"]:disabled:focus, input[type="checkbox"][disabled]:focus {
 	background-color:#f3f3f3;
+	border:1px solid #f3f3f3;
 	cursor: not-allowed;
 }
 .styled-checkbox:after {
@@ -210,6 +213,16 @@ input[type="checkbox"]:disabled:focus, input[type="checkbox"][disabled]:focus {
 }
 .styled-checkbox:focus, input[type="radio"]:focus, select:focus,input:focus, textarea:focus, input[type="email"]:focus, input[type="text"]:focus, input[type="password"]:focus {
 	border: 1px solid #0062FF;
+}
+.styled-checkbox:disabled, input[type="radio"]:disabled, select:disabled, textarea:disabled, input[type="email"]:disabled, input[type="text"]:disabled, input[type="password"]:disabled {
+	border:1px solid #f3f3f3;
+	cursor: not-allowed;
+}
+.styled-checkbox:disabled:hover, input[type="radio"]:disabled:hover, select:disabled:hover, textarea:disabled:hover, input[type="email"]:disabled:hover, input[type="text"]:disabled:hover, input[type="password"]:disabled:hover {
+	border:1px solid #f3f3f3;
+}
+.styled-checkbox:disabled:focus, input[type="radio"]:disabled:focus, select:disabled:focus,input:focus, textarea:disabled:focus, input[type="email"]:disabled:focus, input[type="text"]:disabled:focus, input[type="password"]:disabled:focus {
+	border:1px solid #f3f3f3;
 }
 .styled-checkbox,.styled-checkbox:checked {
 	outline:0;
@@ -295,7 +308,7 @@ input[type="file"] {
 	display: block;
 }
 .main-nav {
-	z-index: 9;
+	z-index: 8;
 	height: 3em;
 	width: 100%;
 	position: fixed;
@@ -617,7 +630,11 @@ p {
 }
 h3 {
 	font-size: 1em;
-	margin-bottom: 0.5em;
+	padding-bottom: 0.5em;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width:100%;
 }
 .key-filename-container h3{
 	display:inline-block;
@@ -706,7 +723,7 @@ button, label {
 	margin-right: 1px;
 	float: left;
 	display: block;
-	min-width: 10em;
+	min-width: 11em;
 }
 textarea {
 	transition: background-color 0.1s ease-out, border 0.1s ease-out;
@@ -737,9 +754,12 @@ section:after, .label-container:after, .downloaded-fingerprint-container {
 	margin-bottom:0.5em;
 }
 .downloaded-fingerprint {
+	width: 16em;
+	display: inline-block;
 	font-family:'IBM Plex Mono',monospace;
 }
 .read h3, .write h3 {
+	width:auto;
 	float: left;
 }
 .revert-encryption.active {
@@ -963,7 +983,6 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 }
 @media only screen and (max-width: 478px) {
 	.public-key-upload-filename, .key-status {
-		display:none;
 	}
 	.lip-exit {
 		top:0.5em;
