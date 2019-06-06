@@ -7,6 +7,11 @@
 	</script>
 	<script src="./js_include/jquery-3.4.1.min.js">
 	</script>
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="application-name" content="MagicPad">
+	<meta name="apple-mobile-web-app-title" content="MagicPad">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
 	<link href="./css/reset.css" rel="stylesheet">
 	<link href="./fonts/stylesheet.css" rel="stylesheet">
 	<link href="./css/main.css" rel="stylesheet">
@@ -23,6 +28,15 @@
 	<link href="./favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
 	<link href="./favicon/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
 	<link href="./favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
+	<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="./webapp/apple-launch-1242x2688.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-828x1792.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="./webapp/apple-launch-1125x2436.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" href="./webapp/apple-launch-1242x2208.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-750x1334.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-2048x2732.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2388.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2224.png">
+	<link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1536x2048.png">
 	<link href="./favicon/manifest.json" rel="manifest">
 	<meta content="#000000" name="msapplication-TileColor">
 	<meta content="./favicon/ms-icon-144x144.png" name="msapplication-TileImage">
@@ -100,7 +114,7 @@
                                 <input type="radio" name="upload-type" value="file" checked> File (.asc)
                                 &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
                                 !-->
-								<textarea class="pubkey-upload-input" id="" placeholder="Paste public key here"></textarea>
+								<textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
 							</section>
 							<section>
 								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Key link</a>
@@ -122,7 +136,7 @@
 								</select>
 							</div>
 							<section class="search-wrapper">
-								<h3>Search for public key</h3><input class="searchbox-pubkey" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-2 search-pubkey" disabled>Search</button>
+								<h3>Search for public key</h3><input class="searchbox-pubkey" spellcheck="false" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-2 search-pubkey" disabled>Search</button>
 							</section>
 							<section>
 								<h3>Search result</h3>
@@ -150,7 +164,7 @@
 					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
 				</div>
 				<div class="popup-contents">
-					<textarea class="processed-output" id="processed-output" readonly></textarea>
+					<textarea class="processed-output" id="processed-output" spellcheck="false" readonly></textarea>
 					<div>
 						<span class="copied">Copied</span>
 						<div class="processed-aside"></div>
@@ -166,7 +180,7 @@
 					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
 				</div>
 				<div class="popup-contents">
-					<textarea class="pubkey-input" id="pubkey-input" placeholder="Paste public key here"></textarea>
+					<textarea class="pubkey-input" id="pubkey-input" spellcheck="false" placeholder="Paste public key here"></textarea>
 					<section>
 						<button class="button-1 import-pubkey-str" disabled><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
 					</section>
@@ -200,7 +214,7 @@
 								<h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
 							</section>
 							<div class="pw-view-toggler checkbox-offset">
-								<input autocomplete="off" class="pw-toggl styled-checkbox" name="pw-toggle" spellcheck="false" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+								<input autocomplete="off" class="pw-toggle styled-checkbox" name="pw-toggle" spellcheck="false" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
 							</div>
 							<section class="bottom-buttons">
 								<button class="button-1 key-generate" disabled><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"></button> <button class="button-2 popup-exit">Cancel</button>
@@ -339,19 +353,22 @@
 			</div>
 			<div class="about tab-window">
 				<h2>MagicPad 0.0.1</h2>
-				<p>This project was created for people to encrypt and decrypt their messages easily using MagicPad.</p>
+				<p>This project was created for people to easily encrypt and decrypt their messages.</p>
 				<section>
 					<h3>Credits</h3>
 					<ul class="credits-list">
-						<li>Created by <a class="b-link" href="https://www.hyun.io" target="_blank">Hyun ↗</a>&nbsp;&nbsp;<a class="b-link" href="https://github.com/hyundotio" target="_blank">GitHub ↗</a>
-						</li>
-						<li>Node.js (Electron, url, and path packages)</li>
+						<li>Created by Hyun</li>
+						<li>Node.js (Electron, Electron builder, url, and path packages)</li>
 						<li>OpenPGP.js</li>
 						<li>Design language and typeface by IBM</li>
 					</ul>
 				</section>
 				<section>
-					<h3>Website</h3><a class="b-link" href="https://www.magicpad.io" target="_blank">https://www.magicpad.io ↗</a>
+					<h3>Links</h3>
+					<ul class="credits-list">
+						<li><a class="b-link" href="https://www.magicpad.io" target="_blank">MagicPad website</a></li>
+						<li><a class="b-link" href="https://github.com/hyundotio/magicpad" target="_blank">MagicPad GitHub</a></li>
+					</ul>
 				</section>
 				<section>
 					<h3>License</h3>MIT
