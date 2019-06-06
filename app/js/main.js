@@ -508,8 +508,6 @@ function keyImport($type){
 					importPrivKey();
 				} else {
 					$type.val('');
-					session.privKey = '';
-					$('.private-key-filename').text('');
 					lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
 				}
 			} else if ($type.hasClass('server-key-pub-import')){
@@ -517,11 +515,8 @@ function keyImport($type){
 					session.keyToUploadFile = reader.result;
 					validatePubKeyUpload();
 				} else {
-					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
 					$type.val('');
-					session.keyToUploadFile = '';
-					$('.public-key-upload-filename').text('');
-					$('.server-key-pub-import-upload').attr('disabled','disabled');
+					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
 				}
 			} else {
 				if (reader.result.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && reader.result.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1) {
@@ -529,8 +524,6 @@ function keyImport($type){
 					importPubKey();
 				} else {
 					$type.val('');
-					session.pubKey = '';
-					$('.public-key-filename').text('');
 					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
 				}
 			}
@@ -623,12 +616,18 @@ $('.searched-key-copy').bind('click',function(){
 //upload key file
 $('.upload-public-key-paste').bind('click',function(){
 	if(!$(this).is(':disabled')){
-		session.keyToUploadFile = $('.pubkey-upload-input').val();
-		uploadKey('paste');
+		let keyToUploadFile = $('.pubkey-upload-input').val();
+		if(keyToUploadFile.search('-----END PGP PUBLIC KEY BLOCK-----') != -1 && keyToUploadFile.search('-----BEGIN PGP PUBLIC KEY BLOCK-----') != -1){
+			session.keyToUploadFile = keyToUploadFile;
+			uploadKey('paste');
+		} else {
+			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+		}
 	}
 })
 $('.server-key-pub-import-upload').bind('click',function(){
 	if(!$(this).is(':disabled')){
+		keyImport($('.server-key-pub-import'));
 		uploadKey('import');
 	}
 })
