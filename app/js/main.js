@@ -60,7 +60,7 @@ function viewEncMsg() {
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
-	$('.save-processed').removeClass('hidden').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastEnc)).attr('download', 'encrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64,' + btoa(session.lastEnc)).attr('download', 'encrypted_message.txt');
 }
 //View decrypted message
 function viewDecMsg() {
@@ -70,7 +70,7 @@ function viewDecMsg() {
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.addClass('active').removeClass('mono').find('.window-title').find('span').text('Decrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
-	$('.save-processed').removeClass('hidden').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.lastDec.data)).attr('download', 'decrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64,' + btoa(session.lastDec.data)).attr('download', 'decrypted_message.txt');
 }
 //Exits popup
 function popupExit() {
@@ -219,9 +219,9 @@ function importPubKey() {
 //Function when key gneration is finished
 function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	$('.key-public-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPubKey)).attr('download', formName+'_public.asc');
-	$('.key-private-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedPrivKey)).attr('download', formName+'_private.asc');
-	$('.key-rev-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
+	$('.key-public-download').attr('href', 'data:application/octet-stream;base64,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
+	$('.key-private-download').attr('href', 'data:application/octet-stream;base64,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
+	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').text('Keys generated').removeClass('active');
@@ -250,7 +250,7 @@ function lookupKey (query,server) {
 						session.searchedKey = keys.trim();
 						openpgp.key.readArmored(session.searchedKey).then(data => {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
-							$('.searched-key-download').attr('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(session.searchedKey)).attr('download', 'searchedKey_public.asc');
+							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc');
 							$('.downloaded-fingerprint').text(buf2hex(buffer));
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
