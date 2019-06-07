@@ -260,6 +260,7 @@ button.view-pub-key {
 	overflow: hidden;
 	height: 36em;
 	width: 100%;
+	padding-top:1em;
 }
 .popup-tabs {
 	height:3em;
