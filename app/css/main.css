@@ -121,14 +121,14 @@ select {
 	font-size: 1em;
 	padding: 0.5em 0.75em 0.75em 0.75em;
 	box-sizing: border-box;
-	border: 1px solid transparent;
+	border: 1px solid #f3f3f3;
 	width:100%;
 	transition:0.1s border ease-out;
 	position:relative;
 	background:url('../ui/dropdown.svg') no-repeat calc(100% - 0.75em) calc(100% - 0.625em);
 	background-size: 1.5em 1.5em;
 	opacity:1;
-	transition:opacity 0.1s ease-out;
+	transition:opacity 0.1s ease-out, border 0.1s ease-out;
 }
 select:focus {
 	opacity:0.6;

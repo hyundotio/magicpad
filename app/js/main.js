@@ -139,6 +139,53 @@ function copyProcessed(content) {
 	document.execCommand("copy");
 	$temp.remove();
 }
+//copy 2
+window.Clipboard = (function(window, document, navigator) {
+    var textArea,
+        copy;
+
+    function isOS() {
+        return navigator.userAgent.match(/ipad|iphone/i);
+    }
+
+    function createTextArea(text) {
+        textArea = document.createElement('textArea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+    }
+
+    function selectText() {
+        var range,
+            selection;
+
+        if (isOS()) {
+            range = document.createRange();
+            range.selectNodeContents(textArea);
+            selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            textArea.setSelectionRange(0, 999999);
+        } else {
+            textArea.select();
+        }
+    }
+
+    function copyToClipboard() {
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+    }
+
+    copy = function(text) {
+        createTextArea(text);
+        selectText();
+        copyToClipboard();
+    };
+
+    return {
+        copy: copy
+    };
+})(window, document, navigator);
+
 //Activate Copied word
 function showCopied($copied){
 	$copied.addClass('active');
@@ -200,7 +247,7 @@ function validatePubKeyUpload(){
 		lipAlert('The public key cannot be read. It may be corrupted.');
 	})
 }
-function importPubKey() {
+function importPubKey(type) {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	openpgp.key.readArmored(session.pubKey).then(data => {
 		const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
@@ -208,7 +255,13 @@ function importPubKey() {
 		session.pubKeyFingerprint = buf2hex(buffer);
 		$('.fingerprint').addClass('active');
 		$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
-		$('.key-pub-import-label').find('span').text('Reselect file');
+		if(type == 'paste'){
+			$('.pubkey-input-open').find('span').text('Repaste key');
+			$('.key-pub-import-label').find('span').text('Select key');
+		} else {
+			$('.pubkey-input-open').find('span').text('Paste key');
+			$('.key-pub-import-label').find('span').text('Reselect key');
+		}
 		//$('.view-pub-key').addClass('active');
 		writeFormCheck();
 		readFormCheck();
@@ -248,6 +301,11 @@ function lookupKey (query,server) {
 		let $searchResults = $('.search-results');
 		let $searchStatus = $('.search-status');
 		$searchStatus.text('Searching...');
+		if (location.protocol == "https:") {
+		  server = location.protocol + server
+		} else {
+			server = 'http:'+server
+		}
 		let hkp = new openpgp.HKP(server);
 		new Promise((resolve, reject) => {
 			hkp.lookup({ query: query }).then(function(keys) {
@@ -277,10 +335,12 @@ function lookupKey (query,server) {
 				session.running = false;
 			}).catch(function(e){
 				session.running = false;
+				$('.search-status').text('Search error');
 				lipAlert('Error in retrieving key. Please try again.');
 			})
 		}).catch(function(e){
 			session.running = false;
+			$('.search-status').text('Search error');
 			$('.create-key-progress').find('span').text('Failed generating keys').removeClass('active');
 			lipAlert('Error in searching. Please try again.');
 		})
@@ -528,7 +588,7 @@ function keyImport($type){
 			} else {
 				if (testPubKey(reader.result)) {
 					session.pubKey = reader.result;
-					importPubKey();
+					importPubKey('file');
 				} else {
 					$type.val('');
 					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
@@ -631,7 +691,8 @@ $('.open-keybrowser').bind('click',function(){
 })
 //searched key copy
 $('.searched-key-copy').bind('click',function(){
-	copyProcessed(session.searchedKey);
+	Clipboard.copy(session.searchedKey);
+	//copyProcessed();
 	showCopied($('.search-results').find('.copied'));
 })
 //upload key file
@@ -679,7 +740,7 @@ $('select').change(function(){
 //paste pub key button
 $('.import-pubkey-str').bind('click',function(){
 	if(importPubkeyStr()){
-		importPubKey();
+		importPubKey('paste');
 	}
 })
 
@@ -697,7 +758,8 @@ $('.pubkey-input-open').bind('click',function(){
 //copy generated public keys
 $('.copy-generated-public-key').bind('click',function(e){
 	e.preventDefault();
-	copyProcessed(session.generatedPubKey);
+	Clipboard.copy(session.generatedPubKey);
+	//copyProcessed(session.generatedPubKey);
 	showCopied($(this).find('.copied'));
 })
 //View pub key bind
@@ -740,7 +802,8 @@ $('.popup-expand').bind('click', function() {
 })
 //Copy to clipboard button
 $('.copy-processed').bind('click', function() {
-	copyProcessed($('.processed-output').text());
+	//copyProcessed($('.processed-output').text());
+	Clipboard.copy($('.processed-output').text());
 	showCopied($('.processed-output-window').find('.copied'));
 })
 //Re-open Decrypted Message popup
