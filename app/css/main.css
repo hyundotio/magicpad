@@ -615,7 +615,7 @@ a.big-button-third:last-child {
 	transition: 0.3s all ease-out;
 	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.66);
 	background-color: #FFF;
-	right: 2em;
+	right: 1em;
 	bottom: -38em;
 	height: 36em;
 	width: 29em;
@@ -1048,7 +1048,6 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		margin: -0.2em 0 3.8em 0;
 	}
 	.popup {
-		right:1em;
 		width:calc(100% - 2em);
 	}
 	.mobile-menu {
