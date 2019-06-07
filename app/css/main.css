@@ -22,7 +22,6 @@ html, body {
 }
 body {
    -webkit-user-select: none;
-	 -webkit-touch-callout: none;
 }
 .mobile-menu {
 	display:none;
