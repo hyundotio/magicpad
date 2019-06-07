@@ -430,11 +430,7 @@ a.big-button-third:last-child {
 	width: 1.5em;
 }
 .popup.expanded.active {
-	height: calc(100% - 4em);
 	opacity: 1;
-	width: calc(100% - 4em);
-	right: 2em;
-	bottom: 2em;
 }
 .main-nav h1 {
 	float: left;
@@ -569,11 +565,11 @@ a.big-button-third:last-child {
 	left: 1em;
 }
 .popup.expanded {
-	height: 92%;
-	width: 92%;
-	right: 4%;
-	bottom: 4%;
+	height: calc(100% - 4em);
 	opacity: 0;
+	width: calc(100% - 4em);
+	right: 2em;
+	bottom: 2em;
 }
 .create-key-window .popup-contents {
 	padding:0;
@@ -1025,7 +1021,7 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		line-height:1.33em;
 	}
 	.button-1, .button-2, .button-9 {
-		min-width:7em;
+		min-width:8em;
 	}
 	.button-icon-img,.label-icon-button,.select-icon {
 		display:none;
