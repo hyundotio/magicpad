@@ -253,14 +253,13 @@ button.view-pub-key {
 	opacity:0;
 }
 .popups {
-	padding:1em;
 	box-sizing:border-box;
 	position: absolute;
 	bottom: 0;
-	right: 1em;
+	right: 0;
 	overflow: hidden;
 	height: 36em;
-	width: 31em;
+	width: 100%;
 }
 .popup-tabs {
 	height:3em;
@@ -475,7 +474,7 @@ a.big-button-third:last-child {
 .tab-windows .tab-window {
 	display: none;
 	width: 100%;
-	padding: 4.75em 1em 3em 1em;
+	padding: 4.75em 1em 1em 1em;
 	box-sizing: border-box;
 	transition: opacity 0.3s ease-out;
 }
@@ -615,7 +614,7 @@ a.big-button-third:last-child {
 	height: 36em;
 	width: 29em;
 	box-sizing: border-box;
-	position: fixed;
+	position: absolute;
 	padding: 3.25em 1.25em 1.25em 1.25em;
 	z-index: 8;
 }
