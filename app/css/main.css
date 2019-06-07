@@ -248,6 +248,16 @@ button.view-pub-key {
 	visibility:hidden;
 	opacity:0;
 }
+.popups {
+	padding:1em;
+	box-sizing:border-box;
+	position: absolute;
+	bottom: 0;
+	right: 1em;
+	overflow: hidden;
+	height: 36em;
+	width: 31em;
+}
 .popup-tabs {
 	height:3em;
 	margin-bottom:1em;
@@ -454,7 +464,10 @@ a.big-button-third:last-child {
 	right: 0.5em;
 	top: 0.33em;
 }
-.tab-windows {}
+.tab-windows {
+	position:relative;
+	z-index:2;
+}
 .tab-windows .tab-window {
 	display: none;
 	width: 100%;
