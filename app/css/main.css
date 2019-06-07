@@ -430,6 +430,7 @@ a.big-button-third:last-child {
 	width: 1.5em;
 }
 .popup.expanded.active {
+	bottom:2em;
 	opacity: 1;
 }
 .main-nav h1 {
@@ -1003,6 +1004,15 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.popup.expanded.active {
+		bottom:0;
+	}
+	.popup.expanded {
+		bottom:0;
+		right: 1em;
+		height: 36em;
+		width: calc(100% - 2em);
+	}
 	.popup-expand {
 		display:none;
 	}
