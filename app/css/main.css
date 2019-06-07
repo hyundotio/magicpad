@@ -4,7 +4,13 @@ html, body {
 	width: 100%;
 	height:100%;
 	overflow:hidden;
-	background-color:#121212;
+	background: repeating-linear-gradient(
+	  45deg,
+	  #CCCCCC,
+	  #CCCCCC 2px,
+	  #EEEEEE 2px,
+	  #EEEEEE 4px
+	);
 }
 .white-bg {
 	position:absolute;
@@ -613,7 +619,7 @@ a.big-button-third:last-child {
 	overflow: hidden;
 	visibility: hidden;
 	transition: 0.3s all ease-out;
-	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.66);
+	box-shadow: 0 0 0.5em rgba(0, 0, 0, 0.2);
 	background-color: #FFF;
 	right: 1em;
 	bottom: -38em;

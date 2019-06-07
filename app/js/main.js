@@ -231,7 +231,7 @@ function writeKeyStatus(pasted) {
 //Import private key button function
 function importPrivKey() {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
-	$('.key-priv-import-label').find('span').text('Reselect key');
+	$('.key-priv-import-label').find('span').text('Reimport key');
 	writeFormCheck();
 	readFormCheck();
 	writeKeyStatus();
@@ -242,7 +242,7 @@ function validatePubKeyUpload(){
 		let $serverKeyPubImport = $('.server-key-pub-import');
 		let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
 		$h3Text.text('  -  '+getFilename($('.server-key-pub-import').val()));
-		$serverKeyPubImport.prev('.label-container').find('span').text('Reselect file');
+		$serverKeyPubImport.prev('.label-container').find('span').text('Reselect key');
 		$('.server-key-pub-import-upload').removeAttr('disabled');
 	}).catch(function(e){
 		lipAlert('The public key cannot be read. It may be corrupted.');
@@ -261,7 +261,7 @@ function importPubKey(type) {
 			$('.key-pub-import-label').find('span').text('Select key');
 		} else {
 			$('.pubkey-input-open').find('span').text('Paste key');
-			$('.key-pub-import-label').find('span').text('Reselect key');
+			$('.key-pub-import-label').find('span').text('Reimport key');
 		}
 		//$('.view-pub-key').addClass('active');
 		writeFormCheck();
