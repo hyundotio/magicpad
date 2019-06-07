@@ -269,7 +269,6 @@ button.view-pub-key {
 	overflow: hidden;
 	height: 100%;
 	width: 100%;
-	padding-top:1em;
 }
 .popup-tabs {
 	height:3em;
@@ -431,11 +430,11 @@ a.big-button-third:last-child {
 	width: 1.5em;
 }
 .popup.expanded.active {
-	height: 92%;
+	height: calc(100% - 4em);
 	opacity: 1;
-	width: 92%;
-	right: 4%;
-	bottom: 4%;
+	width: calc(100% - 4em);
+	right: 2em;
+	bottom: 2em;
 }
 .main-nav h1 {
 	float: left;
@@ -1008,6 +1007,9 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.popup-expand {
+		display:none;
+	}
 	.public-key-upload-filename, .key-status {
 	}
 	.lip-exit {
