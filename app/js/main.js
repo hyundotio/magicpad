@@ -31,7 +31,7 @@ function init() {
       let viewheight = $(window).height();
       let viewwidth = $(window).width();
       let viewport = document.querySelector("meta[name=viewport]");
-      viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
+      viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0, user-scalable=no");
   }, 300);
 }
 init();
