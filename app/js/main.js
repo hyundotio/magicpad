@@ -288,9 +288,9 @@ function saveFile (name, type, data, $el) {
 //Function when key gneration is finished
 function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	saveFile((formName+'_public.asc'),('data:application/octet-stream;base64;filename='+formName+'_public.asc'),session.generatedPubKey,$('.key-public-download'));
-	saveFile((formName+'_private.asc'),('data:application/octet-stream;base64;filename='+formName+'_private.asc'),session.generatedPrivKey,$('.key-private-download'));
-	saveFile((formName+'_revoke.asc'),('data:application/octet-stream;base64;filename='+formName+'_revoke.asc'),session.generatedRevKey,$('.key-rev-download'));
+	saveFile((formName+'_public.asc'),('data:text/plain;base64;filename='+formName+'_public.asc'),session.generatedPubKey,$('.key-public-download'));
+	saveFile((formName+'_private.asc'),('data:text/plain;base64;filename='+formName+'_private.asc'),session.generatedPrivKey,$('.key-private-download'));
+	saveFile((formName+'_revoke.asc'),('data:text/plain;base64;filename='+formName+'_revoke.asc'),session.generatedRevKey,$('.key-rev-download'));
 	//$('.key-public-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
 	//$('.key-private-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
 	//$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
