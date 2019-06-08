@@ -282,8 +282,8 @@ function importPubKey(type) {
 function saveFile (name, type, data, $el) {
 	if (data !== null && navigator.msSaveBlob)
 			return navigator.msSaveBlob(new Blob([data], { type: type }), name);
-	var url = window.URL.createObjectURL(new Blob([data], {type: type}));
-	$el.attr('href',url).attr('download',name).attr('target','_blank');
+	let url = window.URL.createObjectURL(new Blob([data], {type: type}));
+	$el.attr('href',url).attr('download',name);
 }
 //Function when key gneration is finished
 function keyReady() {
