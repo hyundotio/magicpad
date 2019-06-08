@@ -29,6 +29,7 @@
       ]
     },
     "linux": {
+      "icon": "/build/icons/icons.icns",
       "category": "Utility",
       "description": "Text encryption tool",
       "packageCategory": "Utility",
