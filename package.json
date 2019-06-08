@@ -4,9 +4,8 @@
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "devDependencies": {
-    "electron": "^5.0.2",
     "electron-builder": "^20.41.0",
-    "electron-context-menu": "^0.12.1"
+    "electron": "^5.0.2"
   },
   "scripts": {
     "start": "npm install && electron .",
@@ -56,5 +55,8 @@
   "bugs": {
     "url": "https://github.com/hyundotio/magicpad/issues"
   },
-  "homepage": "https://github.com/hyundotio/magicpad#readme"
+  "homepage": "https://github.com/hyundotio/magicpad#readme",
+  "dependencies": {
+    "electron-context-menu": "^0.12.1"
+  }
 }
