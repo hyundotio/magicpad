@@ -4,8 +4,9 @@
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "devDependencies": {
+    "electron": "^5.0.2",
     "electron-builder": "^20.41.0",
-    "electron": "^5.0.2"
+    "electron-context-menu": "^0.12.1"
   },
   "scripts": {
     "start": "npm install && electron .",

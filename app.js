@@ -1,8 +1,12 @@
 const url = require('url');
 const path = require('path');
 const {app, BrowserWindow, Menu} = require('electron');
+const contextMenu = require('electron-context-menu');
 
 let mainWindow;
+contextMenu({
+    prepend: (defaultActions, params, browserWindow) => []
+});
 
 app.on('ready',function(){
   mainWindow = new BrowserWindow({

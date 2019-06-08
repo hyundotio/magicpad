@@ -23,6 +23,14 @@ sudo apt-get install rpm
 npm start
 ```
 
+## Packages
+
+Software used:
+1. Node.js
+2. url and path packages
+3. Electron, Electron Context Menu, and Electron builder
+4. Font and design styling by IBM
+
 ## Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
