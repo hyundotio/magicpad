@@ -283,8 +283,7 @@ function saveFile (name, type, data, $el) {
 	if (data !== null && navigator.msSaveBlob)
 			return navigator.msSaveBlob(new Blob([data], { type: type }), name);
 	let url = window.URL.createObjectURL(new Blob([data], {type: type}));
-	$el.attr('href',url).attr('download',name).attr('target','_blank').unbind('click').bind('click',function(e){
-	});
+	$el.attr('href',url).attr('download',name).attr('target','_blank');
 }
 //Function when key gneration is finished
 function keyReady() {
