@@ -288,9 +288,9 @@ function saveFile (name, type, data, $el) {
 //Function when key gneration is finished
 function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	saveFile((formName+'_public.asc'),('application/octet-stream'),btoa(session.generatedPubKey),$('.key-public-download'));
-	saveFile((formName+'_private.asc'),('application/octet-stream'),btoa(session.generatedPrivKey),$('.key-private-download'));
-	saveFile((formName+'_revoke.asc'),('application/octet-stream'),btoa(session.generatedRevKey),$('.key-rev-download'));
+	saveFile((formName+'_public.asc'),('application/octet-stream;base64'),btoa(session.generatedPubKey),$('.key-public-download'));
+	saveFile((formName+'_private.asc'),('application/octet-stream;base64'),btoa(session.generatedPrivKey),$('.key-private-download'));
+	saveFile((formName+'_revoke.asc'),('application/octet-stream;base64'),btoa(session.generatedRevKey),$('.key-rev-download'));
 	//$('.key-public-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
 	//$('.key-private-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
 	//$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
@@ -327,7 +327,7 @@ function lookupKey (query,server) {
 						session.searchedKey = keys.trim();
 						openpgp.key.readArmored(session.searchedKey).then(data => {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
-							saveFile(('searchedKey_public.asc'),('application/octet-stream'),btoa(session.searchedKey),$('.searched-key-download'));
+							saveFile(('searchedKey_public.asc'),('application/octet-stream;base64'),btoa(session.searchedKey),$('.searched-key-download'));
 							$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
