@@ -288,9 +288,9 @@ function saveFile (name, type, data, $el) {
 //Function when key gneration is finished
 function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	saveFile((formName+'_public.asc'),('data:text/plain;base64;'),session.generatedPubKey,$('.key-public-download'));
-	saveFile((formName+'_private.asc'),('data:text/plain;base64;'),session.generatedPrivKey,$('.key-private-download'));
-	saveFile((formName+'_revoke.asc'),('data:text/plain;base64;'),session.generatedRevKey,$('.key-rev-download'));
+	saveFile((formName+'_public.asc'),('text/plain'),session.generatedPubKey,$('.key-public-download'));
+	saveFile((formName+'_private.asc'),('text/plain'),session.generatedPrivKey,$('.key-private-download'));
+	saveFile((formName+'_revoke.asc'),('text/plain'),session.generatedRevKey,$('.key-rev-download'));
 	//$('.key-public-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
 	//$('.key-private-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
 	//$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
@@ -327,7 +327,7 @@ function lookupKey (query,server) {
 						session.searchedKey = keys.trim();
 						openpgp.key.readArmored(session.searchedKey).then(data => {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
-							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;filename=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc');
+							saveFile(('searchedKey_public.asc'),('text/plain'),session.searchedKey,$('.searched-key-download'));
 							$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
