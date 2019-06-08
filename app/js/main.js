@@ -281,9 +281,9 @@ function importPubKey(type) {
 //Function when key gneration is finished
 function keyReady() {
 	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	$('.key-public-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc').attr('target','_blank');
-	$('.key-private-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc').attr('target','_blank');
-	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;filename='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc').attr('target','_blank');
+	$('.key-public-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc').attr('target','_blank');
+	$('.key-private-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc').attr('target','_blank');
+	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc').attr('target','_blank');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
@@ -317,7 +317,7 @@ function lookupKey (query,server) {
 						session.searchedKey = keys.trim();
 						openpgp.key.readArmored(session.searchedKey).then(data => {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
-							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;filename=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
+							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 							$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
