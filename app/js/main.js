@@ -27,7 +27,7 @@ function init() {
 	} else {
 		$onlineFlag.removeClass('active');
 	}
-	$('input').val('');
+	$('input').val('').prop('checked',false);
 	$('textarea').val('');
 	keyUpChecker($('.pubkey-upload-input'),$('.upload-public-key-paste'));
 	keyUpChecker($('.searchbox-pubkey'),$('.search-pubkey'));
