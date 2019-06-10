@@ -1,5 +1,5 @@
 {
-  "name": "magicpad",
+  "name": "@hyundotio/magicpad",
   "version": "0.0.2",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
