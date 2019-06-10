@@ -69,9 +69,10 @@ function viewPubKey() {
 	let $processedOutputWindow = $('.processed-output-window');
 	$('.popup-filter').addClass('active');
 	$('.processed-aside').text('Viewing public key: '+getFilename($('.key-pub-import').val()));
-	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Imported public key');
 	$processedOutputWindow.find('.processed-output').text(session.pubKey).val(session.pubKey);
+	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$('.save-processed').addClass('hidden');
+	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Imported public key');
 }
 //View Encrypted Message
 function viewEncMsg(steg) {
@@ -87,6 +88,7 @@ function viewEncMsg(steg) {
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
 	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc)).attr('download', 'encrypted_message.txt');
 	$('.popup-filter').addClass('active');
+	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
 }
 //View decrypted message
@@ -97,6 +99,7 @@ function viewDecMsg() {
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
 	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data)).attr('download', 'decrypted_message.txt');
+	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('active').removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
 }
 //Exits popup
@@ -332,7 +335,7 @@ function convertStegMsg($type){
 				//Open convereted-key-window;
 				if(retrievedMsg.length > 0){
 					$('.import-stg-msg-label').text('Reimport steganograph');
-					$('.text-read').val(retrievedMsg).text(retrievedMsg);
+					$('.text-read').val(retrievedMsg).text(retrievedMsg).scrollTop(0,0);
 					readFormCheck();
 				} else {
 					$type.val('');
@@ -363,7 +366,7 @@ function convertStegKey($type){
 				//Open convereted-key-window;
 				if(testPubKey(retrievedKey) || testPrivKey(retrievedKey)){
 					$('.key-convert-label').find('span').text('Reimport image');
-					$('.converted-key-output').text(retrievedKey).val(retrievedKey);
+					$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
 					$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
 					$('.copy-converted').removeAttr('disabled');
 					$('.converted-aside').text('Key converted.');
