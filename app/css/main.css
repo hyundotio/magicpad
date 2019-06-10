@@ -388,7 +388,7 @@ a.big-button-third-half {
 .big-button-third span, .big-button-third-half span {
 	font-size: 1.5em;
 	line-height: 1.25em;
-	margin: -0.25em 0 2em 0;
+	margin: -0.25em 0 2.125em 0;
 	display: block;
 }
 .big-button-third img, .big-button-third-half img {
@@ -647,7 +647,7 @@ a.big-button-third:last-child {
 	height: 36em;
 	width: 29em;
 	box-sizing: border-box;
-	position: absolute;
+	position: fixed;
 	padding: 3.25em 1.25em 1.25em 1.25em;
 	z-index: 8;
 }
@@ -1064,6 +1064,11 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 }
 @media only screen and (max-width: 478px) {
+	.popup {
+		position:absolute;
+		width:100%;
+		right:0;
+	}
 	.popup.expanded.active {
 		bottom:0;
 	}
@@ -1071,7 +1076,6 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		bottom:0;
 		right: 1em;
 		height: 36em;
-		width: calc(100% - 2em);
 	}
 	.popup-expand {
 		display:none;
@@ -1105,10 +1109,7 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		margin: -0.2em 0 3.625em 0;
 	}
 	.big-button-third-half span {
-		margin: -0.2em 0 3.8em 0;
-	}
-	.popup {
-		width:calc(100% - 2em);
+		margin: -0.2em 0 3.625em 0;
 	}
 	.mobile-menu {
 		display:inline-block;
