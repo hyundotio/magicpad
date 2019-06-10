@@ -310,7 +310,7 @@ $('.key-convert').change(function(){
 	convertStegKey($(this));
 })
 $('.import-stg-msg').change(function(){
-	convertStegMsg($(this))
+	convertStegMsg($(this));
 })
 //$('.save-converted').attr('href',(readSteg($type)));
 //readSteg($('importstegmsg')[0]) -> paste to read message textarea
@@ -345,7 +345,7 @@ function convertStegMsg($type){
 		}
 	} else {
 		$type.val('');
-		lipAlert('The imported file is not a valid image key.');
+		lipAlert('The imported file is not a valid steganograph.');
 	}
 }
 function convertStegKey($type){
