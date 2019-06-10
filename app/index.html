@@ -125,7 +125,7 @@
 							<section>
 								<h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
 								<a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
-								<input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file">
+								<input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
 								<a class="key-link import-upload-link b-link" href="#">Link</a>
 								<button class="button-1 server-key-pub-import-upload" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
 							</section>
@@ -174,7 +174,7 @@
 				<div class="popup-contents">
 					<section class="no-margin-section">
 						<h3>Image key for conversion</h3>
-						<a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-convert" id="key-convert" type="file">
+						<a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".png" class="key-convert" id="key-convert" type="file">
 					</section>
 					<section>
 						<h3>Converted key output</h3>
@@ -297,7 +297,7 @@
 					<h3>Your message</h3>
 					<div class="import-img-host-container">
 						<label for="stg-host" class="stg-host-label b-link">Select steganograph host</label>
-						<input accept="png" class="stg-host" id="stg-host" type="file">
+						<input accept=".png,.jpg,.jpeg" class="stg-host" id="stg-host" type="file">
 					</div>
 					<div class="write-key-status key-status"></div>
 					<textarea class="text-write" placeholder="Write your message here"></textarea>
@@ -332,7 +332,7 @@
 
 					</div>
 					<div>
-						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-priv-import" id="key-priv-import" type="file">
+						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
 					</div>
 				</section>
 				<section>
@@ -341,7 +341,7 @@
 
 					</div>
 					<div>
-						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept="asc" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 					</div>
 				</section>
 				<section>
@@ -441,7 +441,7 @@
 					<h3>Received message</h3>
 					<div class="import-img-msg-container">
 						<label for="import-stg-msg" class="import-stg-msg-label b-link">Import steganograph</label>
-						<input accept="png" class="import-stg-msg" id="import-stg-msg" type="file">
+						<input accept=".png" class="import-stg-msg" id="import-stg-msg" type="file">
 					</div>
 					<div class="read-key-status key-status"></div>
 					<textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
