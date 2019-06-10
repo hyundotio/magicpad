@@ -4,6 +4,9 @@ html, body {
 	width: 100%;
 	height:100%;
 }
+html {
+	-webkit-text-size-adjust: 100%;
+}
 body {
    -webkit-user-select: none;
 }
@@ -1077,14 +1080,14 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		right:0;
 	}
 	.popup.expanded.active {
-		bottom: 0;
-		width: 100%;
-		right: 0;
+		bottom:0;
 	}
 	.popup.expanded {
-		bottom:0;
-		right: 1em;
+		bottom:-38em;
+		right:0;
 		height: 36em;
+		width: 100%;
+		opacity:1;
 	}
 	.popup-expand {
 		display:none;
