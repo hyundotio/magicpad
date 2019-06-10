@@ -1163,6 +1163,9 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		margin-bottom: 1em;
 		margin-right:0;
 	}
+	.tutorial-pages {
+		width:100%;
+	}
 }
 @media only screen and (min-width: 868px) {
 	main {
