@@ -297,7 +297,8 @@ $('.clear-steg-host').bind('click',function(){
 	$(this).removeClass('active');
 })
 $('.stg-host').change(function(){
-	let file = $(this)[0].files[0];
+	let $this = $(this);
+	let file = $this[0].files[0];
 	let reader = new FileReader();
 	let $stgClear = $('.clear-steg-host');
 	if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
@@ -365,6 +366,7 @@ function convertStegKey($type){
 				//Also fill in key textArea
 				//Open convereted-key-window;
 				if(testPubKey(retrievedKey) || testPrivKey(retrievedKey)){
+					$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
 					$('.key-convert-label').find('span').text('Reimport image');
 					$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
 					$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
@@ -457,8 +459,6 @@ function keyReady() {
 //Lookup Public Key
 function lookupKey (query,server) {
   //console.log(query)
-	if(!session.running){
-		session.running = true;
 		let $searchResults = $('.search-results');
 		let $searchStatus = $('.search-status');
 		$searchStatus.text('Searching...');
@@ -482,32 +482,25 @@ function lookupKey (query,server) {
 							$('.searched-key-download-steg').attr('download', 'searchedKey_public_steg.png')
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
-							session.running = false;
 						}).catch(function(e){
 							$('.search-status').text('Error');
 							lipAlert("Key retrieved but was unabled to read fingerprint. Please use another key.");
-							session.running = false;
 						})
 					}
 				} else {
 					//clear keys
-					session.running = false;
 					$('.search-complete').removeClass('search-complete');
 					$searchStatus.text('Nothing found');
 				}
-				session.running = false;
 			}).catch(function(e){
-				session.running = false;
 				$('.search-status').text('Search error');
 				lipAlert('Error in retrieving key. Please try again.');
 			})
 		}).catch(function(e){
-			session.running = false;
 			$('.search-status').text('Search error');
 			$('.create-key-progress').find('span').text('Failed generating keys').removeClass('active');
 			lipAlert('Error in searching. Please try again.');
 		})
-	}
 }
 //Generate keys
 function generateKeys() {

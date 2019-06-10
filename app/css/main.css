@@ -885,7 +885,7 @@ button:disabled img, button[disabled], .button-2.disabled img, .button-2.disable
 	background-color: #171717;
 }
 .steg-key-converter-window textarea {
-	height:16.75em;
+	height:16.625em;
 }
 .b-link {
 	cursor:pointer;
