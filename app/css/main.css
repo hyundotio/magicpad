@@ -81,6 +81,8 @@ a.clear-steg-host {
 	opacity:0;
 	transition:0.2s opacity ease-out, 0.2s visibility ease-out;
 	z-index:1;
+	padding: 0 1em 0 1em;
+	box-sizing: border-box;
 }
 .tutorial-pages > li.active {
 	visibility: visible;

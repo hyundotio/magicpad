@@ -59,7 +59,7 @@
 				<a class="write-tab tab" data-tab="write" href="#">Write</a>
 			</li>
 			<li>
-				<a class="tutorial-tab tab" data-tab="tutorial" href="#">Tutorial</a>
+				<a class="tutorial-tab tab" data-tab="tutorial" href="#">Guide</a>
 			</li>
 			<li>
 				<a class="about-tab tab" data-tab="about" href="#">About</a>
@@ -123,7 +123,7 @@
 								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
 							</section>
 							<section>
-								<h3>Upload .asc public key file<span class="public-key-upload-filename"></span></h3>
+								<h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
 								<a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
 								<input accept="asc" class="server-key-pub-import" id="server-key-pub-import" type="file">
 								<a class="key-link import-upload-link b-link" href="#">Link</a>
@@ -354,15 +354,19 @@
 					<h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Browse</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 				</section>
 				<section>
-					<h3>Convert image key to regular key</h3>
+					<h3>Convert image key to universal .asc key</h3>
 					<button class="open-keyconverter button-2"><span>Convert</span><img class="button-icon-img" src="./ui/popup.svg"></button>
 				</section>
 			</div>
 			<div class="tutorial tab-window">
-				<h2>Tutorial</h2>
+				<h2>Guide</h2>
 				<ul class="tutorial-selectors">
 					<li>
 						<a class="tutorial-selector b-link active" data-tutorial="generate-keys-tutorial" href="#">Generate and share keys</a>
+					</li>
+
+					<li>
+						<a class="tutorial-selector b-link" data-tutorial="search-tutorial" href="#">Search public keys</a>
 					</li>
 					<li>
 						<a class="tutorial-selector b-link" data-tutorial="write-tutorial" href="#">Write a message</a>
@@ -376,18 +380,44 @@
 				</ul>
 				<ul class="tutorial-pages">
 					<li class="generate-keys-tutorial active">
-						<video controls=""><source src="./tutorials/generatekeys.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
+						<ol class="tips-list">
+							<li>Click on "Keys" tab then "Create new private and public key set +".</li>
+							<li>Fill in all the information in the form. *The email in the form will be used to search for your public key by others.</li>
+							<li>Download the generated keys. For mobile, it is easier to use image keys, so save the image keys to your photo library. You can always convert the image keys to regular keys. Non-image and image keys are completely interchangeable.</li>
+							<li>After you've downloaded your keys, you can upload your public key via the key server browser.</li>
+						</ol>
+					</li>
+					<li class="search-tutorial">
+						<ol class="tips-list">
+							<li>Click on "Keys" tab then "Browse" under "Access key servers".</li>
+							<li>Select "Search" tab on the popup.</li>
+							<li>Input the email or public key fingerprint to the search box and click on "Search".</li>
+							<li>You can download the results as a regular .asc key, as an image key, or copy it to your clipboard to be pasted.</li>
+						</ol>
 					</li>
 					<li class="write-tutorial">
-						<video controls=""><source src="./tutorials/write.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
+						<ol class="tips-list">
+							<li>Click on "Keys" tab then import the recipient's public key.</li>
+							<li>Make sure to check the public key's fingeprint on MagicPad against the source that provided you the key.</li>
+							<li>If you want to sign your message, import your private key. Signing your message allows the recipient to verify your identity with your public key.</li>
+							<li>Click on "Write" tab then write any message you'd like.</li>
+							<li>You can hide your encrypted message in an image (a steganograph) by clicking on "Select steganograph host" to select an image.</li>
+							<li>Click on "Encrypt" then you can send the encrypted message and/or steganograph via any transmission.</li>
+						</ol>
 					</li>
 					<li class="read-tutorial">
-						<video controls=""><source src="./tutorials/read.mp4" type="video/mp4"> Your browser does not support the video tag.</video>
+						<ol class="tips-list">
+							<li>Click on "Keys" tab then import your private key.</li>
+							<li>Optional: Import the message sender's public key just in case the message is signed.</li>
+							<li>Click on the "Read" tab then paste the encrypted message in the textbox. You can also import a steganograph.</li>
+							<li>Click on "Decrypt".</li>
+						</ol>
 					</li>
 					<li class="tips-tutorial">
 						<ol class="tips-list">
 							<li>You can distribute your public key in many ways. Physically (usb drive, etc) and key distribution sites (search for: PGP Key server).</li>
-							<li>You can send encrypted messages using anyway you'd like. Email, SMS, instant messaging, etc.</li>
+							<li>Image keys are only readable by MagicPad. However, you can convert them to regular .asc keys in the "Keys" tab. They are interchangeable.</li>
+							<li>You can use your key pair with any email or any transmission method. The inputted email just allows easy identification of the key holder.</li>
 							<li>Your email attached to the key pair is only used to search for the key in key servers. You can use them however you like.</li>
 							<li>For maximum security, use MagicPad on an air-gapped computer. An air-gapped computer is an offline computer that will always stay offline. All decrypted / unencrypted information should stay in the airgapped computer and only encrypted data should go out via a physical media (i.e., USB drive). For example: You can copy a received encrypted message to a USB drive and decrypt it in the air-gapped computer. Vice-versa.</li>
 							<li>Use different key pairs per use / person.</li>
