@@ -474,7 +474,7 @@ function lookupKey (query,server) {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
 							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 							$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
-							createStegKey('./ui/publickeyreference.png','search',session.searchedKey);
+							createStegKey('./ui/publickeyreference.jpg','search',session.searchedKey);
 							$('.searched-key-download-steg').attr('download', 'searchedKey_public_steg.png')
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
@@ -522,8 +522,8 @@ function generateKeys() {
 			session.generatedPrivKey = key.privateKeyArmored.trim();
 			session.generatedPubKey = key.publicKeyArmored.trim();
 			session.generatedRevKey = key.revocationCertificate.trim();
-			createStegKey('./ui/privatekeyreference.png','private',session.generatedPrivKey);
-			createStegKey('./ui/publickeyreference.png','public',session.generatedPubKey);
+			createStegKey('./ui/privatekeyreference.jpg','private',session.generatedPrivKey);
+			createStegKey('./ui/publickeyreference.jpg','public',session.generatedPubKey);
 			keyReady();
 		}).catch(function(e) {
 			session.running = false;
