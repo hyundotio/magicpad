@@ -1,6 +1,6 @@
 {
   "name": "@hyundotio/magicpad",
-  "version": "0.0.2",
+  "version": "0.0.21",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "devDependencies": {
