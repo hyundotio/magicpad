@@ -9,7 +9,7 @@ MagicPad is an OpenPGP encryption / decryption tool for beginners. It is designe
 You can run MagicPad four ways:
 1. Download executable at `https://www.magicpad.io`
 2. Run `./app/index.html` via web browser
-3. Build and run executable:
+3. Build and run executable (saved at ./dist/):
 ```
 npm install
 npm run dist
