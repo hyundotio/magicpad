@@ -895,8 +895,11 @@ button:disabled img, button[disabled], .button-2.disabled img, .button-2.disable
 .b-link:focus {
 	color: #0530AD;
 }
+.popup.expanded.steg .processed-output {
+	height:calc(100% - 3.25em);
+}
 .popup.expanded .processed-output {
-	height: calc(100% - 6.25em);
+	height: calc(100% - 1.75em);
 }
 .processed-output {
 	padding: 1em;
@@ -946,8 +949,12 @@ button:disabled img, button[disabled], .button-2.disabled img, .button-2.disable
 .processed-output-window.steg .steg-section {
 	display:block;
 }
+.processed-output-window.steg section.output-section {
+	height: calc(100% - 10.5em);
+}
 .processed-output-window section.output-section {
 	margin:0;
+	height: calc(100% - 4.5em);
 }
 .processed-output-window.steg section.output-section {
 	margin-top:1.5em;
@@ -1070,7 +1077,9 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		right:0;
 	}
 	.popup.expanded.active {
-		bottom:0;
+		bottom: 0;
+		width: 100%;
+		right: 0;
 	}
 	.popup.expanded {
 		bottom:0;
