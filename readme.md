@@ -29,7 +29,9 @@ Software used:
 1. Node.js
 2. url and path packages
 3. Electron, Electron Context Menu, and Electron builder
-4. Font and design styling by IBM
+4. Openpgp.js
+5. Steganography.js
+6. Font and design styling by IBM
 
 ## Contributing
 

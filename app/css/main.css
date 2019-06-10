@@ -4,17 +4,11 @@ html, body {
 	width: 100%;
 	height:100%;
 }
-.white-bg {
-	position:absolute;
-	width:100%;
-	height:100%;
-	background-color:#FFF;
-	top:0;
-	left:0;
-}
 body {
-	background-color:#EEE;
    -webkit-user-select: none;
+}
+.import-img-msg-container {
+	float:right;
 }
 .mobile-menu {
 	display:none;
@@ -22,19 +16,39 @@ body {
 .pw-view-toggler {
 	margin: 0.75em 0 2em 0;
 }
+a.clear-steg-host {
+	visibility: hidden;
+	opacity:0;
+	float:right;
+	transition:0.1s ease-out visibility, 0.1s ease-out opacity, 0.1s ease-out color;
+}
+.clear-steg-host.active {
+	visibility: visible;
+	opacity:1;
+}
 .checkbox-offset {
 	line-height: 0.75em;
 }
 .sign-toggle {
-	float: right;
+	margin-left: 1.25em;
+	float: left;
 	z-index: 2;
 	position: relative;
 	margin-top: 0.125em;
 }
+.sign-toggle:last-of-type {
+	margin-left:0;
+}
 .sign-credentials {
-	transition: opacity 0.2s ease-out;
+	transition: opacity 0.2s ease-out, height 0.2s ease-out;
+	height: 7.625em;
+	overflow: hidden;
+}
+.sign-credentials > h3 {
+	margin-top:1.5em;
 }
 .sign-credentials.disabled {
+	height:0;
 	opacity: 0.5;
 }
 .tutorial-selectors {
@@ -156,6 +170,9 @@ select:focus {
 	position: absolute;
 	right:1em;
 	top:1em;
+}
+.no-margin-section {
+	margin-top:0;
 }
 input[type="radio"] {
 	margin:0;
@@ -338,8 +355,17 @@ input[type="file"] {
 	background-color: #121212;
 	color: #FFF;
 }
-a.big-button-third-half:last-child {
+.checkbox-section {
+	margin-top:0.33em;
+}
+.import-img-host-container {
+	float:right;
+}
+.big-button-third-half:nth-child(2n) {
 	border-right:1px solid transparent;
+}
+.key-new-done .button-2.big-button-third-half.no-bottom-border  {
+	border-bottom:1px solid transparent;
 }
 a.big-button-third-half {
 	height: 11em;
@@ -347,6 +373,7 @@ a.big-button-third-half {
 	margin:0;
 	margin-right:0;
 	border-bottom: 0;
+	border-bottom: 1px solid #FFF;
 	border-right: 1px solid #FFF;
 	box-sizing: border-box;
 	font-weight: 300;
@@ -357,9 +384,9 @@ a.big-button-third-half {
 	margin: -1.25em 0 0em 0;
 }
 .big-button-third span, .big-button-third-half span {
-	font-size: 1.75em;
+	font-size: 1.5em;
 	line-height: 1.25em;
-	margin: -0.25em 0 1.625em 0;
+	margin: -0.25em 0 2em 0;
 	display: block;
 }
 .big-button-third img, .big-button-third-half img {
@@ -770,7 +797,15 @@ section:after, .label-container:after, .downloaded-fingerprint-container {
 	display: table;
 	clear: both;
 }
+.downloaded-fingerprint-container a.searched-key-download, .downloaded-fingerprint-container button.searched-key-copy {
+	width:50%;
+}
+.downloaded-fingerprint-container a.searched-key-download-steg {
+	width:100%;
+	margin-top:1px;
+}
 .downloaded-fingerprint-container {
+	width:100%;
 	margin-bottom:0.5em;
 }
 .downloaded-fingerprint {
@@ -820,10 +855,10 @@ section {
 button img {
 	transition: 0.2s opacity ease-out;
 }
-button:disabled img, button[disabled] img {
+button:disabled img, button[disabled], .button-2.disabled img, .button-2.disabled {
 	opacity: 0.3;
 }
-button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover, button:disabled:active, button[disabled]:active, button:disabled:focus, button[disabled]:focus {
+.button-2.disabled, .button-2.disabled:hover, .button-2.disabled:focus, .button-2.disabled:active, button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover, button:disabled:active, button[disabled]:active, button:disabled:focus, button[disabled]:focus {
 	cursor: not-allowed;
 	background-color: #BEBEBE;
 	color: #8C8C8C;
@@ -847,7 +882,11 @@ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover
 .button-2:focus {
 	background-color: #171717;
 }
+.steg-key-converter-window textarea {
+	height:16.75em;
+}
 .b-link {
+	cursor:pointer;
 	transition: color 0.1s ease-out;
 	color: #0062ff;
 }
@@ -892,6 +931,27 @@ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover
 	width: 11em;
 	margin: 0;
 	min-width: unset;
+}
+.processed-output-window h3 {
+	display:none;
+}
+.processed-output-window.steg h3 {
+	display:block;
+}
+.processed-output-window.steg textarea {
+	height:16.75em;
+}
+.processed-output-window.steg .steg-section {
+	display:block;
+}
+.processed-output-window section.output-section {
+	margin:0;
+}
+.processed-output-window.steg section.output-section {
+	margin-top:1.5em;
+}
+.processed-output-window .steg-section {
+	display:none;
 }
 .processed-output-window .button-third {
 	border-right: 1px solid #fff;
@@ -944,7 +1004,7 @@ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover
 	animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
 	border-color: #0062FF transparent transparent transparent;
 }
-.processed-aside {
+.processed-aside, .converted-aside {
 	margin-top: 0.75em;
 	display: block;
 }

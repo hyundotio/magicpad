@@ -27,6 +27,16 @@ function init() {
 	} else {
 		$onlineFlag.removeClass('active');
 	}
+	$('input').val('');
+	$('textarea').val('');
+	keyUpChecker($('.pubkey-upload-input'),$('.upload-public-key-paste'));
+	keyUpChecker($('.searchbox-pubkey'),$('.search-pubkey'));
+	keyUpChecker($('.pubkey-input'),$('.import-pubkey-str'));
+	readFormCheck();
+	writeFormCheck();
+	newKeyFormCheck();
+	$('.server-key-pub-import-upload').attr('disabled','disabled');
+	$('.copy-converted').attr('disabled','disabled');
 	setTimeout(function () {
       let viewheight = $(window).height();
       let viewwidth = $(window).width();
@@ -38,6 +48,11 @@ init();
 // UI data handling functions
 // UI data handling functions
 // UI data handling functions
+//Truncate string
+String.prototype.trunc = String.prototype.trunc ||
+function(n){
+		return (this.length > n) ? this.substr(0, n-1) + '...' : this;
+};
 //Alert notification
 function lipAlert(str) {
 	$('.message-flag').addClass('active').find('span').text(str);
@@ -59,14 +74,20 @@ function viewPubKey() {
 	$('.save-processed').addClass('hidden');
 }
 //View Encrypted Message
-function viewEncMsg() {
+function viewEncMsg(steg) {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
 	$processedAside.text(session.lastEncStatus);
-	$('.popup-filter').addClass('active');
-	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
+	if(steg){
+		$('.steg-msg-download').attr('download', 'encrypted_steg_message.png')
+		$processedOutputWindow.addClass('steg');
+	} else {
+		$processedOutputWindow.removeClass('steg');
+	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
 	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc)).attr('download', 'encrypted_message.txt');
+	$('.popup-filter').addClass('active');
+	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
 }
 //View decrypted message
 function viewDecMsg() {
@@ -74,9 +95,9 @@ function viewDecMsg() {
 	let $processedOutputWindow = $('.processed-output-window');
 	$processedAside.text(session.lastDecStatus);
 	$('.popup-filter').addClass('active');
-	$processedOutputWindow.addClass('active').removeClass('mono').find('.window-title').find('span').text('Decrypted message');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
 	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data)).attr('download', 'decrypted_message.txt');
+	$processedOutputWindow.addClass('active').removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
 }
 //Exits popup
 function popupExit() {
@@ -227,6 +248,139 @@ function writeKeyStatus(pasted) {
 		$('.private-key-filename').text(' - ' + filename);
 	}
 }
+//createStegKey('../ui/privatekeyreference.png','private',session.privKey);
+function createStegKey(input,type,str){
+	let loadedImg = document.createElement('img');
+	let newImg = document.createElement('img');
+	loadedImg.onload = function(){
+		let imgCanvas = document.createElement("canvas");
+		let imgContext = imgCanvas.getContext("2d");
+		imgContext.canvas.width = loadedImg.width;
+		imgContext.canvas.height = loadedImg.height;
+		imgContext.drawImage(loadedImg, 0, 0, loadedImg.width, loadedImg.height);
+		imgContext.font = '11px IBM Plex Mono';
+		imgContext.fillStyle = '#0062ff';
+		let imgStr = $('.form-email').val().trunc(35);
+		if(type == 'search'){
+			imgStr = $('.searchbox-pubkey').val().trunc(35);
+		}
+		imgContext.fillText(imgStr, 14, 55);
+		let imgInfom = imgCanvas.toDataURL("image/png");
+		newImg.onload = function(){
+			if(type == 'public'){
+				createSteg(newImg,$('.key-public-img-download'),str);
+			} else if (type == 'private'){
+				createSteg(newImg,$('.key-private-img-download'),str);
+			} else if (type =='search'){
+				createSteg(newImg,$('.searched-key-download-steg'),str);
+			}else {
+				//createSteg(newImg,$('.key-revoke-steg-download-link'),str);
+			}
+			$(imgCanvas).remove();
+			$(loadedImg).remove();
+			$(newImg).remove();
+		}
+		newImg.src = imgInfom;
+	}
+	loadedImg.src = input;
+}
+//createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
+function createSteg(img,$dest,str){
+	$dest.attr('href',steg.encode(str, img));
+}
+$('.clear-steg-host').bind('click',function(){
+	$('.stg-host-label').text('Select steganograph host');
+	$('.stg-host').val('');
+	$(this).removeClass('active');
+})
+$('.stg-host').change(function(){
+	let file = $(this)[0].files[0];
+	let reader = new FileReader();
+	let $stgClear = $('.clear-steg-host');
+	if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
+		$('.stg-host-label').text('Reselect steganograph host');
+		$stgClear.addClass('active');
+	} else {
+		$(this).val('');
+		$stgClear.removeClass('active');
+		lipAlert('This is not a valid image to be used as a steganograph host');
+	}
+})
+$('.key-convert').change(function(){
+	convertStegKey($(this));
+})
+$('.import-stg-msg').change(function(){
+	convertStegMsg($(this))
+})
+//$('.save-converted').attr('href',(readSteg($type)));
+//readSteg($('importstegmsg')[0]) -> paste to read message textarea
+//readSteg($('importstegkey')[0]) -> paste to processed + download link
+function readSteg(img){
+	return steg.decode(img);
+}
+function convertStegMsg($type){
+	// Closure to capture the file information.
+	let file = $type[0].files[0];
+	let reader = new FileReader();
+	if($.inArray(file['type'], ['image/png']) > -1){
+		reader.onload = function(e) {
+			let img = document.createElement('img');
+			img.onload = function(){
+				let retrievedMsg = readSteg(img);
+				$(img).remove();
+				//Also fill in key textArea
+				//Open convereted-key-window;
+				if(retrievedMsg.length > 0){
+					$('.import-stg-msg-label').text('Reimport steganograph');
+					$('.text-read').val(retrievedMsg).text(retrievedMsg);
+				} else {
+					$type.val('');
+					lipAlert('The imported steganograph does not contain a message.');
+				}
+			}
+			img.src = e.target.result;
+		}
+		if (file != undefined) {
+			reader.readAsDataURL(file);
+		}
+	} else {
+		$type.val('');
+		lipAlert('The imported file is not a valid image key.');
+	}
+}
+function convertStegKey($type){
+	// Closure to capture the file information.
+	let file = $type[0].files[0];
+	let reader = new FileReader();
+	if($.inArray(file['type'], ['image/png']) > -1){
+		reader.onload = function(e) {
+			let img = document.createElement('img');
+			img.onload = function(){
+				let retrievedKey = readSteg(img);
+				$(img).remove();
+				//Also fill in key textArea
+				//Open convereted-key-window;
+				if(testPubKey(retrievedKey) || testPrivKey(retrievedKey)){
+					$('.key-convert-label').find('span').text('Reimport image');
+					$('.converted-key-output').text(retrievedKey).val(retrievedKey);
+					$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
+					$('.copy-converted').removeAttr('disabled');
+					$('.converted-aside').text('Key converted.');
+				} else {
+					$type.val('');
+					lipAlert('The imported image does not contain a valid key.');
+				}
+			}
+			img.src = e.target.result;
+		}
+		if (file != undefined) {
+			reader.readAsDataURL(file);
+		}
+	} else {
+		$type.val('');
+		lipAlert('The imported file is not a valid image key.');
+	}
+}
 //Import private key button function
 function importPrivKey() {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
@@ -279,10 +433,12 @@ function importPubKey(type) {
 //Generate Download Functions  saveFile("Example.txt", "data:attachment/text", "Hello, world.");
 //Function when key gneration is finished
 function keyReady() {
-	let formName = $('.form-name').val().toLowerCase().replace(/\s/g, '');
-	$('.key-public-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc').attr('target','_blank');
-	$('.key-private-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc').attr('target','_blank');
-	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc').attr('target','_blank');
+	let formName = $('.form-name').val().split(' ')[0].toLowerCase().replace(/\s/g, '');
+	$('.key-public-img-download').attr('download',formName+'_pub_steg.png');
+	$('.key-private-img-download').attr('download',formName+'_priv_steg.png');
+	$('.key-public-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
+	$('.key-private-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
+	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
@@ -318,6 +474,8 @@ function lookupKey (query,server) {
 							const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
 							$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 							$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
+							createStegKey('./ui/publickeyreference.png','search',session.searchedKey);
+							$('.searched-key-download-steg').attr('download', 'searchedKey_public_steg.png')
 							$searchResults.addClass('search-complete');
 							$searchStatus.text('Key found');
 							session.running = false;
@@ -364,6 +522,8 @@ function generateKeys() {
 			session.generatedPrivKey = key.privateKeyArmored.trim();
 			session.generatedPubKey = key.publicKeyArmored.trim();
 			session.generatedRevKey = key.revocationCertificate.trim();
+			createStegKey('./ui/privatekeyreference.png','private',session.generatedPrivKey);
+			createStegKey('./ui/publickeyreference.png','public',session.generatedPubKey);
 			keyReady();
 		}).catch(function(e) {
 			session.running = false;
@@ -410,7 +570,7 @@ function decryptMessage() {
 							}
 						}).catch(function(e) {
 							session.running = false;
-							lipAlert('Cannot decrypt message. Try testing a different message and/or keys.');
+							lipAlert('Cannot decrypt message. Try a different private key.');
 							$body.removeClass('loading');
 						});
 					}).catch(function(e) {
@@ -435,11 +595,20 @@ function decryptMessage() {
 		});
 	}
 }
+function encryptStatus(signedToggle){
+	let $processedAside = $('.processed-aside');
+	$('.view-message-encrypted').removeAttr('disabled');
+	if (signedToggle) {
+		session.lastEncStatus = 'Message encrypted and signed.';
+	} else {
+		session.lastEncStatus = 'Message encrypted.';
+	}
+	$processedAside.text(session.lastEncStatus);
+}
 //Encrypt Message
 function encryptMessage(msg, signedToggle) {
 	if (!session.running) {
 		session.running = true;
-
 		let $body = $('body');
 		openpgp.key.readArmored(session.pubKey).then(data => {
 			let options, cleartext, validity;
@@ -448,19 +617,33 @@ function encryptMessage(msg, signedToggle) {
 				publicKeys: data.keys
 			}
 			openpgp.encrypt(options).then(ciphertext => {
-				let $processedAside = $('.processed-aside');
 				encrypted = ciphertext.data.trim() // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
 				session.lastEnc = encrypted;
-				$('.view-message-encrypted').removeAttr('disabled');
-				if (signedToggle) {
-					session.lastEncStatus = 'Message encrypted and signed.';
+				if ($('.stg-host').val().length > 0){
+					let reader = new FileReader();
+					reader.onload = function(e){
+						let newImg = document.createElement('img');
+						newImg.onload = function(){
+							if(parseInt(steg.getHidingCapacity(newImg)) >= session.lastEnc){
+								lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
+							} else {
+								createSteg(newImg,$('.steg-msg-download'),session.lastEnc);
+								$(newImg).remove();
+								encryptStatus(signedToggle);
+								session.running = false;
+								$body.removeClass('loading');
+								viewEncMsg(true);
+							}
+						}
+						newImg.src = e.target.result;
+					}
+					reader.readAsDataURL($('.stg-host')[0].files[0]);
 				} else {
-					session.lastEncStatus = 'Message encrypted.';
+					encryptStatus(signedToggle);
+					session.running = false;
+					$body.removeClass('loading');
+					viewEncMsg(false);
 				}
-				$processedAside.text(session.lastEncStatus);
-				$body.removeClass('loading');
-				session.running = false;
-				viewEncMsg();
 			}).catch(function(e) {
 				session.running = false;
 				$body.removeClass('loading');
@@ -566,38 +749,55 @@ function importPubkeyStr(){
 		return false
 	}
 }
+
+function keyImportProcess($type,result){
+	if ($type.hasClass('key-priv-import')) {
+		if (testPrivKey(result)) {
+			session.privKey = result;
+			importPrivKey();
+		} else {
+			$type.val('');
+			lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+		}
+	} else if ($type.hasClass('server-key-pub-import')){
+		if (testPubKey(result)) {
+			session.keyToUploadFile = result;
+			validatePubKeyUpload();
+		} else {
+			$type.val('');
+			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+		}
+	} else {
+		if (testPubKey(result)) {
+			session.pubKey = result;
+			importPubKey('file');
+		} else {
+			$type.val('');
+			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+		}
+	}
+}
 //key file importe
 function keyImport($type){
 		let file = $type[0].files[0];
 		let reader = new FileReader();
 		reader.onload = function(e) {
-			if ($type.hasClass('key-priv-import')) {
-				if (testPrivKey(reader.result)) {
-					session.privKey = reader.result;
-					importPrivKey();
-				} else {
-					$type.val('');
-					lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+			let result;
+			if($.inArray(file['type'], ['image/png']) > -1){
+				let img = document.createElement('img');
+				img.onload = function(){
+					result = readSteg(img);
+					$(img).remove();
+					keyImportProcess($type,result);
 				}
-			} else if ($type.hasClass('server-key-pub-import')){
-				if (testPubKey(reader.result)) {
-					session.keyToUploadFile = reader.result;
-					validatePubKeyUpload();
-				} else {
-					$type.val('');
-					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
-				}
+				img.src = e.target.result;
 			} else {
-				if (testPubKey(reader.result)) {
-					session.pubKey = reader.result;
-					importPubKey('file');
-				} else {
-					$type.val('');
-					lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
-				}
+				keyImportProcess($type,reader.result);
 			}
 		}
-		if (file != undefined) {
+		if ($.inArray(file['type'], ['image/png']) > -1) {
+			reader.readAsDataURL(file);
+		} else {
 			reader.readAsText(file);
 		}
 }
@@ -802,6 +1002,11 @@ $('.popup-expand').bind('click', function() {
 		$thisParPar.addClass('expanded');
 	}
 })
+//copy to clipboard - converted
+$('.copy-converted').bind('click',function(){
+	Clipboard.copy($('.converted-key-output').text());
+	showCopied($('.steg-key-converter-window').find('.copied'));
+})
 //Copy to clipboard button
 $('.copy-processed').bind('click', function() {
 	//copyProcessed($('.processed-output').text());
@@ -817,7 +1022,12 @@ $('.view-message-decrypted').bind('click', function() {
 //Re-open Encrypted Message popup
 $('.view-message-encrypted').bind('click', function() {
 	if (!$(this).is(':disabled')) {
-		viewEncMsg();
+		if($('.steg-msg-download').attr('href').length > 1){
+			viewEncMsg(true);
+		} else {
+			viewEncMsg(false);
+		}
+
 	}
 })
 //Encrypt Message Button
@@ -851,12 +1061,19 @@ $('.write').keyup(function() {
 }).change(function(){
 	writeFormCheck()
 })
+$('.open-keyconverter').bind('click',function(){
+	$('.steg-key-converter-window').addClass('active');
+	$('.popup-filter').addClass('active');
+})
 //Checks for file imported by user in Private and Key import buttons
 $('.key-import').change(function() {
 	keyImport($(this))
 })
-$('body').keyup(function(e) {
-	if (e.keyCode === 27) $('.popup-filter').click();
+//disable function for a buttons
+$('a').bind('click',function(e){
+	if ($(this).hasClass('disabled')){
+		e.preventDefault();
+	}
 })
 //opens new key generation popup
 $('.key-generate-start').bind('click', function(e) {
