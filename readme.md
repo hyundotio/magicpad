@@ -8,8 +8,8 @@ MagicPad is an OpenPGP encryption / decryption tool for beginners. It is designe
 
 You can run MagicPad four ways:
 1. Download executable at `https://www.magicpad.io`
-2. Run `main.html` via web browser
-3. Build and run executable
+2. Run `./app/index.html` via web browser
+3. Build and run executable:
 ```
 npm install
 npm run dist
@@ -18,7 +18,7 @@ If building from Ubuntu, run this first:
 ```
 sudo apt-get install rpm
 ```
-4. Run Electron via Node from terminal
+4. Run Electron via Node from command line:
 ```
 npm start
 ```
