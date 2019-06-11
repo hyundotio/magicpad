@@ -1,3 +1,10 @@
+window.onload = function(){
+	let loadingStart = document.getElementById('loading-start');
+	loadingStart.style.opacity = 0;
+	setTimeout(function(){
+		$(loadingStart).remove();
+	},250);
+}
 //Session Data
 //Session Data
 //Session Data
