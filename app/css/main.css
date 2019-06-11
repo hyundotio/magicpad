@@ -1107,7 +1107,7 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		line-height:1.33em;
 	}
 	.button-1, .button-2, .button-9 {
-		min-width:8em;
+		min-width:8.5em;
 	}
 	.button-icon-img,.label-icon-button,.select-icon {
 		display:none;
