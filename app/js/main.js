@@ -314,7 +314,7 @@ $('.stg-host').change(function(){
 	} else {
 		$(this).val('');
 		$stgClear.removeClass('active');
-		lipAlert('This is not a valid image to be used as a steganograph host');
+		lipAlert('The imported file is not a valid image to be used as a steganograph host');
 	}
 })
 $('.key-convert').change(function(){
@@ -501,12 +501,12 @@ function lookupKey (query,server) {
 				}
 			}).catch(function(e){
 				$('.search-status').text('Search error');
-				lipAlert('Error in retrieving key. Please try again.');
+				lipAlert('Could not retrieve key. Please try again.');
 			})
 		}).catch(function(e){
 			$('.search-status').text('Search error');
 			$('.create-key-progress').find('span').text('Failed generating keys').removeClass('active');
-			lipAlert('Error in searching. Please try again.');
+			lipAlert('Could not connect to key server. Please try again.');
 		})
 }
 //Generate keys
@@ -532,7 +532,7 @@ function generateKeys() {
 		}).catch(function(e) {
 			session.running = false;
 			$('body').removeClass('cursor-loading');
-			lipAlert(e);
+			lipAlert('Keys could not be generated. Please try again.');
 			newKeyReset();
 		});
 	}
