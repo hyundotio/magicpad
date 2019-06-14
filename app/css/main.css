@@ -115,6 +115,7 @@ a.clear-steg-host {
 	top:0;
 }
 .popup-tab-page.active {
+	z-index:1;
 	opacity: 1;
 	visibility: visible;
 }
