@@ -26,6 +26,15 @@ npm install
 npm start
 ```
 
+## Build explained
+
+In the build procedure, the following happens:
+1. HTML files in the `./html_src` folder are combined into a single `index.html` file in `./app`.
+2. JS files in `./app/js` are added as `<script>` tags after `</body>` tag in `index.html`. (Step 1 and 2 are controlled by `./build)_magicpad.index.js`)
+3. `index.html` is saved to `./app`.
+4. All other files are static in `./app` and are not altered.
+5. Electron executable is created in a `./dist` folder.
+
 ## Packages
 
 Software used:
