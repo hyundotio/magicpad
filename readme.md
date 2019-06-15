@@ -30,11 +30,12 @@ npm start
 
 Software used:
 1. Node.js
-2. url and path packages
+2. url, path, fs-extra, and jsdom packages
 3. Electron, Electron Context Menu, and Electron builder
 4. Openpgp.js
 5. Steganography.js
-6. Font and design styling by IBM
+6. jQuery
+7. Font and design styling by IBM
 
 ## Contributing
 
