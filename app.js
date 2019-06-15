@@ -2,6 +2,9 @@ const url = require('url');
 const path = require('path');
 const {app, BrowserWindow, Menu} = require('electron');
 const contextMenu = require('electron-context-menu');
+const buildMagicpadIndex = require('./build_magicpad_index');
+
+buildMagicpadIndex.build();
 
 let mainWindow;
 contextMenu({
@@ -16,7 +19,7 @@ app.on('ready',function(){
     width:660,
     'backgroundColor': '#FFFFFF',
     title:'MagicPad',
-    icon: __dirname +  '/build/icons/appicon.icns'
+    icon: __dirname +  '/icons_src/icons/appicon.icns'
   });
   mainWindow.setMenuBarVisibility(false)
   mainWindow.loadURL(url.format({

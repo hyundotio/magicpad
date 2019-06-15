@@ -1,0 +1,31 @@
+
+  <div class="write tab-window">
+    <h2>Write</h2>
+    <section>
+      <h3>Your message</h3>
+      <div class="import-img-host-container">
+        <label for="stg-host" class="stg-host-label b-link">Select steganograph host</label>
+        <input accept=".png,.jpg,.jpeg" class="stg-host" id="stg-host" type="file">
+      </div>
+      <div class="write-key-status key-status"></div>
+      <textarea class="text-write" placeholder="Write your message here"></textarea>
+    </section>
+    <section class="checkbox-section">
+      <div class="sign-toggle checkbox-offset">
+        <input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
+      </div>
+      <a href="#" class="clear-steg-host b-link">Clear steganograph host</a>
+    </section>
+
+    <section class="no-margin-section">
+      <div class="sign-credentials disabled">
+        <h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+        <div class="pw-view-toggler checkbox-offset">
+          <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+        </div>
+      </div>
+    </section>
+    <section>
+      <button class="button-1 encrypt-message" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    </section>
+  </div>

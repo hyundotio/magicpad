@@ -1,6 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
+<!DOCTYPE html><html>
 	<title>MagicPad</title>
 	<meta charset="utf-8">
 	<script src="./js_include/openpgp.min.js">
@@ -9,13 +7,13 @@
 	</script>
 	<script src="./js_include/jquery-3.4.1.min.js">
 	</script>
-  <meta http-equiv="x-ua-compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui" />
+  <meta http-equiv="x-ua-compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="application-name" content="MagicPad">
 	<meta name="apple-mobile-web-app-title" content="MagicPad">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<link href="./css/reset.css" rel="stylesheet">
+	<link href="./css_include/reset.css" rel="stylesheet">
 	<link href="./fonts/stylesheet.css" rel="stylesheet">
 	<link href="./css/main.css" rel="stylesheet">
 	<link href="./favicon/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
@@ -40,39 +38,40 @@
 	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2388.png">
 	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2224.png">
 	<link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1536x2048.png">
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2732x2048.png" />
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2224x1668.png" />
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2388x1668.png" />
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2048x1536.png" />
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2732x2048.png">
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2224x1668.png">
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2388x1668.png">
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2048x1536.png">
 	<link href="./favicon/manifest.json" rel="manifest">
 	<meta content="#000000" name="msapplication-TileColor">
 	<meta content="./favicon/ms-icon-144x144.png" name="msapplication-TileImage">
 	<meta content="#000000" name="theme-color">
-</head>
-<body ontouchstart="">
+
+
 	<div id="loading-start" style="background-color:#FFF;width:100%;height:100%;z-index:12;top:0;left:0;position:fixed;opacity:1;transition:0.2s ease-out opacity;">
 		<span style="width: 10em;display: inline-block;text-align: center;position: absolute;top: 50%;left: 50%;margin: -0.5em 0 0 -5em;">Loading MagicPad...</span>
 	</div>
 	<nav class="main-nav">
-		<button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg"></button>
-		<ul>
-			<li>
-				<a class="keys-tab tab active" data-tab="keys" href="#">Keys</a>
-			</li>
-			<li>
-				<a class="read-tab tab" data-tab="read" href="#">Read</a>
-			</li>
-			<li>
-				<a class="write-tab tab" data-tab="write" href="#">Write</a>
-			</li>
-			<li>
-				<a class="tutorial-tab tab" data-tab="tutorial" href="#">Guide</a>
-			</li>
-			<li>
-				<a class="about-tab tab" data-tab="about" href="#">About</a>
-			</li>
-		</ul>
-	</nav>
+	
+  <button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg"></button>
+  <ul>
+    <li>
+      <a class="keys-tab tab active" data-tab="keys" href="#">Keys</a>
+    </li>
+    <li>
+      <a class="read-tab tab" data-tab="read" href="#">Read</a>
+    </li>
+    <li>
+      <a class="write-tab tab" data-tab="write" href="#">Write</a>
+    </li>
+    <li>
+      <a class="tutorial-tab tab" data-tab="tutorial" href="#">Guide</a>
+    </li>
+    <li>
+      <a class="about-tab tab" data-tab="about" href="#">About</a>
+    </li>
+  </ul>
+</nav>
 	<main>
 		<div class="lds-ring-small main-loader">
 			<div></div>
@@ -86,418 +85,424 @@
 		</div>
 		<div class="popups">
 			<div class="popup-filter popup-exit"></div>
-			<div class="key-server-browser-window popup paged-popup">
-				<div class="window-title">
-					<span>Browse key server</span>
-					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
-				</div>
-				<div class="upload-progress">
-					<div class="progress-container">
-						<div class="lds-ring">
-							<div></div>
-							<div></div>
-							<div></div>
-							<div></div>
-						</div><span>Uploading key...</span>
-					</div>
-				</div>
-				<div class="popup-contents">
-					<ul class="popup-tabs">
-						<li><button class="upload-public-key-tab popup-tab active" data-tab="pubkeyserver-upload">Upload</button></li>
-						<li><button class="search-public-key-tab popup-tab" data-tab="pubkeyserver-search">Search</button></li>
-					</ul>
-					<div class="popup-tab-content">
-						<div class="pubkeyserver-upload popup-tab-page">
-							<h3>Select key server</h3>
-							<div class="select-wrapper">
-								<select class="upload-key-server-list">
-									<option value="//keyserver.ubuntu.com">
-										keyserver.ubuntu.com
-									</option>
-									<option value="//pgp.key-server.io">
-										pgp.key-server.io
-									</option>
-									<option value="//keys.fedoraproject.org">
-										keys.fedoraproject.org
-									</option>
-									<option value="//gnjtzu5c2lv4zasv.onion">
-										pgp.key-server.io - TOR
-									</option>
-								</select>
-							</div>
-							<section>
-								<h3>Upload pasted public key</h3><!--
-                                <input type="radio" name="upload-type" value="file" checked> File (.asc)
-                                &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
-                                !-->
-								<textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
-							</section>
-							<section>
-								<button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
-							</section>
-							<section>
-								<h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
-								<a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
-								<input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
-								<a class="key-link import-upload-link b-link" href="#">Link</a>
-								<button class="button-1 server-key-pub-import-upload" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
-							</section>
-						</div>
-						<div class="pubkeyserver-search popup-tab-page">
-							<h3>Key server</h3>
-							<div class="select-wrapper">
-								<select class="search-key-server-list">
-									<option value="//keyserver.ubuntu.com">
-										keyserver.ubuntu.com
-									</option>
-									<option value="//pgp.key-server.io">
-										pgp.key-server.io
-									</option>
-									<option value="//keys.fedoraproject.org">
-										keys.fedoraproject.org
-									</option>
-									<option value="//gnjtzu5c2lv4zasv.onion">
-										pgp.key-server.io - TOR
-									</option>
-								</select>
-							</div>
-							<section class="search-wrapper">
-								<h3>Search for public key</h3><input class="searchbox-pubkey" spellcheck="false" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-1 search-pubkey" disabled>Search</button>
-							</section>
-							<section>
-								<h3>Search result</h3>
-								<ul class="search-results">
-									<li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
-									<li class="search-result">
-										<div class="downloaded-fingerprint-container">
-											<a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"></a>
-											<button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg"></button>
-											<a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg"></a>
-										</div>
-										<div>
-											<h3>Fingerprint</h3>
-											<span class="downloaded-fingerprint"></span>
-										</div>
-									</li>
-								</ul>
-							</section>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="steg-key-converter-window popup">
-				<div class="window-title">
-					<span>Convert image key</span>
-					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
-				</div>
-				<div class="popup-contents">
-					<section class="no-margin-section">
-						<h3>Image key for conversion<span class="convert-filename"></span></h3>
-						<a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".png" class="key-convert" id="key-convert" type="file">
-					</section>
-					<section>
-						<h3>Converted key output</h3>
-						<textarea class="converted-key-output" readonly placeholder="No steganograph imported"></textarea>
-						<div>
-							<span class="copied">Copied</span>
-							<div class="converted-aside">No image imported.</div>
-						</div>
-					</section>
-					<section>
-						<button class="button-2 copy-converted" disabled><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
-					</section>
-				</div>
-			</div>
-			<div class="processed-output-window popup">
-				<div class="window-title">
-					<span>Processed output</span>
-					<div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
-					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
-				</div>
-				<div class="popup-contents">
-					<section class="no-margin-section steg-section">
-						<h3>Steganograph output</h3>
-						<a href="#" class="button-2 steg-msg-download" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
-					</section>
-					<section class="output-section">
-						<h3>Text output</h3>
-						<textarea class="processed-output" id="processed-output" spellcheck="false" readonly></textarea>
-						<div>
-							<span class="copied">Copied</span>
-							<div class="processed-aside"></div>
-						</div>
-					</section>
-					<section>
-						<button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-processed" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
-					</section>
-				</div>
-			</div>
-			<div class="converted-key-window popup">
-				<div class="window-title">
-					<span>Converted key output</span>
-					<div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
-					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
-				</div>
-				<div class="popup-contents">
-					<textarea class="converted-output" id="converted-output" spellcheck="false" readonly></textarea>
-					<div>
-						<span class="copied">Copied</span>
-						<div class="converted-aside"></div>
-					</div>
-					<section>
-						<button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted" download="convertedKey.asc" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
-					</section>
-				</div>
-			</div>
-			<div class="pubkey-input-window popup">
-				<div class="window-title">
-					<span>Public key input</span>
-					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
-				</div>
-				<div class="popup-contents">
-					<textarea class="pubkey-input" id="pubkey-input" spellcheck="false" placeholder="Paste public key here"></textarea>
-					<section>
-						<button class="button-1 import-pubkey-str" disabled><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
-					</section>
-				</div>
-			</div>
-			<div class="create-key-window popup">
-				<div class="window-title">
-					<span>New key set</span>
-					<div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
-				</div>
-				<div class="popup-contents">
-					<div class="create-key-progress">
-						<div class="progress-container">
-							<div class="lds-ring">
-								<div></div>
-								<div></div>
-								<div></div>
-								<div></div>
-							</div><span>Generating keys...</span>
-						</div>
-					</div>
-					<ul class="pages">
-						<li class="key-new-form">
-							<section>
-								<h3>Identifier / Name</h3><input autocomplete="off" class="form-name" placeholder="John Smith" spellcheck="false" type="text">
-							</section>
-							<section>
-								<h3>Your email</h3><input autocomplete="off" class="form-email" placeholder="johnsmith@email.com" spellcheck="false" type="email">
-							</section>
-							<section>
-								<h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
-							</section>
-							<div class="pw-view-toggler checkbox-offset">
-								<input autocomplete="off" class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
-							</div>
-							<section class="bottom-buttons">
-								<button class="button-1 key-generate" disabled><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"></button> <button class="button-2 popup-exit">Cancel</button>
-							</section>
-						</li>
-						<li class="key-new-done">
-							<a class="big-button-third-half button-1 key-private-download" href="#" target="_blank"><span>Download<br>private key</span><img src="./ui/download.svg"></a>
-							<a class="big-button-third-half button-1 key-public-download" href="#" target="_blank"><span>Download<br>public key</span><img src="./ui/download.svg"></a>
-							<a class="big-button-third-half button-2 key-private-img-download" href="#" target="_blank"><span>Download private<br>key as an image</span><img src="./ui/download.svg"></a>
-							<a class="big-button-third-half button-2 key-public-img-download" href="#" target="_blank"><span>Download public<br>key as an image</span><img src="./ui/download.svg"></a>
-							<!--<a class="big-button-third-half button-1 key-rev-download force-hidden" href="#"><span>Download<br>
-							revocation key</span><img src="./ui/download.svg"></a>!-->
-							<a class="big-button-third-half button-2 copy-generated-public-key no-bottom-border" href="#"><span>Copy public key<br>to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a>
-							<a class="big-button-third-half button-2 key-generate-reset no-bottom-border" href="#"><span>Clear keys<br>and restart</span><img src="./ui/restart.svg"></a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
+		
+<div class="converted-key-window popup">
+  <div class="window-title">
+    <span>Converted key output</span>
+    <div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="popup-contents">
+    <textarea class="converted-output" id="converted-output" spellcheck="false" readonly=""></textarea>
+    <div>
+      <span class="copied">Copied</span>
+      <div class="converted-aside"></div>
+    </div>
+    <section>
+      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted" download="convertedKey.asc" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+    </section>
+  </div>
+</div>
+
+<div class="create-key-window popup">
+  <div class="window-title">
+    <span>New key set</span>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="popup-contents">
+    <div class="create-key-progress">
+      <div class="progress-container">
+        <div class="lds-ring">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div><span>Generating keys...</span>
+      </div>
+    </div>
+    <ul class="pages">
+      <li class="key-new-form">
+        <section>
+          <h3>Identifier / Name</h3><input autocomplete="off" class="form-name" placeholder="John Smith" spellcheck="false" type="text">
+        </section>
+        <section>
+          <h3>Your email</h3><input autocomplete="off" class="form-email" placeholder="johnsmith@email.com" spellcheck="false" type="email">
+        </section>
+        <section>
+          <h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
+        </section>
+        <div class="pw-view-toggler checkbox-offset">
+          <input autocomplete="off" class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+        </div>
+        <section class="bottom-buttons">
+          <button class="button-1 key-generate" disabled=""><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"></button> <button class="button-2 popup-exit">Cancel</button>
+        </section>
+      </li>
+      <li class="key-new-done">
+        <a class="big-button-third-half button-1 key-private-download" href="#" target="_blank"><span>Download<br>private key</span><img src="./ui/download.svg"></a>
+        <a class="big-button-third-half button-1 key-public-download" href="#" target="_blank"><span>Download<br>public key</span><img src="./ui/download.svg"></a>
+        <a class="big-button-third-half button-2 key-private-img-download" href="#" target="_blank"><span>Download private<br>key as an image</span><img src="./ui/download.svg"></a>
+        <a class="big-button-third-half button-2 key-public-img-download" href="#" target="_blank"><span>Download public<br>key as an image</span><img src="./ui/download.svg"></a>
+        <!--<a class="big-button-third-half button-1 key-rev-download force-hidden" href="#"><span>Download<br>
+        revocation key</span><img src="./ui/download.svg"></a>!-->
+        <a class="big-button-third-half button-2 copy-generated-public-key no-bottom-border" href="#"><span>Copy public key<br>to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a>
+        <a class="big-button-third-half button-2 key-generate-reset no-bottom-border" href="#"><span>Clear keys<br>and restart</span><img src="./ui/restart.svg"></a>
+      </li>
+    </ul>
+  </div>
+</div>s
+
+<div class="key-server-browser-window popup paged-popup">
+  <div class="window-title">
+    <span>Browse key server</span>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="upload-progress">
+    <div class="progress-container">
+      <div class="lds-ring">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div><span>Uploading key...</span>
+    </div>
+  </div>
+  <div class="popup-contents">
+    <ul class="popup-tabs">
+      <li><button class="upload-public-key-tab popup-tab active" data-tab="pubkeyserver-upload">Upload</button></li>
+      <li><button class="search-public-key-tab popup-tab" data-tab="pubkeyserver-search">Search</button></li>
+    </ul>
+    <div class="popup-tab-content">
+      <div class="pubkeyserver-upload popup-tab-page">
+        <h3>Select key server</h3>
+        <div class="select-wrapper">
+          <select class="upload-key-server-list">
+            <option value="//keyserver.ubuntu.com">
+              keyserver.ubuntu.com
+            </option>
+            <option value="//pgp.key-server.io">
+              pgp.key-server.io
+            </option>
+            <option value="//keys.fedoraproject.org">
+              keys.fedoraproject.org
+            </option>
+            <option value="//gnjtzu5c2lv4zasv.onion">
+              pgp.key-server.io - TOR
+            </option>
+          </select>
+        </div>
+        <section>
+          <h3>Upload pasted public key</h3><!--
+                          <input type="radio" name="upload-type" value="file" checked> File (.asc)
+                          &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
+                          !-->
+          <textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
+        </section>
+        <section>
+          <button class="button-1 upload upload-public-key-paste" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
+        </section>
+        <section>
+          <h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
+          <a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
+          <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
+          <a class="key-link import-upload-link b-link" href="#">Link</a>
+          <button class="button-1 server-key-pub-import-upload" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+        </section>
+      </div>
+      <div class="pubkeyserver-search popup-tab-page">
+        <h3>Key server</h3>
+        <div class="select-wrapper">
+          <select class="search-key-server-list">
+            <option value="//keyserver.ubuntu.com">
+              keyserver.ubuntu.com
+            </option>
+            <option value="//pgp.key-server.io">
+              pgp.key-server.io
+            </option>
+            <option value="//keys.fedoraproject.org">
+              keys.fedoraproject.org
+            </option>
+            <option value="//gnjtzu5c2lv4zasv.onion">
+              pgp.key-server.io - TOR
+            </option>
+          </select>
+        </div>
+        <section class="search-wrapper">
+          <h3>Search for public key</h3><input class="searchbox-pubkey" spellcheck="false" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-1 search-pubkey" disabled="">Search</button>
+        </section>
+        <section>
+          <h3>Search result</h3>
+          <ul class="search-results">
+            <li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
+            <li class="search-result">
+              <div class="downloaded-fingerprint-container">
+                <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"></a>
+                <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg"></button>
+                <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg"></a>
+              </div>
+              <div>
+                <h3>Fingerprint</h3>
+                <span class="downloaded-fingerprint"></span>
+              </div>
+            </li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="processed-output-window popup">
+  <div class="window-title">
+    <span>Processed output</span>
+    <div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="popup-contents">
+    <section class="no-margin-section steg-section">
+      <h3>Steganograph output</h3>
+      <a href="#" class="button-2 steg-msg-download" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+    </section>
+    <section class="output-section">
+      <h3>Text output</h3>
+      <textarea class="processed-output" id="processed-output" spellcheck="false" readonly=""></textarea>
+      <div>
+        <span class="copied">Copied</span>
+        <div class="processed-aside"></div>
+      </div>
+    </section>
+    <section>
+      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-processed" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+    </section>
+  </div>
+</div>
+
+<div class="pubkey-input-window popup">
+  <div class="window-title">
+    <span>Public key input</span>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="popup-contents">
+    <textarea class="pubkey-input" id="pubkey-input" spellcheck="false" placeholder="Paste public key here"></textarea>
+    <section>
+      <button class="button-1 import-pubkey-str" disabled=""><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+    </section>
+  </div>
+</div>
+
+<div class="steg-key-converter-window popup">
+  <div class="window-title">
+    <span>Convert image key</span>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="popup-contents">
+    <section class="no-margin-section">
+      <h3>Image key for conversion<span class="convert-filename"></span></h3>
+      <a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".png" class="key-convert" id="key-convert" type="file">
+    </section>
+    <section>
+      <h3>Converted key output</h3>
+      <textarea class="converted-key-output" readonly="" placeholder="No steganograph imported"></textarea>
+      <div>
+        <span class="copied">Copied</span>
+        <div class="converted-aside">No image imported.</div>
+      </div>
+    </section>
+    <section>
+      <button class="button-2 copy-converted" disabled=""><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+    </section>
+  </div>
+</div>
+</div>
 		<div class="tab-windows">
-			<div class="write tab-window">
-				<h2>Write</h2>
-				<section>
-					<h3>Your message</h3>
-					<div class="import-img-host-container">
-						<label for="stg-host" class="stg-host-label b-link">Select steganograph host</label>
-						<input accept=".png,.jpg,.jpeg" class="stg-host" id="stg-host" type="file">
-					</div>
-					<div class="write-key-status key-status"></div>
-					<textarea class="text-write" placeholder="Write your message here"></textarea>
-				</section>
-				<section class="checkbox-section">
-					<div class="sign-toggle checkbox-offset">
-						<input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
-					</div>
-					<a href="#" class="clear-steg-host b-link">Clear steganograph host</a>
-				</section>
+		<div class="about tab-window">
+  <h2>MagicPad 0.0.2</h2>
+  <p>This project was created for people to easily encrypt and decrypt text messages.</p>
+  <section>
+    <h3>Credits</h3>
+    <ul class="credits-list">
+      <li>Created by Hyun</li>
+    </ul>
+  </section>
+  <section>
+    <h3>Links</h3>
+    <ul class="credits-list">
+      <li><a class="b-link" href="https://www.magicpad.io" target="_blank" rel="noopener noreferrer nofollow">MagicPad website</a></li>
+      <li><a class="b-link" href="https://github.com/hyundotio/magicpad" target="_blank" rel="noopener noreferrer nofollow">MagicPad GitHub</a></li>
+    </ul>
+  </section>
+  <section>
+    <h3>License</h3><span>MIT</span>
+  </section>
+</div>
+<div class="keys tab-window active">
+  <h2>Keys</h2>
+  <section>
+    <a class="key-generate-start b-link" href="#">Create new private and public key set +</a>
+  </section>
+  <section>
+    <div class="key-filename-container">
+      <h3>Your private key <span class="key-status private-key-filename"></span></h3>
 
-				<section class="no-margin-section">
-					<div class="sign-credentials disabled">
-						<h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
-						<div class="pw-view-toggler checkbox-offset">
-							<input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
-						</div>
-					</div>
-				</section>
-				<section>
-					<button class="button-1 encrypt-message" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
-				</section>
-			</div>
-			<div class="keys tab-window active">
-				<h2>Keys</h2>
-				<section>
-					<a class="key-generate-start b-link" href="#">Create new private and public key set +</a>
-				</section>
-				<section>
-					<div class="key-filename-container">
-						<h3>Your private key <span class="key-status private-key-filename"></span></h3>
+    </div>
+    <div>
+      <a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
+    </div>
+  </section>
+  <section>
+    <div class="key-filename-container">
+      <h3>Recipient/Sender public key <span class="key-status public-key-filename"></span></h3>
 
-					</div>
-					<div>
-						<a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
-					</div>
-				</section>
-				<section>
-					<div class="key-filename-container">
-						<h3>Recipient/Sender public key <span class="key-status public-key-filename"></span></h3>
+    </div>
+    <div>
+      <a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    </div>
+  </section>
+  <section>
+    <h3>Recipient/Sender public key fingerprint</h3>
+    <div class="fingerprint">
+      <span class="no-pub-key">No public key imported</span> <span class="fingerprint-str"></span>
+    </div>
+  </section>
+  <section>
+    <h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Browse</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+  </section>
+  <section>
+    <h3>Convert image key to universal .asc key</h3>
+    <button class="open-keyconverter button-2"><span>Convert</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+  </section>
+</div>
+<div class="read tab-window">
+  <h2>Read</h2>
+  <section>
+    <h3>Received message</h3>
+    <div class="import-img-msg-container">
+      <label for="import-stg-msg" class="import-stg-msg-label b-link">Import steganograph</label>
+      <input accept=".png" class="import-stg-msg" id="import-stg-msg" type="file">
+    </div>
+    <div class="read-key-status key-status"></div>
+    <textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
+  </section>
+  <section>
+    <h3>Your private key passphrase</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+    <div class="pw-view-toggler checkbox-offset">
+      <input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+    </div>
+  </section>
+  <section>
+    <button class="button-1 decrypt-message" disabled=""><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg"></button> <button class="button-2 view-message-decrypted view-processed" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+  </section>
+</div>
+<div class="tutorial tab-window">
+  <h2>Guide</h2>
+  <ul class="tutorial-selectors">
+    <li>
+      <a class="tutorial-selector b-link active" data-tutorial="mobile-tutorial" href="#">MagicPad on mobile devices</a>
+    </li>
+    <li>
+      <a class="tutorial-selector b-link" data-tutorial="generate-keys-tutorial" href="#">Generate and share keys</a>
+    </li>
+    <li>
+      <a class="tutorial-selector b-link" data-tutorial="search-tutorial" href="#">Search public keys</a>
+    </li>
+    <li>
+      <a class="tutorial-selector b-link" data-tutorial="write-tutorial" href="#">Write a message</a>
+    </li>
+    <li>
+      <a class="tutorial-selector b-link" data-tutorial="read-tutorial" href="#">Read a message</a>
+    </li>
+    <li>
+      <a class="tutorial-selector b-link" data-tutorial="tips-tutorial" href="#">Tips</a>
+    </li>
+  </ul>
+  <ul class="tutorial-pages">
+    <li class="mobile-tutorial active">
+      <ol class="tips-list">
+        <li>To "install" on iOS, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in a web browser (e.g., Safari) and click on center button located on the bottom (looks like a box with an up arrow) then find and tap "Add to Home Screen" in the bottom slider menu.</li>
+        <li>To "install" on Android, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in web browser (e.g., Chrome) and click on the 3 dot icon located on the top right then tap "Add to Home screen".</li>
+        <li>You can now use MagicPad without an internet connection.</li>
+      </ol>
+    </li>
+    <li class="generate-keys-tutorial">
+      <ol class="tips-list">
+        <li>Click on "Keys" tab then "Create new private and public key set +".</li>
+        <li>Fill in all the information in the form. *The email in the form will be used to search for your public key by others.</li>
+        <li>Download the generated keys. For mobile, it is easier to use image keys, so save the image keys to your photo library. You can always convert the image keys to regular keys. Non-image and image keys are completely interchangeable.</li>
+        <li>After you've downloaded your keys, you can upload your public key via the key server browser.</li>
+      </ol>
+    </li>
+    <li class="search-tutorial">
+      <ol class="tips-list">
+        <li>Click on "Keys" tab then "Browse" under "Access key servers".</li>
+        <li>Select "Search" tab on the popup.</li>
+        <li>Input the email or public key fingerprint to the search box and click on "Search".</li>
+        <li>You can download the results as a regular .asc key, as an image key, or copy it to your clipboard to be pasted.</li>
+      </ol>
+    </li>
+    <li class="write-tutorial">
+      <ol class="tips-list">
+        <li>Click on "Keys" tab then import the recipient's public key.</li>
+        <li>Make sure to check the public key's fingeprint on MagicPad against the source that provided you the key.</li>
+        <li>If you want to sign your message, import your private key. Signing your message allows the recipient to verify your identity with your public key.</li>
+        <li>Click on "Write" tab then write any message you'd like.</li>
+        <li>You can hide your encrypted message in an image (a steganograph) by clicking on "Select steganograph host" to select an image.</li>
+        <li>Click on "Encrypt" then you can send the encrypted message and/or steganograph via any transmission.</li>
+      </ol>
+    </li>
+    <li class="read-tutorial">
+      <ol class="tips-list">
+        <li>Click on "Keys" tab then import your private key.</li>
+        <li>Optional: Import the message sender's public key just in case the message is signed.</li>
+        <li>Click on the "Read" tab then paste the encrypted message in the textbox. You can also import a steganograph.</li>
+        <li>Click on "Decrypt".</li>
+      </ol>
+    </li>
+    <li class="tips-tutorial">
+      <ol class="tips-list">
+        <li>You can distribute your public key in many ways. Physically (usb drive, etc) and key distribution sites (search for: PGP Key server).</li>
+        <li>Image keys are only readable by MagicPad. However, you can convert them to regular .asc keys in the "Keys" tab. They are interchangeable.</li>
+        <li>You can use your key pair with any email or any transmission method. The inputted email just allows easy identification of the key holder.</li>
+        <li>Your email attached to the key pair is only used to search for the key in key servers. You can use them however you like.</li>
+        <li>For maximum security, use MagicPad on an air-gapped computer. An air-gapped computer is an offline computer that will always stay offline. All decrypted / unencrypted information should stay in the airgapped computer and only encrypted data should go out via a physical media (i.e., USB drive). For example: You can copy a received encrypted message to a USB drive and decrypt it in the air-gapped computer. Vice-versa.</li>
+        <li>Use different key pairs per use / person.</li>
+        <li>Rotate your key pairs. Update your key pair frequently as you can or per use / person.</li>
+      </ol>
+    </li>
+  </ul>
+</div>
 
-					</div>
-					<div>
-						<a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
-					</div>
-				</section>
-				<section>
-					<h3>Recipient/Sender public key fingerprint</h3>
-					<div class="fingerprint">
-						<span class="no-pub-key">No public key imported</span> <span class="fingerprint-str"></span>
-					</div>
-				</section>
-				<section>
-					<h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Browse</span><img class="button-icon-img" src="./ui/popup.svg"></button>
-				</section>
-				<section>
-					<h3>Convert image key to universal .asc key</h3>
-					<button class="open-keyconverter button-2"><span>Convert</span><img class="button-icon-img" src="./ui/popup.svg"></button>
-				</section>
-			</div>
-			<div class="tutorial tab-window">
-				<h2>Guide</h2>
-				<ul class="tutorial-selectors">
-					<li>
-						<a class="tutorial-selector b-link active" data-tutorial="mobile-tutorial" href="#">MagicPad on mobile devices</a>
-					</li>
-					<li>
-						<a class="tutorial-selector b-link" data-tutorial="generate-keys-tutorial" href="#">Generate and share keys</a>
-					</li>
-					<li>
-						<a class="tutorial-selector b-link" data-tutorial="search-tutorial" href="#">Search public keys</a>
-					</li>
-					<li>
-						<a class="tutorial-selector b-link" data-tutorial="write-tutorial" href="#">Write a message</a>
-					</li>
-					<li>
-						<a class="tutorial-selector b-link" data-tutorial="read-tutorial" href="#">Read a message</a>
-					</li>
-					<li>
-						<a class="tutorial-selector b-link" data-tutorial="tips-tutorial" href="#">Tips</a>
-					</li>
-				</ul>
-				<ul class="tutorial-pages">
-					<li class="mobile-tutorial active">
-						<ol class="tips-list">
-							<li>To "install" on iOS, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in a web browser (e.g., Safari) and click on center button located on the bottom (looks like a box with an up arrow) then find and tap "Add to Home Screen" in the bottom slider menu.</li>
-							<li>To "install" on Android, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in web browser (e.g., Chrome) and click on the 3 dot icon located on the top right then tap "Add to Home screen".</li>
-							<li>You can now use MagicPad without an internet connection.</li>
-						</ol>
-					</li>
-					<li class="generate-keys-tutorial">
-						<ol class="tips-list">
-							<li>Click on "Keys" tab then "Create new private and public key set +".</li>
-							<li>Fill in all the information in the form. *The email in the form will be used to search for your public key by others.</li>
-							<li>Download the generated keys. For mobile, it is easier to use image keys, so save the image keys to your photo library. You can always convert the image keys to regular keys. Non-image and image keys are completely interchangeable.</li>
-							<li>After you've downloaded your keys, you can upload your public key via the key server browser.</li>
-						</ol>
-					</li>
-					<li class="search-tutorial">
-						<ol class="tips-list">
-							<li>Click on "Keys" tab then "Browse" under "Access key servers".</li>
-							<li>Select "Search" tab on the popup.</li>
-							<li>Input the email or public key fingerprint to the search box and click on "Search".</li>
-							<li>You can download the results as a regular .asc key, as an image key, or copy it to your clipboard to be pasted.</li>
-						</ol>
-					</li>
-					<li class="write-tutorial">
-						<ol class="tips-list">
-							<li>Click on "Keys" tab then import the recipient's public key.</li>
-							<li>Make sure to check the public key's fingeprint on MagicPad against the source that provided you the key.</li>
-							<li>If you want to sign your message, import your private key. Signing your message allows the recipient to verify your identity with your public key.</li>
-							<li>Click on "Write" tab then write any message you'd like.</li>
-							<li>You can hide your encrypted message in an image (a steganograph) by clicking on "Select steganograph host" to select an image.</li>
-							<li>Click on "Encrypt" then you can send the encrypted message and/or steganograph via any transmission.</li>
-						</ol>
-					</li>
-					<li class="read-tutorial">
-						<ol class="tips-list">
-							<li>Click on "Keys" tab then import your private key.</li>
-							<li>Optional: Import the message sender's public key just in case the message is signed.</li>
-							<li>Click on the "Read" tab then paste the encrypted message in the textbox. You can also import a steganograph.</li>
-							<li>Click on "Decrypt".</li>
-						</ol>
-					</li>
-					<li class="tips-tutorial">
-						<ol class="tips-list">
-							<li>You can distribute your public key in many ways. Physically (usb drive, etc) and key distribution sites (search for: PGP Key server).</li>
-							<li>Image keys are only readable by MagicPad. However, you can convert them to regular .asc keys in the "Keys" tab. They are interchangeable.</li>
-							<li>You can use your key pair with any email or any transmission method. The inputted email just allows easy identification of the key holder.</li>
-							<li>Your email attached to the key pair is only used to search for the key in key servers. You can use them however you like.</li>
-							<li>For maximum security, use MagicPad on an air-gapped computer. An air-gapped computer is an offline computer that will always stay offline. All decrypted / unencrypted information should stay in the airgapped computer and only encrypted data should go out via a physical media (i.e., USB drive). For example: You can copy a received encrypted message to a USB drive and decrypt it in the air-gapped computer. Vice-versa.</li>
-							<li>Use different key pairs per use / person.</li>
-							<li>Rotate your key pairs. Update your key pair frequently as you can or per use / person.</li>
-						</ol>
-					</li>
-				</ul>
-			</div>
-			<div class="read tab-window">
-				<h2>Read</h2>
-				<section>
-					<h3>Received message</h3>
-					<div class="import-img-msg-container">
-						<label for="import-stg-msg" class="import-stg-msg-label b-link">Import steganograph</label>
-						<input accept=".png" class="import-stg-msg" id="import-stg-msg" type="file">
-					</div>
-					<div class="read-key-status key-status"></div>
-					<textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
-				</section>
-				<section>
-					<h3>Your private key passphrase</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
-					<div class="pw-view-toggler checkbox-offset">
-						<input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
-					</div>
-				</section>
-				<section>
-					<button class="button-1 decrypt-message" disabled><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg"></button> <button class="button-2 view-message-decrypted view-processed" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
-				</section>
-			</div>
-			<div class="about tab-window">
-				<h2>MagicPad 0.0.2</h2>
-				<p>This project was created for people to easily encrypt and decrypt text messages.</p>
-				<section>
-					<h3>Credits</h3>
-					<ul class="credits-list">
-						<li>Created by Hyun</li>
-					</ul>
-				</section>
-				<section>
-					<h3>Links</h3>
-					<ul class="credits-list">
-						<li><a class="b-link" href="https://www.magicpad.io" target="_blank" rel="noopener noreferrer nofollow">MagicPad website</a></li>
-						<li><a class="b-link" href="https://github.com/hyundotio/magicpad" target="_blank" rel="noopener noreferrer nofollow">MagicPad GitHub</a></li>
-					</ul>
-				</section>
-				<section>
-					<h3>License</h3><span>MIT</span>
-				</section>
-			</div>
-		</div>
+  <div class="write tab-window">
+    <h2>Write</h2>
+    <section>
+      <h3>Your message</h3>
+      <div class="import-img-host-container">
+        <label for="stg-host" class="stg-host-label b-link">Select steganograph host</label>
+        <input accept=".png,.jpg,.jpeg" class="stg-host" id="stg-host" type="file">
+      </div>
+      <div class="write-key-status key-status"></div>
+      <textarea class="text-write" placeholder="Write your message here"></textarea>
+    </section>
+    <section class="checkbox-section">
+      <div class="sign-toggle checkbox-offset">
+        <input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
+      </div>
+      <a href="#" class="clear-steg-host b-link">Clear steganograph host</a>
+    </section>
+
+    <section class="no-margin-section">
+      <div class="sign-credentials disabled">
+        <h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+        <div class="pw-view-toggler checkbox-offset">
+          <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+        </div>
+      </div>
+    </section>
+    <section>
+      <button class="button-1 encrypt-message" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    </section>
+  </div>
+</div>
 	</main>
-	<script src="./js/main.js">
-	</script>
-</body>
-</html>
+
+
+<script src="./js/events/guide_page/guide_page_events.js"></script><script src="./js/events/key_page/import_paste_key_events.js"></script><script src="./js/events/key_page/key_converter_events.js"></script><script src="./js/events/key_page/key_generation_events.js"></script><script src="./js/events/key_page/key_server_browser.js"></script><script src="./js/events/key_page/key_server_browser_search.js"></script><script src="./js/events/key_page/key_server_browser_upload.js"></script><script src="./js/events/popups/processed_popup_events.js"></script><script src="./js/events/read_page/read_page_events.js"></script><script src="./js/events/universal_shell/lipalert_events.js"></script><script src="./js/events/universal_shell/mainnav_tabs.js"></script><script src="./js/events/universal_shell/universal_events.js"></script><script src="./js/events/universal_shell/universal_popup_events.js"></script><script src="./js/events/write_page/write_page_events.js"></script><script src="./js/form_functions/form_checks.js"></script><script src="./js/keyserver_functions/keyserver_search.js"></script><script src="./js/keyserver_functions/keyserver_upload.js"></script><script src="./js/main.js"></script><script src="./js/opgp_functions/decrypt_message.js"></script><script src="./js/opgp_functions/encrypt_message.js"></script><script src="./js/opgp_functions/generate_keys.js"></script><script src="./js/opgp_functions/import_keys.js"></script><script src="./js/opgp_functions/sign_message.js"></script><script src="./js/opgp_functions/verify_keys.js"></script><script src="./js/opgp_functions/verify_signature.js"></script><script src="./js/page_functions/copy_to_clipboard.js"></script><script src="./js/page_functions/string_modifiers.js"></script><script src="./js/steganography_functions/steganography_main.js"></script><script src="./js/universal_functions/universal_alert.js"></script><script src="./js/universal_functions/universal_init.js"></script><script src="./js/universal_functions/universal_onload.js"></script><script src="./js/universal_functions/universal_popup_functions.js"></script><script src="./js/universal_functions/universal_show_copied.js"></script></html>
