@@ -23,6 +23,7 @@
     "productName": "MagicPad",
     "appId": "scripter.MagicPad",
     "mac": {
+      "icon": "./icons_src/icons/icons.icns",
       "category": "public.app-category.productivity",
       "target": [
         "zip"
