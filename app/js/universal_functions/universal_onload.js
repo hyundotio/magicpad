@@ -1,5 +1,6 @@
 //get rid of loading screen when all assets are loaded
 window.onload = function(){
+	init();
 	let loadingStart = document.getElementById('loading-start');
 	loadingStart.style.opacity = 0;
 	setTimeout(function(){
