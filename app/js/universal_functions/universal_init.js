@@ -24,7 +24,8 @@ function init() {
 	readFormCheck();
 	writeFormCheck();
 	newKeyFormCheck();
-	$('.init-disabled').attr('disabled','disabled');
+	attachmentFormcheck();
+	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	setTimeout(function () {
       let viewheight = $(window).height();
       let viewwidth = $(window).width();
