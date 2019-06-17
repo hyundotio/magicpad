@@ -59,11 +59,12 @@ $('.attachment-view').bind('click',function(){
 
 //
 $('.attachment-download').bind('click',function(e){
+  let link = $(this).attr('href');
   let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
   if(iOS){
     e.preventDefault();
     setTimeout(function(){
-        window.open($(this).attr('href'));
+        window.open(link);
     }, 500);
   }
 })
