@@ -3,6 +3,7 @@ function encryptAttachment(){
 	if (!session.running) {
 		session.running = true;
 		let $body = $('body');
+		$body.addClass('loading');
 		let $attachmentImport = $('.attachment-import');
 		let file = $attachmentImport[0].files[0];
 		let fileReader = new FileReader();
@@ -46,6 +47,7 @@ function decryptAttachment(){
 	if (!session.running) {
 		session.running = true;
 		let $body = $('body');
+		$body.addClass('loading');
 		let $attachmentImport = $('.attachment-import');
 		let file = $attachmentImport[0].files[0];
 		let fileReader = new FileReader();
