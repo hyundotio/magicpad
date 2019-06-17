@@ -65,8 +65,8 @@ function decryptAttachment(){
 									format: 'binary'
 								}
 								openpgp.decrypt(options).then(plaintext => {
-									let blob = new Blob([plaintext.data], {
-									  type: 'application/octet-stream'
+									let blob = new Blob([btoa(plaintext.data)], {
+									  type: 'application/octet-stream;base64'
 									});
 									let url = URL.createObjectURL(blob);
 									$('.attachment-download').attr('href',url).attr('download',('decrypted_'+getFilename($('.attachment-import').val())));
