@@ -39,6 +39,7 @@ $('.attachment-passphrase').keyup(function(){
 //Start processing attachment
 $('.attachment-process').bind('click',function(){
   let $this = $(this);
+  $('body').addClass('loading');
   if($this.hasClass('attachment-decrypt')){
     decryptAttachment();
   } else if ($this.hasClass('attachment-encrypt-sign')){
