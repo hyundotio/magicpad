@@ -95,7 +95,7 @@ function encryptMessage(msg, signedToggle) {
 			}).catch(function(e) {
 				session.running = false;
 				$body.removeClass('loading');
-				lipAlert('Cannot encrypt message. Try testing a different message and/or keys.');
+				lipAlert('Cannot encrypt message. Try testing a different message and/or using different keys.');
 			});
 		}).catch(function(e) {
 			session.running = false;

@@ -6,7 +6,17 @@ function init() {
 	} else {
 		$onlineFlag.removeClass('active');
 	}
-	$('input').val('').prop('checked',false);
+	$('input').each(function(){
+		if($(this).attr('type') == 'radio'){
+			if($(this).index() == 0){
+					$(this).prop('checked',true);
+			} else {
+					$(this).prop('checked',false);
+			}
+		} else {
+			$(this).val('').prop('checked',false);
+		}
+	})
 	$('textarea').val('');
 	keyUpChecker($('.pubkey-upload-input'),$('.upload-public-key-paste'));
 	keyUpChecker($('.searchbox-pubkey'),$('.search-pubkey'));
@@ -14,8 +24,7 @@ function init() {
 	readFormCheck();
 	writeFormCheck();
 	newKeyFormCheck();
-	$('.server-key-pub-import-upload').attr('disabled','disabled');
-	$('.copy-converted').attr('disabled','disabled');
+	$('.init-disabled').attr('disabled','disabled');
 	setTimeout(function () {
       let viewheight = $(window).height();
       let viewwidth = $(window).width();

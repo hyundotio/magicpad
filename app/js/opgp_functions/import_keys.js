@@ -89,6 +89,7 @@ function importPrivKey() {
 	$('.key-priv-import-label').find('span').text('Reimport key');
 	writeFormCheck();
 	readFormCheck();
+	attachmentFormcheck();
 	writeKeyStatus();
 }
 
@@ -109,6 +110,7 @@ function importPubKey(type) {
 			$('.key-pub-import-label').find('span').text('Reimport key');
 		}
 		//$('.view-pub-key').addClass('active');
+		attachmentFormcheck();
 		writeFormCheck();
 		readFormCheck();
 		if($pubkeyInputWindow.hasClass('active')){

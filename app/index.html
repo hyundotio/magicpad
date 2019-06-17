@@ -65,6 +65,9 @@
       <a class="write-tab tab" data-tab="write" href="#">Write</a>
     </li>
     <li>
+      <a class="attachments-tab tab" data-tab="attachments" href="#">Attach</a>
+    </li>
+    <li>
       <a class="tutorial-tab tab" data-tab="tutorial" href="#">Guide</a>
     </li>
     <li>
@@ -86,6 +89,16 @@
 		<div class="popups">
 			<div class="popup-filter popup-exit"></div>
 		
+<div class="attachment-window popup">
+  <div class="window-title">
+    <span>Processed attachment output</span>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+  </div>
+  <div class="popup-contents">
+    <a href="#" download="" target="_blank" class="attachment-download button-1"><span>Download<br>processed file</span><img src="./ui/download.svg"></a>
+  </div>
+</div>
+
 <div class="converted-key-window popup">
   <div class="window-title">
     <span>Converted key output</span>
@@ -206,7 +219,7 @@
           <a class="label-container button-2" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
           <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
           <a class="key-link import-upload-link b-link" href="#">Link</a>
-          <button class="button-1 server-key-pub-import-upload" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+          <button class="button-1 server-key-pub-import-upload init-disabled" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
         </section>
       </div>
       <div class="pubkeyserver-search popup-tab-page">
@@ -309,7 +322,7 @@
       </div>
     </section>
     <section>
-      <button class="button-2 copy-converted" disabled=""><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+      <button class="button-2 copy-converted init-disabled" disabled=""><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
     </section>
   </div>
 </div>
@@ -334,6 +347,32 @@
   <section>
     <h3>License</h3><span>MIT</span>
   </section>
+</div>
+<div class="attachments tab-window">
+  <h2>Attach</h2>
+    <section>
+      <h3>Processing type</h3>
+      <div class="attachment-selectors-container">
+        <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked=""> Encrypt
+        &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"> Decrypt
+      </div>
+    </section>
+    <section>
+      <h3>Your attachment <span class="attachment-filename"></span></h3>
+      <a class="label-container button-2 attachment-import-label" href="#"><label for="attachment-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input class="attachment-import" id="attachment-import" type="file">
+      <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
+    </section>
+    <section class="no-margin-section">
+      <div class="attachment-credentials credentials-box disabled">
+        <h3>Your private key passphrase</h3><input class="attachment-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+        <div class="pw-view-toggler checkbox-offset">
+          <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+        </div>
+      </div>
+    </section>
+    <section>
+      <button class="button-1 attachment-process attachment-encrypt" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button><button class="button-2 attachment-view init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    </section>
 </div>
 <div class="keys tab-window active">
   <h2>Keys</h2>
@@ -412,6 +451,9 @@
       <a class="tutorial-selector b-link" data-tutorial="read-tutorial" href="#">Read a message</a>
     </li>
     <li>
+      <a class="tutorial-selector b-link" data-tutorial="attach-tutorial" href="#">Processing attachments</a>
+    </li>
+    <li>
       <a class="tutorial-selector b-link" data-tutorial="tips-tutorial" href="#">Tips</a>
     </li>
   </ul>
@@ -419,7 +461,7 @@
     <li class="mobile-tutorial active">
       <ol class="tips-list">
         <li>To "install" on iOS, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in a web browser (e.g., Safari) and click on center button located on the bottom (looks like a box with an up arrow) then find and tap "Add to Home Screen" in the bottom slider menu.</li>
-        <li>To "install" on Android, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in web browser (e.g., Chrome) and click on the 3 dot icon located on the top right then tap "Add to Home screen".</li>
+        <li>To "install" on Android, visit <a href="https://app.magicpad.io" class="b-link" target="_blank" rel="noopener noreferrer nofollow">https://app.magicpad.io</a> in web browser (e.g., Chrome) and click on the three dot icon located on the top right then tap "Add to Home screen".</li>
         <li>You can now use MagicPad without an internet connection.</li>
       </ol>
     </li>
@@ -446,7 +488,7 @@
         <li>If you want to sign your message, import your private key. Signing your message allows the recipient to verify your identity with your public key.</li>
         <li>Click on "Write" tab then write any message you'd like.</li>
         <li>You can hide your encrypted message in an image (a steganograph) by clicking on "Select steganograph host" to select an image.</li>
-        <li>Click on "Encrypt" then you can send the encrypted message and/or steganograph via any transmission.</li>
+        <li>Click on "Encrypt" then you can send the encrypted message and/or steganograph via any transmission method.</li>
       </ol>
     </li>
     <li class="read-tutorial">
@@ -455,6 +497,16 @@
         <li>Optional: Import the message sender's public key just in case the message is signed.</li>
         <li>Click on the "Read" tab then paste the encrypted message in the textbox. You can also import a steganograph.</li>
         <li>Click on "Decrypt".</li>
+      </ol>
+    </li>
+    <li class="attach-tutorial">
+      <ol class="tips-list">
+        <li>For encrypting attachments, click on "Keys" tab then import the recipient's public key. For decrypting attachments, import your private key.</li>
+        <li>If you're encrypting attachments, make sure to check the public key's fingerprint on MagicPad against the source that provided you the key.</li>
+        <li>Click on "Attach" tab then choose whether you want to encrypt or decrypt an attachment.</li>
+        <li>Select a file to encrypt / decrypt.</li>
+        <li>Click on "Encrypt" / "Decrypt".</li>
+        <li>Download the processed file. You can send encrypted attachments via any transmission method.</li>
       </ol>
     </li>
     <li class="tips-tutorial">
@@ -490,7 +542,7 @@
     </section>
 
     <section class="no-margin-section">
-      <div class="sign-credentials disabled">
+      <div class="sign-credentials disabled credentials-box">
         <h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
           <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
@@ -505,4 +557,4 @@
 	</main>
 
 
-<script src="./js/events/guide_page/guide_page_events.js"></script><script src="./js/events/key_page/import_paste_key_events.js"></script><script src="./js/events/key_page/key_converter_events.js"></script><script src="./js/events/key_page/key_generation_events.js"></script><script src="./js/events/key_page/key_server_browser.js"></script><script src="./js/events/key_page/key_server_browser_search.js"></script><script src="./js/events/key_page/key_server_browser_upload.js"></script><script src="./js/events/popups/processed_popup_events.js"></script><script src="./js/events/read_page/read_page_events.js"></script><script src="./js/events/universal_shell/lipalert_events.js"></script><script src="./js/events/universal_shell/mainnav_tabs.js"></script><script src="./js/events/universal_shell/universal_events.js"></script><script src="./js/events/universal_shell/universal_popup_events.js"></script><script src="./js/events/write_page/write_page_events.js"></script><script src="./js/form_functions/form_checks.js"></script><script src="./js/keyserver_functions/keyserver_search.js"></script><script src="./js/keyserver_functions/keyserver_upload.js"></script><script src="./js/main.js"></script><script src="./js/opgp_functions/decrypt_message.js"></script><script src="./js/opgp_functions/encrypt_message.js"></script><script src="./js/opgp_functions/generate_keys.js"></script><script src="./js/opgp_functions/import_keys.js"></script><script src="./js/opgp_functions/sign_message.js"></script><script src="./js/opgp_functions/verify_keys.js"></script><script src="./js/opgp_functions/verify_signature.js"></script><script src="./js/page_functions/copy_to_clipboard.js"></script><script src="./js/page_functions/string_modifiers.js"></script><script src="./js/steganography_functions/steganography_main.js"></script><script src="./js/universal_functions/universal_alert.js"></script><script src="./js/universal_functions/universal_init.js"></script><script src="./js/universal_functions/universal_onload.js"></script><script src="./js/universal_functions/universal_popup_functions.js"></script><script src="./js/universal_functions/universal_show_copied.js"></script></html>
+<script src="./js/attachment_functions/attachment_import.js"></script><script src="./js/attachment_functions/attachment_process.js"></script><script src="./js/events/attachment_page/attachment_page_events.js"></script><script src="./js/events/guide_page/guide_page_events.js"></script><script src="./js/events/key_page/import_paste_key_events.js"></script><script src="./js/events/key_page/key_converter_events.js"></script><script src="./js/events/key_page/key_generation_events.js"></script><script src="./js/events/key_page/key_server_browser.js"></script><script src="./js/events/key_page/key_server_browser_search.js"></script><script src="./js/events/key_page/key_server_browser_upload.js"></script><script src="./js/events/popups/processed_popup_events.js"></script><script src="./js/events/read_page/read_page_events.js"></script><script src="./js/events/universal_shell/lipalert_events.js"></script><script src="./js/events/universal_shell/mainnav_tabs.js"></script><script src="./js/events/universal_shell/universal_events.js"></script><script src="./js/events/universal_shell/universal_popup_events.js"></script><script src="./js/events/write_page/write_page_events.js"></script><script src="./js/form_functions/form_checks.js"></script><script src="./js/keyserver_functions/keyserver_search.js"></script><script src="./js/keyserver_functions/keyserver_upload.js"></script><script src="./js/main.js"></script><script src="./js/opgp_functions/decrypt_message.js"></script><script src="./js/opgp_functions/encrypt_message.js"></script><script src="./js/opgp_functions/generate_keys.js"></script><script src="./js/opgp_functions/import_keys.js"></script><script src="./js/opgp_functions/sign_message.js"></script><script src="./js/opgp_functions/verify_keys.js"></script><script src="./js/opgp_functions/verify_signature.js"></script><script src="./js/page_functions/copy_to_clipboard.js"></script><script src="./js/page_functions/string_modifiers.js"></script><script src="./js/steganography_functions/steganography_main.js"></script><script src="./js/universal_functions/universal_alert.js"></script><script src="./js/universal_functions/universal_init.js"></script><script src="./js/universal_functions/universal_onload.js"></script><script src="./js/universal_functions/universal_popup_functions.js"></script><script src="./js/universal_functions/universal_show_copied.js"></script></html>

@@ -1,0 +1,26 @@
+<div class="attachments tab-window">
+  <h2>Attach</h2>
+    <section>
+      <h3>Processing type</h3>
+      <div class="attachment-selectors-container">
+        <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked/> Encrypt
+        &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"/> Decrypt
+      </div>
+    </section>
+    <section>
+      <h3>Your attachment <span class="attachment-filename"></span></h3>
+      <a class="label-container button-2 attachment-import-label" href="#"><label for="attachment-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input class="attachment-import" id="attachment-import" type="file">
+      <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
+    </section>
+    <section class="no-margin-section">
+      <div class="attachment-credentials credentials-box disabled">
+        <h3>Your private key passphrase</h3><input class="attachment-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+        <div class="pw-view-toggler checkbox-offset">
+          <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+        </div>
+      </div>
+    </section>
+    <section>
+      <button class="button-1 attachment-process attachment-encrypt" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button><button class="button-2 attachment-view init-disabled" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    </section>
+</div>

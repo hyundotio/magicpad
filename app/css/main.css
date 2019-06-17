@@ -10,6 +10,36 @@ html {
 body {
    -webkit-user-select: none;
 }
+.attachment-stats {
+  line-height: 1.33em;
+  clear: both;
+  padding-top: 0.33em;
+  font-family: 'IBM Plex Mono', monospace;
+}
+.attachment-selectors-container {
+  clear:both;
+}
+.attachment-download {
+  display: block;
+  height: calc(100% - 3em);
+  width: 100%;
+  top: 3em;
+  left: 0;
+  position: absolute;
+  box-sizing: border-box;
+}
+.attachment-download img {
+  position: absolute;
+  bottom: 1em;
+  left: 1em;
+}
+.attachment-download span {
+  font-size:1.5em;
+  line-height:1.25em;
+  font-weight:100;
+  top: -0.25em;
+  position: relative;
+}
 .import-img-msg-container {
 	float:right;
 }
@@ -42,15 +72,15 @@ a.clear-steg-host {
 .sign-toggle:last-of-type {
 	margin-left:0;
 }
-.sign-credentials {
+.credentials-box {
 	transition: opacity 0.2s ease-out, height 0.2s ease-out;
 	height: 7.625em;
 	overflow: hidden;
 }
-.sign-credentials > h3 {
+.credentials-box > h3 {
 	margin-top:1.5em;
 }
-.sign-credentials.disabled {
+.credentials-box.disabled {
 	height:0;
 	opacity: 0.5;
 }
@@ -182,6 +212,7 @@ select:focus {
 }
 input[type="radio"] {
 	margin:0;
+	cursor:pointer;
 	-moz-appearance:none;
 	-webkit-appearance:none;
 	-ms-appearance:none;
@@ -489,7 +520,7 @@ a.big-button-third:last-child {
 	position: relative;
 	z-index: 1;
 	display: block;
-	min-width: 4.5em;
+	min-width: 3.5em;
 	padding: 1em;
 }
 .icon-button {
@@ -1074,7 +1105,35 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 		transform: rotate(360deg);
 	}
 }
-@media only screen and (max-width: 478px) {
+@media only screen and (max-width: 512px) {
+	.mobile-menu {
+		display:inline-block;
+	}
+	.main-nav ul {
+		position: fixed;
+		top: 3em;
+		background-color: #121212;
+		left: -18.5em;
+		margin: 0;
+		height: 100%;
+		transition:left 0.2s ease-out;
+	}
+	.main-nav.mobile-active ul{
+		left:0;
+	}
+	.main-nav ul li {
+		width: 18em;
+	}
+	.main-nav ul li {
+		float:none;
+	}
+	.main-nav ul li:last-of-type {
+		position:relative;
+		right:initial;
+		text-align: inherit;
+	}
+}
+@media only screen and (max-width: 420px) {
 	.popup {
 		position:absolute;
 		width:100%;
@@ -1124,21 +1183,6 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	.big-button-third-half span {
 		margin: -0.2em 0 3.625em 0;
 	}
-	.mobile-menu {
-		display:inline-block;
-	}
-	.main-nav ul {
-		position: fixed;
-		top: 3em;
-		background-color: #121212;
-		left: -18.5em;
-		margin: 0;
-		height: 100%;
-		transition:left 0.2s ease-out;
-	}
-	.main-nav.mobile-active ul{
-		left:0;
-	}
 	.tab.active {
 		font-weight:600;
 	}
@@ -1154,17 +1198,6 @@ body.cursor-loading, body.loading, body.loading input, body.loading textarea {
 	}
 	.tutorial-pages {
 		width:100%;
-	}
-	.main-nav ul li {
-		width: 18em;
-	}
-	.main-nav ul li {
-		float:none;
-	}
-	.main-nav ul li:last-of-type {
-		position:relative;
-		right:initial;
-		text-align: inherit;
 	}
 	.fingerprint-str {
 		display:inline-block;
