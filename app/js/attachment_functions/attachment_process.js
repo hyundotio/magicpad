@@ -18,12 +18,14 @@ function encryptAttachment(){
 						  type: 'application/octet-stream'
 						});
 						let url = URL.createObjectURL(blob);
-						$('.attachment-download').attr('href',url).attr('download',('encrypted_'+getFilename($('.attachment-import').val())));
+						session.lastEncFile = url;
+						session.lastEncFilename = 'encrypted_' + getFilename($('.attachment-import').val());
+						session.lastEncFileSigned = false;
+						$('.attachment-download').attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
 						session.running = false;
 						$body.removeClass('loading');
 						$('.popup-filter').addClass('active');
 						$('.attachment-window').addClass('active').find('.window-title').find('span').text('Encrypted attachment');
-						$('.attachment-download').find('span').html('Download<br>encrypted file');
 						$('.attachment-view').removeAttr('disabled');
 					}).catch(function(e){
 						session.running = false;
@@ -69,12 +71,13 @@ function decryptAttachment(){
 									  type: 'application/octet-stream'
 									});
 									let url = URL.createObjectURL(blob);
-									$('.attachment-download').attr('href',url).attr('download',('decrypted_'+getFilename($('.attachment-import').val())));
+									session.lastDecFile = url;
+									session.lastDecFilename = 'decrypted_' + getFilename($('.attachment-import').val());
+									$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
 									session.running = false;
 									$body.removeClass('loading');
 									$('.attachment-window').addClass('active').find('.window-title').find('span').text('Decrypted attachment');
 									$('.popup-filter').addClass('active');
-									$('.attachment-download').find('span').html('Download<br>decrypted file');
 									$('.attachment-view').removeAttr('disabled');
 								}).catch(function(e){
 									session.running = false;

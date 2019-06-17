@@ -11,6 +11,11 @@ let session = {
 	lastDecStatus: '',
 	lastEncStatus: '',
 	lastEncPaste: '',
+	lastEncFile:'',
+	lastDecFile:'',
+	lastDecFilename:'',
+	lastEncFileType:'',
+	lastEncFilename:'',
 	keyToUploadFile:'',
 	searchedKey:''
 }
