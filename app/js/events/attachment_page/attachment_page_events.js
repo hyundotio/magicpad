@@ -56,3 +56,14 @@ $('.attachment-view').bind('click',function(){
     $('.attachment-window').addClass('active');
   }
 })
+
+//
+$('.attachment-download').bind('click',function(e){
+  let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+  if(iOS){
+    e.preventDefault();
+    setTimeout(function(){
+        window.open($(this).attr('href'));
+    }, 500);
+  }
+})
