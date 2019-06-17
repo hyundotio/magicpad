@@ -2,9 +2,6 @@ const url = require('url');
 const path = require('path');
 const {app, BrowserWindow, Menu} = require('electron');
 const contextMenu = require('electron-context-menu');
-const buildMagicpadIndex = require('./build_magicpad_index');
-
-buildMagicpadIndex.build();
 
 let mainWindow;
 contextMenu({
