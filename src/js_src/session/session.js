@@ -1,0 +1,21 @@
+let session = {
+	privKey: '',
+	pubKey: '',
+	generatedPubKey:'',
+	generatedPrivKey:'',
+	generatedRevKey:'',
+	pubKeyFingerprint: '',
+	running: false,
+	lastDec: '',
+	lastEnc: '',
+	lastDecStatus: '',
+	lastEncStatus: '',
+	lastEncPaste: '',
+	lastEncFile:'',
+	lastDecFile:'',
+	lastDecFilename:'',
+	lastEncFileType:'',
+	lastEncFilename:'',
+	keyToUploadFile:'',
+	searchedKey:''
+}

@@ -15,6 +15,7 @@ npm i magicpad
 npm install
 npm run dist
 ```
+To create only compiled html without running electron, run: `node build_magicpad_index.js`
 If building from Ubuntu, run this first:
 ```
 sudo apt-get install rpm
@@ -39,7 +40,7 @@ In the build procedure, the following happens:
 
 Software used:
 1. Node.js
-2. url, path, fs-extra, and jsdom packages
+2. url, path, fs-extra, ncp, and jsdom packages
 3. Electron, Electron Context Menu, and Electron builder
 4. Openpgp.js
 5. Steganography.js

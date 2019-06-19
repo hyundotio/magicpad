@@ -23,7 +23,7 @@
     "productName": "MagicPad",
     "appId": "scripter.MagicPad",
     "mac": {
-      "icon": "./icons_src/icons/icons.icns",
+      "icon": "./src/icons_src/icons/icons.icns",
       "category": "public.app-category.productivity",
       "target": [
         "zip"
@@ -31,7 +31,7 @@
     },
     "linux": {
       "executableName": "MagicPad",
-      "icon": "./icons_src/icons/icons.icns",
+      "icon": "./src/icons_src/icons/icons.icns",
       "category": "Utility",
       "description": "Text encryption tool",
       "packageCategory": "Utility",
@@ -42,7 +42,7 @@
       ]
     },
     "win": {
-      "icon": "./icons_src/icons/1024x1024.png",
+      "icon": "./src/icons_src/icons/1024x1024.png",
       "target": [
         "portable"
       ]
@@ -61,10 +61,10 @@
   "homepage": "https://github.com/hyundotio/magicpad#readme",
   "dependencies": {
     "electron-context-menu": "^0.12.1",
-    "fs": "0.0.1-security",
     "fs-extra": "^8.0.1",
     "jquery": "^3.4.1",
     "jsdom": "^15.1.1",
+    "ncp": "^2.0.0",
     "path": "^0.12.7"
   }
 }

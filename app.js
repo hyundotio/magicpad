@@ -16,7 +16,7 @@ app.on('ready',function(){
     width:660,
     'backgroundColor': '#FFFFFF',
     title:'MagicPad',
-    icon: __dirname +  '/icons_src/icons/appicon.icns'
+    icon: __dirname +  '/src/icons_src/icons/appicon.icns'
   });
   mainWindow.setMenuBarVisibility(false)
   mainWindow.loadURL(url.format({
