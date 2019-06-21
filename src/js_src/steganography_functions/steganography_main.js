@@ -15,7 +15,7 @@ const createStegKey = function(input,type,str){
 			imgContext.drawImage(loadedImg, 0, 0, loadedImg.width, loadedImg.height);
 			imgContext.font = '11px IBM Plex Mono';
 			imgContext.fillStyle = '#0062ff';
-			const imgStr = $('.form-email').val().trunc(35);
+			let imgStr = $('.form-email').val().trunc(35);
 			if(type == 'search'){
 				imgStr = $('.searchbox-pubkey').val().trunc(35);
 			}
@@ -51,8 +51,8 @@ const convertStegMsg = function($type){
 	async function main() {
 		try {
 			// Closure to capture the file information.
-			const imgSrc = await resolveLoadFileURL($type).result;
-			const img = await resolveImg(imgSrc);
+			const imgSrc = await resolveLoadFileURL($type);
+			const img = await resolveImg(imgSrc.result);
 			const retrievedMsg = readSteg(img);
 			$(img).remove();
 
@@ -78,9 +78,9 @@ const convertStegMsg = function($type){
 const convertStegKey = function($type){
 	async function main() {
 		try {
-			const imgSrc = await resolveLoadFileURL($type).result;
-			const img = await resolveImg(imgSrc);
-			let retrievedKey = readSteg(img);
+			const imgSrc = await resolveLoadFileURL($type);
+			const img = await resolveImg(imgSrc.result);
+			const retrievedKey = readSteg(img);
 			$(img).remove();
 			//Also fill in key textArea
 			//Open convereted-key-window;

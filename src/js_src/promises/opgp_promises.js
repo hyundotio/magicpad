@@ -11,12 +11,13 @@ const resolveImg = function(src){
 }
 
 //promise wrapper for importing steg file
+/*
 const resolveLoadFileDataURL = function($type){
 	return new Promise(resolve => {
 		 const file = $type[0].files[0];
 		 let reader = new FileReader();
 		 reader.onload = function(e){
-			 let returnObj = {
+			 const returnObj = {
 				 reader : reader,
 				 file : file
 			 }
@@ -25,16 +26,18 @@ const resolveLoadFileDataURL = function($type){
 		 reader.readAsDataURL(file);
 	})
 }
+*/
 
 //promise wrapper for decrypting attachment
-const resolveLoadFileText = function(file){
+const resolveLoadFileText = function($type){
+	const file = $type[0].files[0];
 	return new Promise(resolve => {
 		let reader = new FileReader();
 		reader.onload = function(){
 			resolve(reader.result);
 		}
+		reader.readAsText(file);
 	})
-	reader.readAsText(file);
 }
 
 //promise wrapper for encrypting attachment
@@ -44,36 +47,41 @@ const resolveLoadFileBuffer = function(file){
 		reader.onload = function(){
 			resolve(reader.result);
 		}
+		reader.readAsArrayBuffer(file);
 	})
 }
 
 //promise wrapper for importing steg key file
-const resolveLoadFileURLzzz=[p-0l] = function($type){
+const resolveLoadFileURL = function($type){
 	return new Promise(resolve => {
 		 const file = $type[0].files[0];
 		 let reader = new FileReader();
 		 reader.onload = function(e){
-			 let returnObj = function(){
+			 const result = e.target.result;
+			 const returnObj = {
 				 file : file,
-				 result : e.target.result
+				 reader : reader,
+				 result : result
 			 }
 			 resolve(returnObj);
 		 }
-		 reader.readAsURL(file);
+		 reader.readAsDataURL(file);
 	})
 }
 
 //promise wrapper for uploading key
-const resolveUploadKey = function(key){
+const resolveUploadKey = function(key,server){
 	return new Promise(resolve => {
+		const hkp = new openpgp.HKP(server);
 		const uploadKeyResolve = hkp.upload(key);
 		resolve(uploadKeyResolve);
 	})
 }
 
 //promise wrapper for searching key
-const resolveSearchKey = function(query){
+const resolveSearchKey = function(query,server){
 	return new Promise(resolve => {
+		const hkp = new openpgp.HKP(server);
 		const searchKeyResolve = hkp.lookup({ query: query });
 		resolve(searchKeyResolve);
 	})

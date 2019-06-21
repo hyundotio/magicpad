@@ -33,12 +33,13 @@ const resolveImg = function(src){
 }
 
 //promise wrapper for importing steg file
+/*
 const resolveLoadFileDataURL = function($type){
 	return new Promise(resolve => {
 		 const file = $type[0].files[0];
 		 let reader = new FileReader();
 		 reader.onload = function(e){
-			 let returnObj = {
+			 const returnObj = {
 				 reader : reader,
 				 file : file
 			 }
@@ -47,16 +48,18 @@ const resolveLoadFileDataURL = function($type){
 		 reader.readAsDataURL(file);
 	})
 }
+*/
 
 //promise wrapper for decrypting attachment
-const resolveLoadFileText = function(file){
+const resolveLoadFileText = function($type){
+	const file = $type[0].files[0];
 	return new Promise(resolve => {
 		let reader = new FileReader();
 		reader.onload = function(){
 			resolve(reader.result);
 		}
+		reader.readAsText(file);
 	})
-	reader.readAsText(file);
 }
 
 //promise wrapper for encrypting attachment
@@ -66,32 +69,41 @@ const resolveLoadFileBuffer = function(file){
 		reader.onload = function(){
 			resolve(reader.result);
 		}
+		reader.readAsArrayBuffer(file);
 	})
 }
 
 //promise wrapper for importing steg key file
-const resolveFileSteg = function($type){
+const resolveLoadFileURL = function($type){
 	return new Promise(resolve => {
 		 const file = $type[0].files[0];
 		 let reader = new FileReader();
 		 reader.onload = function(e){
-			 resolve(e.target.result);
+			 const result = e.target.result;
+			 const returnObj = {
+				 file : file,
+				 reader : reader,
+				 result : result
+			 }
+			 resolve(returnObj);
 		 }
-		 reader.readAsURL(file);
+		 reader.readAsDataURL(file);
 	})
 }
 
 //promise wrapper for uploading key
-const resolveUploadKey = function(key){
+const resolveUploadKey = function(key,server){
 	return new Promise(resolve => {
+		const hkp = new openpgp.HKP(server);
 		const uploadKeyResolve = hkp.upload(key);
 		resolve(uploadKeyResolve);
 	})
 }
 
 //promise wrapper for searching key
-const resolveSearchKey = function(query){
+const resolveSearchKey = function(query,server){
 	return new Promise(resolve => {
+		const hkp = new openpgp.HKP(server);
 		const searchKeyResolve = hkp.lookup({ query: query });
 		resolve(searchKeyResolve);
 	})
@@ -199,11 +211,11 @@ const resolveGenKey = function(options){
 const attachmentFilename = function($type) {
 	async function main() {
 		try {
-			const attachment = await resolveLoadFileDataURL($type);
+			const attachment = await resolveLoadFileURL($type);
 			let $filenameEl = $('.attachment-filename');
 			const filename = getFilename($type.val());
 			$filenameEl.text(' - ' + filename);
-			$('.attachment-size').text('File size: '+bytesToSize(attachment.size));
+			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.size));
 			$('.attachment-import-label').find('span').text('Reselect file');
 		} catch(e) {
 			$type.val('');
@@ -483,20 +495,20 @@ const readFormCheck = function() {
 const lookupKey = function(query,server) {
   //console.log(query)
 	async function main() {
+		let $searchResults = $('.search-results');
+		let $searchStatus = $('.search-status');
+		$searchStatus.text('Searching...');
+		let server = $('.search-key-server-list').val();
+		if (location.protocol == "https:") {
+			server = location.protocol + server
+		} else {
+			server = 'http:'+server
+		}
 		try {
-			let $searchResults = $('.search-results');
-			let $searchStatus = $('.search-status');
-			$searchStatus.text('Searching...');
-			if (location.protocol == "https:") {
-			  server = location.protocol + server
-			} else {
-				server = 'http:'+server
-			}
-			const hkp = new openpgp.HKP(server);
-			const hkpLookup = await resolveSearchKey(query);
+			const hkpLookup = await resolveSearchKey(query,server);
 			if(hkpLookup != undefined){
 				if(hkpLookup.length > 0){
-					session.searchedKey = keys.trim();
+					session.searchedKey = hkpLookup.trim();
 					const searchedKey = await resolvePubKey(session.searchedKey);
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
@@ -518,7 +530,7 @@ const lookupKey = function(query,server) {
 	}
 	main();
 /*
-		new Promise((resolve, reject) => {
+		ndew Promise((resolve, reject) => {
 			hkp.lookup({ query: query }).then(function(keys) {
 				if(keys != undefined){
 					if (keys.length > 0){
@@ -564,11 +576,17 @@ const uploadKey = function(type){
 		if(type !== 'import'){
 				session.keyToUploadFile = $('.pubkey-upload-input').val();
 		}
-		$('.upload-progress').addClass('active').find('span').text('Uploading key...');
-		if(testPubKey(session.keyToUploadFile)){
+		let $uploadProgress = $('.upload-progress');
+		$uploadProgress.addClass('active').find('span').text('Uploading key...');
+		let server = $('.upload-key-server-list').val();
+		if (location.protocol == "https:") {
+			server = location.protocol + server
+		} else {
+			server = 'http:'+server
+		}
+		if(testPubKey(session.keyToUploadFile, server)){
 			async function main() {
 				try {
-					const hkp = new openpgp.HKP($('.upload-key-server-list').val());
 					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
 					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
@@ -580,10 +598,10 @@ const uploadKey = function(type){
 						$('.import-upload-link').addClass('active').attr('href',downloadLink);
 						//import
 					}
-					$('.upload-progress').removeClass('active').find('span').text('Upload complete');
+					$uploadProgress.removeClass('active').find('span').text('Upload complete');
 					session.running = false;
 				} catch(e) {
-					$('.upload-progress').removeClass('active').find('span').text('Upload failed');
+					$uploadProgress.removeClass('active').find('span').text('Upload failed');
 					lipAlert(e);
 					session.running = false;
 				}
@@ -632,19 +650,20 @@ const decryptMessage = function() {
 				session.running = true;
 				const $body = $('body');
 				session.lastEncPaste = $('.text-read').val();
-				const privKeyObj = await resolvePrivKey(session.privKey).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
-				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
+				const decryptPrivKey = (await resolveDecKey(privKeyObj,$('.text-read-passphrase').val())).keys;
+				const pbKeyObj = await resolvePubKey(session.pubKey);
 				const msg = await resolveDecMsgPrep(session.lastEncPaste);
+				console.log(msg);
 				const options = {
 					message: msg,
-					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
 				const plaintext = await resolveDecMsg(options);
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;
+				console.log(session.lastDec);
 				if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 					verifySignature();
 				} else {
@@ -740,19 +759,20 @@ const encryptMessage = function(msg, signedToggle) {
 		async function main() {
 		  try {
 				const $stgHost = $('.stg-host');
-				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				const pbKeyObj = await resolvePubKey(session.pubKey);
 				const opgpMsg = await resolveTextMsg(msg);
-				let options, cleartext, validity;
-				options = {
+				console.log(pbKeyObj);
+				console.log(opgpMsg);
+				const options = {
 					message: opgpMsg, // input as Message object
-					publicKeys: pbKeyObj
+					publicKeys: pbKeyObj.keys
 				}
 				const ciphertext = await resolveEncMsg(options);
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
-					const stegSrc = await resolveFileSteg($stgHost[0].files[0]);
-					const newImg = await resolveImg(stegSrc);
+					const stegSrc = await resolveLoadFileURL($stgHost)
+					const newImg = await resolveImg(stegSrc.result);
 					const imgCanvas = document.createElement("canvas");
 					let imgContext = imgCanvas.getContext("2d");
 					imgContext.canvas.width = newImg.width;
@@ -958,7 +978,7 @@ const keyImportProcess = function($type,result){
 //Input key filename when selected
 const writeKeyStatus = function(pasted) {
 	let filename;
-	const pubImport = $('.key-pub-import').val();
+	let pubImport = $('.key-pub-import').val();
  	const privImport = $('.key-priv-import').val();
 	if(pasted){
 		pubImport = 'pasted key'
@@ -977,21 +997,23 @@ const writeKeyStatus = function(pasted) {
 const keyImport = function($type){
 	async function main() {
 		try {
-			const selectedFile = await resolveFileSteg($type); //reuse function to get url
+			const selectedFile = await resolveLoadFileURL($type); //reuse function to get url
 			if($.inArray(selectedFile.file['type'], ['image/png']) > -1){
 				//reader.readAsDataURL(file);
-				const img = await resolveLoadFileDataURL($type);
+				const img = await resolveImg(selectedFile.result);
 				const result = readSteg(img);
+				console.log(result);
 				$(img).remove();
 				keyImportProcess($type,result);
 			} else {
 				//reader.readAsText(file);
 				const loadedFile = await resolveLoadFileText($type);
-				keyImportProcess($type,loadedFile.reader.result);
+				console.log(loadedFile);
+				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert('Cannot read imported key.');
+			lipAlert(e);
 		}
 	}
 	main();
@@ -1051,8 +1073,8 @@ const importPubKey = function(type) {
 			} else {
 				writeKeyStatus();
 			}
-	  } catch (error) {
-	    lipAlert('The public key cannot be read. It may be corrupted.');
+	  } catch (e) {
+	    lipAlert(e);
 	  }
 	}
 	main();
@@ -1065,13 +1087,16 @@ const signMessage = function() {
 		let $body = $('body');
 		async function main() {
 			try {
-				const privKey = resolvePrivKey(session.privKey).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
+				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
+				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-write-passphrase').val());
 				const options = {
 					message: openpgp.cleartext.fromText($('.text-write').val()),
 					privateKeys: [privKeyObj]
 				};
 				const signMsg = await resolveSignMsg(options);
+				const cleartext = signMsg.data.trim();
+				session.running = false;
+				encryptMessage(signMsg);
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
@@ -1152,8 +1177,8 @@ const verifySignature = function() {
 		async function main() {
 			try {
 				let $body = $('body');
-				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
-				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
+				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
+				const msg = await resolveVerifyMsgPrep(session.lastDec);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
@@ -1305,7 +1330,7 @@ const createStegKey = function(input,type,str){
 			imgContext.drawImage(loadedImg, 0, 0, loadedImg.width, loadedImg.height);
 			imgContext.font = '11px IBM Plex Mono';
 			imgContext.fillStyle = '#0062ff';
-			const imgStr = $('.form-email').val().trunc(35);
+			let imgStr = $('.form-email').val().trunc(35);
 			if(type == 'search'){
 				imgStr = $('.searchbox-pubkey').val().trunc(35);
 			}
@@ -1341,8 +1366,8 @@ const convertStegMsg = function($type){
 	async function main() {
 		try {
 			// Closure to capture the file information.
-			const imgSrc = await resolveFileSteg($type);
-			const img = await resolveImg(imgSrc);
+			const imgSrc = await resolveLoadFileURL($type);
+			const img = await resolveImg(imgSrc.result);
 			const retrievedMsg = readSteg(img);
 			$(img).remove();
 
@@ -1368,9 +1393,9 @@ const convertStegMsg = function($type){
 const convertStegKey = function($type){
 	async function main() {
 		try {
-			const imgSrc = await resolveFileSteg($type);
-			const img = await resolveImg(imgSrc);
-			let retrievedKey = readSteg(img);
+			const imgSrc = await resolveLoadFileURL($type);
+			const img = await resolveImg(imgSrc.result);
+			const retrievedKey = readSteg(img);
 			$(img).remove();
 			//Also fill in key textArea
 			//Open convereted-key-window;

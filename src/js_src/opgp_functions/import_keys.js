@@ -30,7 +30,7 @@ const keyImportProcess = function($type,result){
 //Input key filename when selected
 const writeKeyStatus = function(pasted) {
 	let filename;
-	const pubImport = $('.key-pub-import').val();
+	let pubImport = $('.key-pub-import').val();
  	const privImport = $('.key-priv-import').val();
 	if(pasted){
 		pubImport = 'pasted key'
@@ -52,18 +52,20 @@ const keyImport = function($type){
 			const selectedFile = await resolveLoadFileURL($type); //reuse function to get url
 			if($.inArray(selectedFile.file['type'], ['image/png']) > -1){
 				//reader.readAsDataURL(file);
-				const img = await resolveLoadFileDataURL($type);
+				const img = await resolveImg(selectedFile.result);
 				const result = readSteg(img);
+				console.log(result);
 				$(img).remove();
 				keyImportProcess($type,result);
 			} else {
 				//reader.readAsText(file);
 				const loadedFile = await resolveLoadFileText($type);
-				keyImportProcess($type,loadedFile.reader.result);
+				console.log(loadedFile);
+				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert('Cannot read imported key.');
+			lipAlert(e);
 		}
 	}
 	main();
@@ -123,8 +125,8 @@ const importPubKey = function(type) {
 			} else {
 				writeKeyStatus();
 			}
-	  } catch (error) {
-	    lipAlert('The public key cannot be read. It may be corrupted.');
+	  } catch (e) {
+	    lipAlert(e);
 	  }
 	}
 	main();

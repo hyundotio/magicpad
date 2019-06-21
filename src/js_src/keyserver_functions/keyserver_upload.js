@@ -5,11 +5,17 @@ const uploadKey = function(type){
 		if(type !== 'import'){
 				session.keyToUploadFile = $('.pubkey-upload-input').val();
 		}
-		$('.upload-progress').addClass('active').find('span').text('Uploading key...');
-		if(testPubKey(session.keyToUploadFile)){
+		let $uploadProgress = $('.upload-progress');
+		$uploadProgress.addClass('active').find('span').text('Uploading key...');
+		let server = $('.upload-key-server-list').val();
+		if (location.protocol == "https:") {
+			server = location.protocol + server
+		} else {
+			server = 'http:'+server
+		}
+		if(testPubKey(session.keyToUploadFile, server)){
 			async function main() {
 				try {
-					const hkp = new openpgp.HKP($('.upload-key-server-list').val());
 					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
 					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
@@ -21,10 +27,10 @@ const uploadKey = function(type){
 						$('.import-upload-link').addClass('active').attr('href',downloadLink);
 						//import
 					}
-					$('.upload-progress').removeClass('active').find('span').text('Upload complete');
+					$uploadProgress.removeClass('active').find('span').text('Upload complete');
 					session.running = false;
 				} catch(e) {
-					$('.upload-progress').removeClass('active').find('span').text('Upload failed');
+					$uploadProgress.removeClass('active').find('span').text('Upload failed');
 					lipAlert(e);
 					session.running = false;
 				}

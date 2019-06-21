@@ -2,20 +2,20 @@
 const lookupKey = function(query,server) {
   //console.log(query)
 	async function main() {
+		let $searchResults = $('.search-results');
+		let $searchStatus = $('.search-status');
+		$searchStatus.text('Searching...');
+		let server = $('.search-key-server-list').val();
+		if (location.protocol == "https:") {
+			server = location.protocol + server
+		} else {
+			server = 'http:'+server
+		}
 		try {
-			let $searchResults = $('.search-results');
-			let $searchStatus = $('.search-status');
-			$searchStatus.text('Searching...');
-			if (location.protocol == "https:") {
-			  server = location.protocol + server
-			} else {
-				server = 'http:'+server
-			}
-			const hkp = new openpgp.HKP(server);
-			const hkpLookup = await resolveSearchKey(query);
+			const hkpLookup = await resolveSearchKey(query,server);
 			if(hkpLookup != undefined){
 				if(hkpLookup.length > 0){
-					session.searchedKey = keys.trim();
+					session.searchedKey = hkpLookup.trim();
 					const searchedKey = await resolvePubKey(session.searchedKey);
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
@@ -37,7 +37,7 @@ const lookupKey = function(query,server) {
 	}
 	main();
 /*
-		new Promise((resolve, reject) => {
+		ndew Promise((resolve, reject) => {
 			hkp.lookup({ query: query }).then(function(keys) {
 				if(keys != undefined){
 					if (keys.length > 0){

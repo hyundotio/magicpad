@@ -36,19 +36,20 @@ const encryptMessage = function(msg, signedToggle) {
 		async function main() {
 		  try {
 				const $stgHost = $('.stg-host');
-				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				const pbKeyObj = await resolvePubKey(session.pubKey);
 				const opgpMsg = await resolveTextMsg(msg);
-				let options, cleartext, validity;
-				options = {
+				console.log(pbKeyObj);
+				console.log(opgpMsg);
+				const options = {
 					message: opgpMsg, // input as Message object
-					publicKeys: pbKeyObj
+					publicKeys: pbKeyObj.keys
 				}
 				const ciphertext = await resolveEncMsg(options);
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
-					const stegSrc = await resolveLoadFileURL($stgHost[0].files[0]).result;
-					const newImg = await resolveImg(stegSrc);
+					const stegSrc = await resolveLoadFileURL($stgHost)
+					const newImg = await resolveImg(stegSrc.result);
 					const imgCanvas = document.createElement("canvas");
 					let imgContext = imgCanvas.getContext("2d");
 					imgContext.canvas.width = newImg.width;

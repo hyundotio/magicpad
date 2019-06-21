@@ -5,8 +5,8 @@ const verifySignature = function() {
 		async function main() {
 			try {
 				let $body = $('body');
-				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
-				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
+				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
+				const msg = await resolveVerifyMsgPrep(session.lastDec);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
