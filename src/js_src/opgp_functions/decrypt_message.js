@@ -1,38 +1,43 @@
 //Decrypt messages
 const decryptMessage = function() {
 	if (!session.running) {
-		session.running = true;
-		let privKeyObj;
-		let pbKeyObj;
-		let parsedMsg;
-		let $body = $('body');
-		session.lastEncPaste = $('.text-read').val();
-		openpgp.key.readArmored(session.privKey).then(pvKeys => {
-			privKeyObj = pvKeys.keys[0];
-			privKeyObj.decrypt($('.text-read-passphrase').val()).then(output => {
-				openpgp.key.readArmored(session.pubKey).then(pbKeys => {
-					pbKeyObj = pbKeys.keys;
-					openpgp.message.readArmored(session.lastEncPaste).then(msg => {
-						let options = {
-							message: msg,
-							publicKeys: pbKeyObj,
-							privateKeys: [privKeyObj]
-						}
-						openpgp.decrypt(options).then(plaintext => {
-							let $processedAside = $('.processed-aside');
-							session.lastDec = plaintext;
-							session.running = false;
-							if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
-								verifySignature();
-							} else {
-								$body.removeClass('loading');
-								session.lastDecStatus = 'Message decrypted.';
-								$processedAside.text(session.lastDecStatus);
-								$('.view-message-decrypted').removeAttr('disabled');
-								session.running = false;
-								viewDecMsg();
-							}
-						}).catch(function(e) {
+		async function main() {
+		  try {
+				session.running = true;
+				const $body = $('body');
+				session.lastEncPaste = $('.text-read').val();
+				const privKeyObj = await resolvePrivKey(session.privKey).keys[0];
+				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
+				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				const msg = await resolveDecMsgPrep(session.lastEncPaste);
+				const options = {
+					message: msg,
+					publicKeys: pbKeyObj,
+					privateKeys: [privKeyObj]
+				}
+				const plaintext = await resolveDecMsg(options);
+				const $processedAside = $('.processed-aside');
+				session.lastDec = plaintext;
+				session.running = false;
+				if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
+					verifySignature();
+				} else {
+					$body.removeClass('loading');
+					session.lastDecStatus = 'Message decrypted.';
+					$processedAside.text(session.lastDecStatus);
+					$('.view-message-decrypted').removeAttr('disabled');
+					session.running = false;
+					viewDecMsg();
+				}
+			} catch (e) {
+			  console.error(e);
+			}
+		}
+		main();
+	}
+}
+/*
+}).catch(function(e) {
 							session.running = false;
 							lipAlert('Cannot decrypt message. Try a different private key.');
 							$body.removeClass('loading');
@@ -48,17 +53,16 @@ const decryptMessage = function() {
 					$body.removeClass('loading');
 				});
 			}).catch(function(e) {
-				session.running = false;
-				lipAlert('The private key passphrase is incorrect.');
-				$body.removeClass('loading');
-			});
-		}).catch(function(e) {
 			session.running = false;
-			lipAlert('The private key cannot be read. It may be corrupted.');
+			lipAlert('The private key passphrase is incorrect.');
 			$body.removeClass('loading');
 		});
-	}
-}
+	}).catch(function(e) {
+		session.running = false;
+		lipAlert('The private key cannot be read. It may be corrupted.');
+		$body.removeClass('loading');
+	});
+				*/
 
 //View decrypted message
 const viewDecMsg = function() {

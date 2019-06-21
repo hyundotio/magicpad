@@ -1,6 +1,6 @@
 //initialize application
 const init = function() {
-	let $onlineFlag = $('.online-flag');
+	 $onlineFlag = $('.online-flag');
 	if (window.navigator.onLine) {
 		$onlineFlag.addClass('active');
 	} else {
@@ -27,9 +27,9 @@ const init = function() {
 	attachmentFormcheck();
 	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	setTimeout(function () {
-      let viewheight = $(window).height();
-      let viewwidth = $(window).width();
-      let viewport = document.querySelector("meta[name=viewport]");
+      const viewheight = $(window).height();
+      const viewwidth = $(window).width();
+      const viewport = document.querySelector("meta[name=viewport]");
       viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0, user-scalable=0, maximum-scale=1");
   }, 300);
 }

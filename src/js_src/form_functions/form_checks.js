@@ -34,14 +34,15 @@ const newKeyFormCheck = function(){
 //Checks for form in the Write tab
 const writeFormCheck = function() {
 	let $encryptMessage = $('.encrypt-message');
+	let $textWrite = $('.text-write');
 	if ($encryptMessage.hasClass('sign-enabled')) {
-		if ($('.text-write').val().length > 0 && $('.text-write-passphrase').val().length > 0 && session.privKey.length > 0 && session.pubKey.length > 0) {
+		if ($textWrite.val().length > 0 && $('.text-write-passphrase').val().length > 0 && session.privKey.length > 0 && session.pubKey.length > 0) {
 			$encryptMessage.removeAttr('disabled');
 		} else {
 			$encryptMessage.attr('disabled', 'disabled');
 		}
 	} else {
-		if ($('.text-write').val().length > 0 && session.pubKey.length > 0) {
+		if ($textWrite.val().length > 0 && session.pubKey.length > 0) {
 			$encryptMessage.removeAttr('disabled');
 		} else {
 			$encryptMessage.attr('disabled', 'disabled');

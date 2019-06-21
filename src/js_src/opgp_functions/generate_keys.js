@@ -2,9 +2,10 @@
 const generateKeys = function() {
 	if (!session.running) {
 		session.running = true;
+		let $body = $('body');
     $('.create-key-progress').addClass('active').find('span').text('Generating keys...');
-		$('body').addClass('cursor-loading');
-		let options = {
+		$body.addClass('cursor-loading');
+		const options = {
 			userIds: [{
 				name: ($('.form-name').val()),
 				email: ($('.form-email').val())
@@ -12,19 +13,23 @@ const generateKeys = function() {
 			numBits: 4096,
 			passphrase: ($('.form-passphrase').val())
 		}
-		openpgp.generateKey(options).then(key => {
-			session.generatedPrivKey = key.privateKeyArmored.trim();
-			session.generatedPubKey = key.publicKeyArmored.trim();
-			session.generatedRevKey = key.revocationCertificate.trim();
-			createStegKey('./ui/privatekeyreference.jpg','private',session.generatedPrivKey);
-			createStegKey('./ui/publickeyreference.jpg','public',session.generatedPubKey);
-			keyReady();
-		}).catch(function(e) {
-			session.running = false;
-			$('body').removeClass('cursor-loading');
-			lipAlert('Keys could not be generated. Please try again.');
-			newKeyReset();
-		});
+		async function main() {
+			try {
+				const generateKey = await resolveGenKey(options);
+				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
+				session.generatedPubKey = generateKey.publicKeyArmored.trim();
+				session.generatedRevKey = generateKey.revocationCertificate.trim();
+				createStegKey('./ui/privatekeyreference.jpg','private',session.generatedPrivKey);
+				createStegKey('./ui/publickeyreference.jpg','public',session.generatedPubKey);
+				keyReady();
+			} catch(e) {
+				session.running = false;
+				$body.removeClass('cursor-loading');
+				lipAlert('Keys could not be generated. Please try again.');
+				newKeyReset();
+			}
+		}
+		main();
 	}
 }
 

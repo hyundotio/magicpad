@@ -1,6 +1,6 @@
 //Copy content to Clipboard
 window.Clipboard = (function(window, document, navigator) {
-    var textArea,
+    let textArea,
         copy;
     function isOS() {
         return navigator.userAgent.match(/ipad|iphone/i);
@@ -11,7 +11,7 @@ window.Clipboard = (function(window, document, navigator) {
         document.body.appendChild(textArea);
     }
     function selectText() {
-        var range,
+        let range,
             selection;
         if (isOS()) {
             range = document.createRange();

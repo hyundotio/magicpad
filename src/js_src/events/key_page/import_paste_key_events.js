@@ -1,8 +1,3 @@
-//Checks for file imported by user in Private and Key import buttons
-$('.key-import').change(function() {
-	keyImport($(this))
-})
-
 //import pasted pubkey
 $('.import-pubkey-str').bind('click',function(){
 	if(importPubkeyStr()){

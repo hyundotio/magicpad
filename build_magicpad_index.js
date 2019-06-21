@@ -30,7 +30,14 @@ module.exports = {
     let nav = [];
     let js = [];
     let jsContent = [];
-
+    function removeArrItem(item,arr){
+      for (let i = 0; i < arr.length; i++){
+        if(arr[i].search(item) > 0){
+          arr.splice(i,1);
+        }
+      }
+      return arr
+    }
     function createMainJs(){
       let eventsJs = [];
       let newJs = [];
@@ -43,11 +50,9 @@ module.exports = {
       }
       js = newJs.concat(eventsJs);
       js = js.concat(['src/js_src/universal_functions/universal_onload.js']);
-      for (let i = 0; i < js.length; i++){
-        if(js[i].search('session.js') > 0){
-          js.splice(i,1);
-        }
-      }
+      js = removeArrItem('session.js',js);
+      js = removeArrItem('promises',js);
+      js.unshift('src/js_src/promises/opgp_promises.js');
       js.unshift('src/js_src/session/session.js');
       for (let i = 0; i < js.length; i++){
         jsContent.push(fs.readFileSync(js[i],{encoding:'utf-8'}));

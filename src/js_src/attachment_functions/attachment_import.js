@@ -1,24 +1,27 @@
 //Input key filename when selected
 const attachmentFilename = function($type) {
-	let file = $type[0].files[0];
-	let reader = new FileReader();
-	reader.onload = function(e) {
-		let result;
-		let $filenameEl = $('.attachment-filename');
-		filename = getFilename($type.val());
-		$filenameEl.text(' - ' + filename);
-		$('.attachment-size').text('File size: '+bytesToSize(file.size));
-		$('.attachment-import-label').find('span').text('Reselect file');
+	async function main() {
+		try {
+			const attachment = await resolveLoadFileDataURL($type);
+			let $filenameEl = $('.attachment-filename');
+			const filename = getFilename($type.val());
+			$filenameEl.text(' - ' + filename);
+			$('.attachment-size').text('File size: '+bytesToSize(attachment.size));
+			$('.attachment-import-label').find('span').text('Reselect file');
+		} catch(e) {
+			$type.val('');
+			lipAlert('Failed to load selected file.');
+		}
 	}
-	reader.readAsDataURL(file);
+	main();
 }
 
 //check  form for attachments
 const attachmentFormcheck = function(){
-	let attachmentRadio = $('.attachment-radio:checked').val();
+	const attachmentRadio = $('.attachment-radio:checked').val();
+	const attachmentImport = $('.attachment-import').val();
+	const attachmentPassphrase = $('.attachment-passphrase').val();
 	let $attachmentProcess = $('.attachment-process');
-	let attachmentImport = $('.attachment-import').val();
-	let attachmentPassphrase = $('.attachment-passphrase').val();
 	if(attachmentRadio == 'decrypt'){
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');

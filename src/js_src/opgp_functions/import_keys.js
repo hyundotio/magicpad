@@ -30,8 +30,8 @@ const keyImportProcess = function($type,result){
 //Input key filename when selected
 const writeKeyStatus = function(pasted) {
 	let filename;
-	let pubImport = $('.key-pub-import').val();
-	let privImport = $('.key-priv-import').val();
+	const pubImport = $('.key-pub-import').val();
+ 	const privImport = $('.key-priv-import').val();
 	if(pasted){
 		pubImport = 'pasted key'
 	}
@@ -47,33 +47,32 @@ const writeKeyStatus = function(pasted) {
 
 //read key file when file is selected (pasted public key, selected public key, selected private key) steganography or plain text
 const keyImport = function($type){
-		let file = $type[0].files[0];
-		let reader = new FileReader();
-		reader.onload = function(e) {
-			let result;
-			if($.inArray(file['type'], ['image/png']) > -1){
-				let img = document.createElement('img');
-				img.onload = function(){
-					result = readSteg(img);
-					$(img).remove();
-					keyImportProcess($type,result);
-				}
-				img.src = e.target.result;
+	async function main() {
+		try {
+			const selectedFile = await resolveLoadFileURL($type); //reuse function to get url
+			if($.inArray(selectedFile.file['type'], ['image/png']) > -1){
+				//reader.readAsDataURL(file);
+				const img = await resolveLoadFileDataURL($type);
+				const result = readSteg(img);
+				$(img).remove();
+				keyImportProcess($type,result);
 			} else {
-				keyImportProcess($type,reader.result);
+				//reader.readAsText(file);
+				const loadedFile = await resolveLoadFileText($type);
+				keyImportProcess($type,loadedFile.reader.result);
 			}
+		} catch(e) {
+			$type.val('');
+			lipAlert('Cannot read imported key.');
 		}
-		if ($.inArray(file['type'], ['image/png']) > -1) {
-			reader.readAsDataURL(file);
-		} else {
-			reader.readAsText(file);
-		}
+	}
+	main();
 }
 
 //read public key from pasted button
 const importPubkeyStr = function(){
-	let $pubkeyInput = $('.pubkey-input');
-	let pubKeyPaste = $pubkeyInput.val().trim();
+	const $pubkeyInput = $('.pubkey-input');
+	const pubKeyPaste = $pubkeyInput.val().trim();
 	if (testPubKey(pubKeyPaste)) {
 		session.pubKey = pubKeyPaste;
 		return true
@@ -96,31 +95,37 @@ const importPrivKey = function() {
 //process public key from import
 const importPubKey = function(type) {
 	//$('.fingerprint').text(getFingerprint(pubKey));
-	openpgp.key.readArmored(session.pubKey).then(data => {
-		const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
-		let $pubkeyInputWindow = $('.pubkey-input-window');
-		session.pubKeyFingerprint = buf2hex(buffer);
-		$('.fingerprint').addClass('active');
-		$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
-		if(type == 'paste'){
-			$('.pubkey-input-open').find('span').text('Repaste key');
-			$('.key-pub-import-label').find('span').text('Select key');
-		} else {
-			$('.pubkey-input-open').find('span').text('Paste key');
-			$('.key-pub-import-label').find('span').text('Reimport key');
-		}
-		//$('.view-pub-key').addClass('active');
-		attachmentFormcheck();
-		writeFormCheck();
-		readFormCheck();
-		if($pubkeyInputWindow.hasClass('active')){
-			writeKeyStatus(true);
-			$('.popup-filter').removeClass('active');
-			$pubkeyInputWindow.removeClass('active');
-		} else {
-			writeKeyStatus();
-		}
-	}).catch(function(e){
-		lipAlert('The public key cannot be read. It may be corrupted.');
-	})
+	async function main() {
+	  try {
+	    const pubKeyOutput = await resolvePubKey(session.pubKey);
+			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
+			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
+			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
+			let $pubkeyInputWindow = $('.pubkey-input-window');
+			session.pubKeyFingerprint = buf2hex(buffer);
+			$('.fingerprint').addClass('active');
+			$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
+			if(type == 'paste'){
+				$pubkeyInputOpenText.text('Repaste key');
+				$keyPubImportLabel.text('Select key');
+			} else {
+				$pubkeyInputOpenText.text('Paste key');
+				$keyPubImportLabel.text('Reimport key');
+			}
+			//$('.view-pub-key').addClass('active');
+			attachmentFormcheck();
+			writeFormCheck();
+			readFormCheck();
+			if($pubkeyInputWindow.hasClass('active')){
+				writeKeyStatus(true);
+				$('.popup-filter').removeClass('active');
+				$pubkeyInputWindow.removeClass('active');
+			} else {
+				writeKeyStatus();
+			}
+	  } catch (error) {
+	    lipAlert('The public key cannot be read. It may be corrupted.');
+	  }
+	}
+	main();
 }

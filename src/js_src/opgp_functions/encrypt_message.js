@@ -33,6 +33,58 @@ const encryptMessage = function(msg, signedToggle) {
 	if (!session.running) {
 		session.running = true;
 		let $body = $('body');
+		async function main() {
+		  try {
+				const $stgHost = $('.stg-host');
+				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				const opgpMsg = await resolveTextMsg(msg);
+				let options, cleartext, validity;
+				options = {
+					message: opgpMsg, // input as Message object
+					publicKeys: pbKeyObj
+				}
+				const ciphertext = await resolveEncMsg(options);
+				encrypted = ciphertext.data.trim();
+				session.lastEnc = encrypted;
+				if ($stgHost.val().length > 0){
+					const stegSrc = await resolveLoadFileURL($stgHost[0].files[0]).result;
+					const newImg = await resolveImg(stegSrc);
+					const imgCanvas = document.createElement("canvas");
+					let imgContext = imgCanvas.getContext("2d");
+					imgContext.canvas.width = newImg.width;
+					imgContext.canvas.height = newImg.height;
+					imgContext.fillStyle = '#FFFFFF';
+					imgContext.fillRect(0,0,newImg.width,newImg.height);
+					imgContext.drawImage(newImg, 0, 0, newImg.width, newImg.height);
+					const imgInfom = imgCanvas.toDataURL("image/jpeg", 1.0);
+					const imgConvert = await resolveImg(imgInfom);
+					if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
+						$stgHost.val('');
+						lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
+					} else {
+						createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
+						$(imgCanvas).remove();
+						$(newImg).remove();
+						$(imgConvert).remove();
+						encryptStatus(signedToggle);
+						session.running = false;
+						$body.removeClass('loading');
+						viewEncMsg(true);
+					}
+				} else {
+					encryptStatus(signedToggle);
+					session.running = false;
+					$body.removeClass('loading');
+					viewEncMsg(false);
+				}
+			} catch(e) {
+				session.running = false;
+				$body.removeClass('loading');
+				lipAlert(e);
+			}
+		}
+		main();
+		/*
 		openpgp.key.readArmored(session.pubKey).then(data => {
 			let options, cleartext, validity;
 			options = {
@@ -71,7 +123,6 @@ const encryptMessage = function(msg, signedToggle) {
 								}
 							}
 							imgConvert.src = imgInfom;
-							/*
 							if(parseInt(steg.getHidingCapacity(newImg)) >= session.lastEnc){
 								lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
 							} else {
@@ -81,7 +132,7 @@ const encryptMessage = function(msg, signedToggle) {
 								session.running = false;
 								$body.removeClass('loading');
 								viewEncMsg(true);
-							}*/
+							}
 						}
 						newImg.src = e.target.result;
 					}
@@ -101,6 +152,6 @@ const encryptMessage = function(msg, signedToggle) {
 			session.running = false;
 			$body.removeClass('loading');
 			lipAlert('The public key cannot be read. It may be corrupted.');
-		});
+		});*/
 	}
 }

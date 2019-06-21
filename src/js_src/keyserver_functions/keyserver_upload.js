@@ -7,7 +7,31 @@ const uploadKey = function(type){
 		}
 		$('.upload-progress').addClass('active').find('span').text('Uploading key...');
 		if(testPubKey(session.keyToUploadFile)){
-			let hkp = new openpgp.HKP($('.upload-key-server-list').val());
+			async function main() {
+				try {
+					const hkp = new openpgp.HKP($('.upload-key-server-list').val());
+					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
+					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
+					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
+					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
+					if(type !== 'import'){
+						//paste
+						$('.paste-upload-link').addClass('active').attr('href',downloadLink);
+					} else {
+						$('.import-upload-link').addClass('active').attr('href',downloadLink);
+						//import
+					}
+					$('.upload-progress').removeClass('active').find('span').text('Upload complete');
+					session.running = false;
+				} catch(e) {
+					$('.upload-progress').removeClass('active').find('span').text('Upload failed');
+					lipAlert(e);
+					session.running = false;
+				}
+			}
+			main();
+
+			/*
 			hkp.upload(session.keyToUploadFile).then(function() {
 				//downloadlink
 				openpgp.key.readArmored(session.keyToUploadFile).then(data => {
@@ -32,6 +56,7 @@ const uploadKey = function(type){
 				lipAlert('The public key could not be uploaded. Please try again.');
 				session.running = false;
 			});
+			*/
 		} else {
 			$('.upload-progress').removeClass('active').find('span').text('Upload failed');
 			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
