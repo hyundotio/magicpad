@@ -1,25 +1,24 @@
 //Decrypt messages
 const decryptMessage = function() {
 	if (!session.running) {
+		session.running = true;
+		const $body = $('body');
 		async function main() {
 		  try {
-				session.running = true;
-				const $body = $('body');
 				session.lastEncPaste = $('.text-read').val();
 				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = (await resolveDecKey(privKeyObj,$('.text-read-passphrase').val())).keys;
-				const pbKeyObj = await resolvePubKey(session.pubKey);
+				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
+				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
 				const msg = await resolveDecMsgPrep(session.lastEncPaste);
-				console.log(msg);
 				const options = {
 					message: msg,
+					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
-				const plaintext = await resolveDecMsg(options);
+				const plaintext = (await resolveDecMsg(options));
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;
-				console.log(session.lastDec);
 				if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 					verifySignature();
 				} else {
@@ -31,7 +30,9 @@ const decryptMessage = function() {
 					viewDecMsg();
 				}
 			} catch (e) {
-			  console.error(e);
+				session.running = false;
+				lipAlert(e);
+				$body.removeClass('loading');
 			}
 		}
 		main();

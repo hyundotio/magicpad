@@ -54,13 +54,11 @@ const keyImport = function($type){
 				//reader.readAsDataURL(file);
 				const img = await resolveImg(selectedFile.result);
 				const result = readSteg(img);
-				console.log(result);
 				$(img).remove();
 				keyImportProcess($type,result);
 			} else {
 				//reader.readAsText(file);
 				const loadedFile = await resolveLoadFileText($type);
-				console.log(loadedFile);
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {

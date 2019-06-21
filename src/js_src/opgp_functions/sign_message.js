@@ -14,7 +14,7 @@ const signMessage = function() {
 				const signMsg = await resolveSignMsg(options);
 				const cleartext = signMsg.data.trim();
 				session.running = false;
-				encryptMessage(signMsg);
+				encryptMessage(cleartext);
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');

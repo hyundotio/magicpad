@@ -20,193 +20,6 @@ let session = {
 	searchedKey:''
 }
 
-//promise wrapper for steganography canvas
-const resolveImg = function(src){
-	return new Promise(resolve => {
-		const img = document.createElement('img');
-		img.onload = function(){
-			resolve(img);
-			$(img).remove();
-		}
-		img.src = src;
-	})
-}
-
-//promise wrapper for importing steg file
-/*
-const resolveLoadFileDataURL = function($type){
-	return new Promise(resolve => {
-		 const file = $type[0].files[0];
-		 let reader = new FileReader();
-		 reader.onload = function(e){
-			 const returnObj = {
-				 reader : reader,
-				 file : file
-			 }
-			 resolve(returnObj);
-		 }
-		 reader.readAsDataURL(file);
-	})
-}
-*/
-
-//promise wrapper for decrypting attachment
-const resolveLoadFileText = function($type){
-	const file = $type[0].files[0];
-	return new Promise(resolve => {
-		let reader = new FileReader();
-		reader.onload = function(){
-			resolve(reader.result);
-		}
-		reader.readAsText(file);
-	})
-}
-
-//promise wrapper for encrypting attachment
-const resolveLoadFileBuffer = function(file){
-	return new Promise(resolve => {
-		let reader = new FileReader();
-		reader.onload = function(){
-			resolve(reader.result);
-		}
-		reader.readAsArrayBuffer(file);
-	})
-}
-
-//promise wrapper for importing steg key file
-const resolveLoadFileURL = function($type){
-	return new Promise(resolve => {
-		 const file = $type[0].files[0];
-		 let reader = new FileReader();
-		 reader.onload = function(e){
-			 const result = e.target.result;
-			 const returnObj = {
-				 file : file,
-				 reader : reader,
-				 result : result
-			 }
-			 resolve(returnObj);
-		 }
-		 reader.readAsDataURL(file);
-	})
-}
-
-//promise wrapper for uploading key
-const resolveUploadKey = function(key,server){
-	return new Promise(resolve => {
-		const hkp = new openpgp.HKP(server);
-		const uploadKeyResolve = hkp.upload(key);
-		resolve(uploadKeyResolve);
-	})
-}
-
-//promise wrapper for searching key
-const resolveSearchKey = function(query,server){
-	return new Promise(resolve => {
-		const hkp = new openpgp.HKP(server);
-		const searchKeyResolve = hkp.lookup({ query: query });
-		resolve(searchKeyResolve);
-	})
-}
-
-//promise wrapper for parsing public key
-//session.pubKey
-const resolvePubKey = function(pubKey){
-	return new Promise(resolve => {
-		const pubKeyResolve = openpgp.key.readArmored(pubKey);
-		resolve(pubKeyResolve);
-	})
-}
-
-//promise wrapper for parsing private key
-//session.privKey
-const resolvePrivKey = function(privKey){
-	return new Promise(resolve => {
-		const privKeyResolve = openpgp.key.readArmored(privKey);
-		resolve(privKeyResolve);
-	})
-}
-
-//promise wrapper for decrypting private key
-const resolveDecPrivKey = function(passphrase){
-	return new Promise(resolve => {
-		const privKeyDecResolve = openpgp.decrypt(passphrase);
-		resolve(privKeyDecResolve);
-	})
-}
-
-//promise wrapper for signing message
-const resolveSignMsg = function(options){
-	return new Promise(resolve => {
-		const signMsgResolve = openpgp.sign(options);
-		resolve(signMsgResolve);
-	})
-}
-
-//promise wrapper for encrypting message
-const resolveEncMsg = function(options){
-	return new Promise(resolve => {
-		const encMsgResolve = openpgp.encrypt(options);
-		resolve(encMsgResolve);
-	})
-}
-//promise wrapper for parsing enc msg for decryption
-const resolveDecMsgPrep = function(encMsg){
-	return new Promise(resolve => {
-		const decMsgPrepResolve = openpgp.message.readArmored(encMsg);
-		resolve(decMsgPrepResolve);
-	})
-}
-
-//promise wrapper for decrypting message
-const resolveDecMsg = function(options){
-	return new Promise(resolve => {
-		const decMsgResolve = openpgp.decrypt(options);
-		resolve(decMsgResolve);
-	})
-}
-
-//promise wrapper for decrypting private key
-const resolveDecKey = function(privKeyObj,passphrase){
-	return new Promise(resolve => {
-		const decKeyResolve = privKeyObj.decrypt(passphrase);
-		resolve(decKeyResolve);
-	})
-}
-
-//read decrypted data for signature verification
-//session.lastDec.data
-const resolveVerifyMsgPrep = function(decData){
-	return new Promise(resolve => {
-		const verifyMsgPrepResolve = openpgp.cleartext.readArmored(decData);
-		resolve(verifyMsgPrepResolve);
-	})
-}
-
-//verify signature in message
-const resolveVerifyMsg = function(options){
-	return new Promise(resolve => {
-		const verifyMsgResolve = openpgp.verify(options);
-		resolve(verifyMsgResolve);
-	})
-}
-
-//output as opgp msg
-const resolveTextMsg = function(msg){
-	return new Promise(resolve => {
-		const textMsgResolve = openpgp.message.fromText(msg);
-		resolve(textMsgResolve);
-	})
-}
-
-//generate key
-const resolveGenKey = function(options){
-		return new Promise(resolve => {
-			const genKeyResolve = openpgp.generateKey(options);
-			resolve(genKeyResolve);
-		})
-}
-
 //Input key filename when selected
 const attachmentFilename = function($type) {
 	async function main() {
@@ -645,25 +458,24 @@ const uploadKey = function(type){
 //Decrypt messages
 const decryptMessage = function() {
 	if (!session.running) {
+		session.running = true;
+		const $body = $('body');
 		async function main() {
 		  try {
-				session.running = true;
-				const $body = $('body');
 				session.lastEncPaste = $('.text-read').val();
 				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = (await resolveDecKey(privKeyObj,$('.text-read-passphrase').val())).keys;
-				const pbKeyObj = await resolvePubKey(session.pubKey);
+				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
+				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
 				const msg = await resolveDecMsgPrep(session.lastEncPaste);
-				console.log(msg);
 				const options = {
 					message: msg,
+					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
-				const plaintext = await resolveDecMsg(options);
+				const plaintext = (await resolveDecMsg(options));
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;
-				console.log(session.lastDec);
 				if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 					verifySignature();
 				} else {
@@ -675,7 +487,9 @@ const decryptMessage = function() {
 					viewDecMsg();
 				}
 			} catch (e) {
-			  console.error(e);
+				session.running = false;
+				lipAlert(e);
+				$body.removeClass('loading');
 			}
 		}
 		main();
@@ -761,8 +575,6 @@ const encryptMessage = function(msg, signedToggle) {
 				const $stgHost = $('.stg-host');
 				const pbKeyObj = await resolvePubKey(session.pubKey);
 				const opgpMsg = await resolveTextMsg(msg);
-				console.log(pbKeyObj);
-				console.log(opgpMsg);
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
@@ -1002,13 +814,11 @@ const keyImport = function($type){
 				//reader.readAsDataURL(file);
 				const img = await resolveImg(selectedFile.result);
 				const result = readSteg(img);
-				console.log(result);
 				$(img).remove();
 				keyImportProcess($type,result);
 			} else {
 				//reader.readAsText(file);
 				const loadedFile = await resolveLoadFileText($type);
-				console.log(loadedFile);
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
@@ -1096,7 +906,7 @@ const signMessage = function() {
 				const signMsg = await resolveSignMsg(options);
 				const cleartext = signMsg.data.trim();
 				session.running = false;
-				encryptMessage(signMsg);
+				encryptMessage(cleartext);
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
@@ -1174,17 +984,17 @@ const validatePubKeyUpload = function(){
 const verifySignature = function() {
 	if (!session.running) {
 		session.running = true;
+		let $body = $('body');
+		let $processedAside = $('.processed-aside');
 		async function main() {
 			try {
-				let $body = $('body');
 				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveVerifyMsgPrep(session.lastDec);
+				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
 				}
 				const verified = await resolveVerifyMsg(options);
-				let $processedAside = $('.processed-aside');
 				validity = verified.signatures[0].valid;
 				if (validity) {
 					session.lastDecStatus = 'Message decrypted. Signature valid.';
@@ -1312,6 +1122,177 @@ const bytesToSize = function(bytes) {
    const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
    return Math.round(bytes / Math.pow(1024, i), 2) + ' ' + sizes[i];
 };
+
+//promise wrapper for encrypting message
+const resolveEncMsg = function(options){
+	return new Promise(resolve => {
+		const encMsgResolve = openpgp.encrypt(options);
+		resolve(encMsgResolve);
+	})
+}
+
+//promise wrapper for parsing enc msg for decryption
+const resolveDecMsgPrep = function(encMsg){
+	return new Promise(resolve => {
+		const decMsgPrepResolve = openpgp.message.readArmored(encMsg);
+		resolve(decMsgPrepResolve);
+	})
+}
+
+//promise wrapper for decrypting message
+const resolveDecMsg = function(options){
+	return new Promise(resolve => {
+		const decMsgResolve = openpgp.decrypt(options);
+		resolve(decMsgResolve);
+	})
+}
+
+//promise wrapper for decrypting private key
+const resolveDecKey = function(privKeyObj,passphrase){
+	return new Promise(resolve => {
+		const decKeyResolve = privKeyObj.decrypt(passphrase);
+		resolve(decKeyResolve);
+	})
+}
+
+//output as opgp msg
+const resolveTextMsg = function(msg){
+	return new Promise(resolve => {
+		const textMsgResolve = openpgp.message.fromText(msg);
+		resolve(textMsgResolve);
+	})
+}
+
+//promise wrapper for steganography canvas
+const resolveImg = function(src){
+	return new Promise(resolve => {
+		const img = document.createElement('img');
+		img.onload = function(){
+			resolve(img);
+			$(img).remove();
+		}
+		img.src = src;
+	})
+}
+
+//promise wrapper for decrypting attachment
+const resolveLoadFileText = function($type){
+	const file = $type[0].files[0];
+	return new Promise(resolve => {
+		let reader = new FileReader();
+		reader.onload = function(){
+			resolve(reader.result);
+		}
+		reader.readAsText(file);
+	})
+}
+
+//promise wrapper for encrypting attachment
+const resolveLoadFileBuffer = function(file){
+	return new Promise(resolve => {
+		let reader = new FileReader();
+		reader.onload = function(){
+			resolve(reader.result);
+		}
+		reader.readAsArrayBuffer(file);
+	})
+}
+
+//promise wrapper for importing steg key file
+const resolveLoadFileURL = function($type){
+	return new Promise(resolve => {
+		 const file = $type[0].files[0];
+		 let reader = new FileReader();
+		 reader.onload = function(e){
+			 const result = e.target.result;
+			 const returnObj = {
+				 file : file,
+				 reader : reader,
+				 result : result
+			 }
+			 resolve(returnObj);
+		 }
+		 reader.readAsDataURL(file);
+	})
+}
+
+
+//generate key
+const resolveGenKey = function(options){
+		return new Promise(resolve => {
+			const genKeyResolve = openpgp.generateKey(options);
+			resolve(genKeyResolve);
+		})
+}
+
+//promise wrapper for parsing public key
+//session.pubKey
+const resolvePubKey = function(pubKey){
+	return new Promise(resolve => {
+		const pubKeyResolve = openpgp.key.readArmored(pubKey);
+		resolve(pubKeyResolve);
+	})
+}
+
+//promise wrapper for parsing private key
+//session.privKey
+const resolvePrivKey = function(privKey){
+	return new Promise(resolve => {
+		const privKeyResolve = openpgp.key.readArmored(privKey);
+		resolve(privKeyResolve);
+	})
+}
+
+//promise wrapper for decrypting private key
+const resolveDecPrivKey = function(passphrase){
+	return new Promise(resolve => {
+		const privKeyDecResolve = openpgp.decrypt(passphrase);
+		resolve(privKeyDecResolve);
+	})
+}
+
+//promise wrapper for uploading key
+const resolveUploadKey = function(key,server){
+	return new Promise(resolve => {
+		const hkp = new openpgp.HKP(server);
+		const uploadKeyResolve = hkp.upload(key);
+		resolve(uploadKeyResolve);
+	})
+}
+
+//promise wrapper for searching key
+const resolveSearchKey = function(query,server){
+	return new Promise(resolve => {
+		const hkp = new openpgp.HKP(server);
+		const searchKeyResolve = hkp.lookup({ query: query });
+		resolve(searchKeyResolve);
+	})
+}
+
+//read decrypted data for signature verification
+//session.lastDec.data
+const resolveVerifyMsgPrep = function(decData){
+	return new Promise(resolve => {
+		const verifyMsgPrepResolve = openpgp.cleartext.readArmored(decData);
+		resolve(verifyMsgPrepResolve);
+	})
+}
+
+//verify signature in message
+const resolveVerifyMsg = function(options){
+	return new Promise(resolve => {
+		const verifyMsgResolve = openpgp.verify(options);
+		resolve(verifyMsgResolve);
+	})
+}
+
+//promise wrapper for signing message
+const resolveSignMsg = function(options){
+	return new Promise(resolve => {
+		const signMsgResolve = openpgp.sign(options);
+		resolve(signMsgResolve);
+	})
+}
 
 //convert steganograph to text
 const readSteg = function(img){

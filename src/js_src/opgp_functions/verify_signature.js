@@ -2,17 +2,17 @@
 const verifySignature = function() {
 	if (!session.running) {
 		session.running = true;
+		let $body = $('body');
+		let $processedAside = $('.processed-aside');
 		async function main() {
 			try {
-				let $body = $('body');
 				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveVerifyMsgPrep(session.lastDec);
+				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
 				}
 				const verified = await resolveVerifyMsg(options);
-				let $processedAside = $('.processed-aside');
 				validity = verified.signatures[0].valid;
 				if (validity) {
 					session.lastDecStatus = 'Message decrypted. Signature valid.';

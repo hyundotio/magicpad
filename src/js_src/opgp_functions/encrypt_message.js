@@ -38,8 +38,6 @@ const encryptMessage = function(msg, signedToggle) {
 				const $stgHost = $('.stg-host');
 				const pbKeyObj = await resolvePubKey(session.pubKey);
 				const opgpMsg = await resolveTextMsg(msg);
-				console.log(pbKeyObj);
-				console.log(opgpMsg);
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys

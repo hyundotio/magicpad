@@ -51,8 +51,6 @@ module.exports = {
       js = newJs.concat(eventsJs);
       js = js.concat(['src/js_src/universal_functions/universal_onload.js']);
       js = removeArrItem('session.js',js);
-      js = removeArrItem('promises',js);
-      js.unshift('src/js_src/promises/opgp_promises.js');
       js.unshift('src/js_src/session/session.js');
       for (let i = 0; i < js.length; i++){
         jsContent.push(fs.readFileSync(js[i],{encoding:'utf-8'}));
