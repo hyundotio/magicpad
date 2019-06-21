@@ -21,6 +21,7 @@ const validatePubKeyUpload = function(){
 	async function main() {
 		try {
 			const readPubKey = await resolvePubKey(session.pubKey);
+			if (opgpErrorHandler(readPubKey.err)) return;
 			let $serverKeyPubImport = $('.server-key-pub-import');
 			let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
 			$h3Text.text('  -  '+getFilename($serverKeyPubImport.val()));

@@ -8,11 +8,13 @@ const encryptAttachment = function(){
 			try {
 				const fileReader = await resolveLoadFileBuffer($attachmentImport[0].files[0]);
 				const pbKeyObj = await resolvePubKey(session.pubKey);
+				if (opgpErrorHandler(pbKeyObj.err)) return;
 				const options = {
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader.result)),
 						publicKeys: data.keys
 				};
 				const ciphertext = await resolveEncMsg(options);
+				if (opgpErrorHandler(ciphertext.err)) return;
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
@@ -82,9 +84,13 @@ const decryptAttachment = function(){
 			try {
 				const readAttachment = await resolveLoadFileText($attachmentImport[0].files[0]);
 				const privKeyObj = await resolvePrivKey(session.privKey).keys[0];
+				if (opgpErrorHandler(privKeyObj.err)) return;
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.attachment-passphrase').val());
+				if (opgpErrorHandler(decryptPrivKey.err)) return;
 				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				if (opgpErrorHandler(pbKeyObj.err)) return;
 				const msg = await resolveDecMsgPrep(readAttachment);
+				if (opgpErrorHandler(msg.err)) return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
@@ -92,6 +98,7 @@ const decryptAttachment = function(){
 					format: 'binary'
 				}
 				const plaintext = await resolveDecMsg(options);
+				if (opgpErrorHandler(plaintext.err)) return;
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
 				});

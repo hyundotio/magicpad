@@ -17,6 +17,7 @@ const lookupKey = function(query,server) {
 				if(hkpLookup.length > 0){
 					session.searchedKey = hkpLookup.trim();
 					const searchedKey = await resolvePubKey(session.searchedKey);
+					if (opgpErrorHandler(searchedKey.err)) return;
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 					$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());

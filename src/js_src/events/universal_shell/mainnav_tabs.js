@@ -11,5 +11,10 @@ $('.tab').bind('click', function(e) {
 			popupExit();
 			$(this).addClass('active');
 		}
+		for (let i = 0; i < formChecker.length; i++){
+			if(formChecker[i].type == nextTab){
+				formChecker[i].runCheck();
+			}
+		}
 	})
 })

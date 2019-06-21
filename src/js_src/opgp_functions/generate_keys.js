@@ -16,6 +16,7 @@ const generateKeys = function() {
 		async function main() {
 			try {
 				const generateKey = await resolveGenKey(options);
+				if (opgpErrorHandler(generateKey.err)) return;
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();

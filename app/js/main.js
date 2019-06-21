@@ -28,7 +28,8 @@ const attachmentFilename = function($type) {
 			let $filenameEl = $('.attachment-filename');
 			const filename = getFilename($type.val());
 			$filenameEl.text(' - ' + filename);
-			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.size));
+			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.
+				size));
 			$('.attachment-import-label').find('span').text('Reselect file');
 		} catch(e) {
 			$type.val('');
@@ -36,33 +37,6 @@ const attachmentFilename = function($type) {
 		}
 	}
 	main();
-}
-
-//check  form for attachments
-const attachmentFormcheck = function(){
-	const attachmentRadio = $('.attachment-radio:checked').val();
-	const attachmentImport = $('.attachment-import').val();
-	const attachmentPassphrase = $('.attachment-passphrase').val();
-	let $attachmentProcess = $('.attachment-process');
-	if(attachmentRadio == 'decrypt'){
-		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
-			$attachmentProcess.removeAttr('disabled');
-		} else {
-			$attachmentProcess.attr('disabled','disabled');
-		}
-	} else if (attachmentRadio == 'encrypt'){
-		if(attachmentImport.length > 0 && session.pubKey.length > 0){
-			$attachmentProcess.removeAttr('disabled');
-		} else {
-			$attachmentProcess.attr('disabled','disabled');
-		}
-	} else {
-		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
-			$attachmentProcess.removeAttr('disabled');
-		} else {
-			$attachmentProcess.attr('disabled','disabled');
-		}
-	}
 }
 
 //encrypt attachment
@@ -242,6 +216,28 @@ const decryptAttachment = function(){
 	}
 }
 
+const errorDict = [{
+  input: 'whatever',
+  output: 'yay!'
+}]
+
+const opgpErrorHandler = function(opgp){
+  if(opgp){
+		alert('error!');
+    return true
+	} else {
+		return false
+	}
+}
+
+const errorFinder = function(error){
+  for(i = 0; i < errorDict.length; i++){
+    if((errorDict[i].input).search(error) > -1){
+      return errorDict[i].output
+    }
+  }
+}
+
 //enables / disabled buttons based upon given list of inputs / textarea
 const keyUpChecker = function($input,$target){
 	if($input.val().length > 0){
@@ -303,6 +299,48 @@ const readFormCheck = function() {
 		$decryptMessage.attr('disabled', 'disabled');
 	}
 }
+
+//check  form for attachments
+const attachmentFormcheck = function(){
+	const attachmentRadio = $('.attachment-radio:checked').val();
+	const attachmentImport = $('.attachment-import').val();
+	const attachmentPassphrase = $('.attachment-passphrase').val();
+	let $attachmentProcess = $('.attachment-process');
+	if(attachmentRadio == 'decrypt'){
+		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
+			$attachmentProcess.removeAttr('disabled');
+		} else {
+			$attachmentProcess.attr('disabled','disabled');
+		}
+	} else if (attachmentRadio == 'encrypt'){
+		if(attachmentImport.length > 0 && session.pubKey.length > 0){
+			$attachmentProcess.removeAttr('disabled');
+		} else {
+			$attachmentProcess.attr('disabled','disabled');
+		}
+	} else {
+		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
+			$attachmentProcess.removeAttr('disabled');
+		} else {
+			$attachmentProcess.attr('disabled','disabled');
+		}
+	}
+}
+
+const formChecker = [
+	{
+		type: 'read',
+		runCheck: function(){readFormCheck()}
+	},
+	{
+		type: 'write',
+		runCheck: function(){writeFormCheck()}
+	},
+	{
+		type: 'attachments',
+		runCheck: function(){attachmentFormcheck()}
+	}
+]
 
 //Function to look up key
 const lookupKey = function(query,server) {
@@ -489,6 +527,7 @@ const decryptMessage = function() {
 			} catch (e) {
 				session.running = false;
 				lipAlert(e);
+				//
 				$body.removeClass('loading');
 			}
 		}
@@ -614,6 +653,7 @@ const encryptMessage = function(msg, signedToggle) {
 					viewEncMsg(false);
 				}
 			} catch(e) {
+				//
 				session.running = false;
 				$body.removeClass('loading');
 				lipAlert(e);
@@ -766,7 +806,7 @@ const keyImportProcess = function($type,result){
 			importPrivKey();
 		} else {
 			$type.val('');
-			lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+			lipAlert("The imported file is not a valid private key. Please choose a different file.");
 		}
 	} else if ($type.hasClass('server-key-pub-import')){
 		if (testPubKey(result)) {
@@ -774,7 +814,7 @@ const keyImportProcess = function($type,result){
 			validatePubKeyUpload();
 		} else {
 			$type.val('');
-			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+			lipAlert("The imported file is not a valid public key. Please choose a different file.");
 		}
 	} else {
 		if (testPubKey(result)) {
@@ -782,7 +822,7 @@ const keyImportProcess = function($type,result){
 			importPubKey('file');
 		} else {
 			$type.val('');
-			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+			lipAlert("The imported file is not a valid public key. Please choose a different file.");
 		}
 	}
 }
@@ -822,8 +862,8 @@ const keyImport = function($type){
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
-			$type.val('');
 			lipAlert(e);
+			//
 		}
 	}
 	main();
@@ -837,7 +877,7 @@ const importPubkeyStr = function(){
 		session.pubKey = pubKeyPaste;
 		return true
 	} else {
-		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+		lipAlert("The imported file is not a valid public key. Please choose a different file.");
 		return false
 	}
 }
@@ -846,9 +886,11 @@ const importPubkeyStr = function(){
 const importPrivKey = function() {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
 	$('.key-priv-import-label').find('span').text('Reimport key');
+	/*
 	writeFormCheck();
 	readFormCheck();
 	attachmentFormcheck();
+	*/
 	writeKeyStatus();
 }
 
@@ -858,6 +900,7 @@ const importPubKey = function(type) {
 	async function main() {
 	  try {
 	    const pubKeyOutput = await resolvePubKey(session.pubKey);
+			if (opgpErrorHandler(pubKeyOutput.err)) return;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -873,9 +916,11 @@ const importPubKey = function(type) {
 				$keyPubImportLabel.text('Reimport key');
 			}
 			//$('.view-pub-key').addClass('active');
+			/*
 			attachmentFormcheck();
 			writeFormCheck();
 			readFormCheck();
+			*/
 			if($pubkeyInputWindow.hasClass('active')){
 				writeKeyStatus(true);
 				$('.popup-filter').removeClass('active');
@@ -908,6 +953,7 @@ const signMessage = function() {
 				session.running = false;
 				encryptMessage(cleartext);
 			} catch(e) {
+				//
 				session.running = false;
 				$body.removeClass('loading');
 				lipAlert(e);
@@ -1007,6 +1053,7 @@ const verifySignature = function() {
 				session.running = false;
 				viewDecMsg();
 			} catch(e) {
+				//
 				lipAlert(e);
 				session.running = false;
 				$body.removeClass('loading');
@@ -1783,6 +1830,11 @@ $('.tab').bind('click', function(e) {
 		if ($(this).hasClass(nextTab)) {
 			popupExit();
 			$(this).addClass('active');
+		}
+		for (let i = 0; i < formChecker.length; i++){
+			if(formChecker[i].type == nextTab){
+				formChecker[i].runCheck();
+			}
 		}
 	})
 })

@@ -17,7 +17,9 @@ const uploadKey = function(type){
 			async function main() {
 				try {
 					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
+					if (opgpErrorHandler(hkpUpload.err)) return;
 					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
+					if (opgpErrorHandler(pbKeyObj.err)) return;
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 					if(type !== 'import'){

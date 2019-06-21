@@ -59,3 +59,45 @@ const readFormCheck = function() {
 		$decryptMessage.attr('disabled', 'disabled');
 	}
 }
+
+//check  form for attachments
+const attachmentFormcheck = function(){
+	const attachmentRadio = $('.attachment-radio:checked').val();
+	const attachmentImport = $('.attachment-import').val();
+	const attachmentPassphrase = $('.attachment-passphrase').val();
+	let $attachmentProcess = $('.attachment-process');
+	if(attachmentRadio == 'decrypt'){
+		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
+			$attachmentProcess.removeAttr('disabled');
+		} else {
+			$attachmentProcess.attr('disabled','disabled');
+		}
+	} else if (attachmentRadio == 'encrypt'){
+		if(attachmentImport.length > 0 && session.pubKey.length > 0){
+			$attachmentProcess.removeAttr('disabled');
+		} else {
+			$attachmentProcess.attr('disabled','disabled');
+		}
+	} else {
+		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
+			$attachmentProcess.removeAttr('disabled');
+		} else {
+			$attachmentProcess.attr('disabled','disabled');
+		}
+	}
+}
+
+const formChecker = [
+	{
+		type: 'read',
+		runCheck: function(){readFormCheck()}
+	},
+	{
+		type: 'write',
+		runCheck: function(){writeFormCheck()}
+	},
+	{
+		type: 'attachments',
+		runCheck: function(){attachmentFormcheck()}
+	}
+]

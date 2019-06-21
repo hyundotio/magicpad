@@ -6,7 +6,7 @@ const keyImportProcess = function($type,result){
 			importPrivKey();
 		} else {
 			$type.val('');
-			lipAlert("Oops! This doesn't seem like a valid private key. Please choose a different file.");
+			lipAlert("The imported file is not a valid private key. Please choose a different file.");
 		}
 	} else if ($type.hasClass('server-key-pub-import')){
 		if (testPubKey(result)) {
@@ -14,7 +14,7 @@ const keyImportProcess = function($type,result){
 			validatePubKeyUpload();
 		} else {
 			$type.val('');
-			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+			lipAlert("The imported file is not a valid public key. Please choose a different file.");
 		}
 	} else {
 		if (testPubKey(result)) {
@@ -22,7 +22,7 @@ const keyImportProcess = function($type,result){
 			importPubKey('file');
 		} else {
 			$type.val('');
-			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+			lipAlert("The imported file is not a valid public key. Please choose a different file.");
 		}
 	}
 }
@@ -62,8 +62,8 @@ const keyImport = function($type){
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
-			$type.val('');
 			lipAlert(e);
+			//
 		}
 	}
 	main();
@@ -77,7 +77,7 @@ const importPubkeyStr = function(){
 		session.pubKey = pubKeyPaste;
 		return true
 	} else {
-		lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+		lipAlert("The imported file is not a valid public key. Please choose a different file.");
 		return false
 	}
 }
@@ -86,9 +86,11 @@ const importPubkeyStr = function(){
 const importPrivKey = function() {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
 	$('.key-priv-import-label').find('span').text('Reimport key');
+	/*
 	writeFormCheck();
 	readFormCheck();
 	attachmentFormcheck();
+	*/
 	writeKeyStatus();
 }
 
@@ -98,6 +100,7 @@ const importPubKey = function(type) {
 	async function main() {
 	  try {
 	    const pubKeyOutput = await resolvePubKey(session.pubKey);
+			if (opgpErrorHandler(pubKeyOutput.err)) return;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -113,9 +116,11 @@ const importPubKey = function(type) {
 				$keyPubImportLabel.text('Reimport key');
 			}
 			//$('.view-pub-key').addClass('active');
+			/*
 			attachmentFormcheck();
 			writeFormCheck();
 			readFormCheck();
+			*/
 			if($pubkeyInputWindow.hasClass('active')){
 				writeKeyStatus(true);
 				$('.popup-filter').removeClass('active');

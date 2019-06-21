@@ -37,16 +37,19 @@ const encryptMessage = function(msg, signedToggle) {
 		  try {
 				const $stgHost = $('.stg-host');
 				const pbKeyObj = await resolvePubKey(session.pubKey);
+				if (opgpErrorHandler(pbKeyObj.err)) return;
 				const opgpMsg = await resolveTextMsg(msg);
+				if (opgpErrorHandler(opgpMsg.err)) return;
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
 				}
 				const ciphertext = await resolveEncMsg(options);
+				if (opgpErrorHandler(ciphertext.err)) return;
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
-					const stegSrc = await resolveLoadFileURL($stgHost)
+					const stegSrc = await resolveLoadFileURL($stgHost);
 					const newImg = await resolveImg(stegSrc.result);
 					const imgCanvas = document.createElement("canvas");
 					let imgContext = imgCanvas.getContext("2d");
@@ -77,6 +80,7 @@ const encryptMessage = function(msg, signedToggle) {
 					viewEncMsg(false);
 				}
 			} catch(e) {
+				//
 				session.running = false;
 				$body.removeClass('loading');
 				lipAlert(e);

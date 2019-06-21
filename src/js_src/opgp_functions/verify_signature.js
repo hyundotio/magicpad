@@ -7,7 +7,9 @@ const verifySignature = function() {
 		async function main() {
 			try {
 				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
+				if (opgpErrorHandler(pbKeyObj.err)) return;
 				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
+				if (opgpErrorHandler(msg.err)) return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
@@ -25,6 +27,7 @@ const verifySignature = function() {
 				session.running = false;
 				viewDecMsg();
 			} catch(e) {
+				//
 				lipAlert(e);
 				session.running = false;
 				$body.removeClass('loading');

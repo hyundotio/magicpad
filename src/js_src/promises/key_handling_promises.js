@@ -1,8 +1,9 @@
 //promise wrapper for parsing public key
 //session.pubKey
 const resolvePubKey = function(pubKey){
-	return new Promise(resolve => {
-		const pubKeyResolve = openpgp.key.readArmored(pubKey);
+	let pubKeyResolve;
+	const prom = new Promise(resolve => {
+		pubKeyResolve = openpgp.key.readArmored(pubKey);
 		resolve(pubKeyResolve);
 	})
 }
