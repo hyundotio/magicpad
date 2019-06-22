@@ -16,17 +16,16 @@ const generateKeys = function() {
 		async function main() {
 			try {
 				const generateKey = await resolveGenKey(options);
-				if (opgpErrorHandler(generateKey.err,'genkey')) return;
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();
-				createStegKey('./ui/privatekeyreference.jpg','private',session.generatedPrivKey);
-				createStegKey('./ui/publickeyreference.jpg','public',session.generatedPubKey);
+				createStegKey(pvDataUri,'private',session.generatedPrivKey);
+				createStegKey(pubDataUri,'public',session.generatedPubKey);
 				keyReady();
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('cursor-loading');
-				opgpErrorHandler(true,'genkey');
+				lipAlert(e);
 				newKeyReset();
 			}
 		}

@@ -3,7 +3,19 @@ const resolveImg = function(src){
 	return new Promise(resolve => {
 		const img = document.createElement('img');
 		img.onload = function(){
-			img.setAttribute('crossOrigin', 'anonymous');
+			resolve(img);
+			$(img).remove();
+		}
+		img.src = src;
+	})
+}
+
+//add anon CORS
+const resolveImgCORS = function(src){
+	return new Promise(resolve => {
+		const img = document.createElement('img');
+		img.setAttribute('crossOrigin', 'anonymous');
+		img.onload = function(){
 			resolve(img);
 			$(img).remove();
 		}
@@ -24,7 +36,8 @@ const resolveLoadFileText = function($type){
 }
 
 //promise wrapper for encrypting attachment
-const resolveLoadFileBuffer = function(file){
+const resolveLoadFileBuffer = function($type){
+	const file = $type[0].files[0];
 	return new Promise(resolve => {
 		let reader = new FileReader();
 		reader.onload = function(){

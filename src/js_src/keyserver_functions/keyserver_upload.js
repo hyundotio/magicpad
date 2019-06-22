@@ -17,9 +17,7 @@ const uploadKey = function(type){
 			async function main() {
 				try {
 					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
-					if (opgpErrorHandler(hkpUpload.err,'upload')) return;
 					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
-					if (opgpErrorHandler(pbKeyObj.err,'uploadcomplete')) return;
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 					if(type !== 'import'){
@@ -33,14 +31,14 @@ const uploadKey = function(type){
 					session.running = false;
 				} catch(e) {
 					$uploadProgress.removeClass('active').find('span').text('Upload failed');
-					opgpErrorHandler(true,'upload');
+					lipAlert(e);
 					session.running = false;
 				}
 			}
 			main();
 		} else {
 			$('.upload-progress').removeClass('active').find('span').text('Upload failed');
-			opgpErrorHandler(true,'pubkey');
+			lipAlert(errorFinder('pubkey'));
 			session.running = false;
 		}
 	}

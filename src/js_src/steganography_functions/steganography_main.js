@@ -7,7 +7,7 @@ const readSteg = function(img){
 const createStegKey = function(input,type,str){
 	async function main() {
 		try {
-			const loadedImg = await resolveImg(input);
+			const loadedImg = await resolveImgCORS(input);
 			const imgCanvas = document.createElement("canvas");
 			let imgContext = imgCanvas.getContext("2d");
 			imgContext.canvas.width = loadedImg.width;
@@ -20,8 +20,8 @@ const createStegKey = function(input,type,str){
 				imgStr = $('.searchbox-pubkey').val().trunc(35);
 			}
 			imgContext.fillText(imgStr, 14, 55);
-
 			let newImg = await resolveImg(imgCanvas.toDataURL("image/png"));
+			$('body').append($(newImg));
 			if(type == 'public'){
 				createSteg(newImg,$('.key-public-img-download'),str);
 			} else if (type == 'private'){
@@ -35,7 +35,7 @@ const createStegKey = function(input,type,str){
 			$(loadedImg).remove();
 			$(newImg).remove();
 		} catch(e) {
-			lipAlert(opgpErrorHandler(true,'stegkey'));
+			lipAlert(e);
 		}
 	}
 	main();
@@ -64,11 +64,11 @@ const convertStegMsg = function($type){
 				readFormCheck();
 			} else {
 				$type.val('');
-				lipAlert(opgpErrorHandler(true,'stegnomsg'));
+				lipAlert(errorFinder('stegnomsg'));
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert(opgpErrorHandler(true,'stegmsggeneral'));
+			lipAlert(e);
 		}
 	}
 	main();
@@ -93,11 +93,11 @@ const convertStegKey = function($type){
 				$('.converted-aside').text('Key converted.');
 			} else {
 				$type.val('');
-				lipAlert(opgpErrorHandler(true,'stegkeyread'));
+				lipAlert(errorFinder('stegkeyread'));
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert(opgpErrorHandler(true,'stegkey'));
+			lipAlert(e);
 		}
 	}
 	main();

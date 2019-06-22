@@ -7,20 +7,15 @@ const decryptMessage = function() {
 		  try {
 				session.lastEncPaste = $('.text-read').val();
 				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				if (opgpErrorHandler(privKeyObj.err,'privkey')) return;
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
-				if (opgpErrorHandler(decryptPrivKey.err,'decpriv')) return;
 				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const msg = await resolveDecMsgPrep(session.lastEncPaste);
-				if (opgpErrorHandler(msg.err,'parsemsg')) return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
 				const plaintext = (await resolveDecMsg(options));
-				if (opgpErrorHandler(plaintext.err,'decmsg')) return;
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;
@@ -36,7 +31,7 @@ const decryptMessage = function() {
 				}
 			} catch (e) {
 				session.running = false;
-				opgpErrorHandler(true,'decmsg');
+				lipAlert(e);
 				$body.removeClass('loading');
 			}
 		}

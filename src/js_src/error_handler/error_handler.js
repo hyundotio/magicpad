@@ -107,9 +107,7 @@ const errorDict = [
 
 const opgpErrorHandler = function(opgp,type){
   if(opgp){
-    const ret = errorFinder(type);
-		lipAlert(ret);
-    return ret
+    throw (errorFinder(type))
 	} else {
 		return false
 	}

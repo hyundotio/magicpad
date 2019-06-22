@@ -6,7 +6,7 @@ const keyImportProcess = function($type,result){
 			importPrivKey();
 		} else {
 			$type.val('');
-			opgpErrorHandler(true,'privkey');
+			lipAlert(errorFinder('privkey'));
 		}
 	} else if ($type.hasClass('server-key-pub-import')){
 		if (testPubKey(result)) {
@@ -14,7 +14,7 @@ const keyImportProcess = function($type,result){
 			validatePubKeyUpload();
 		} else {
 			$type.val('');
-			opgpErrorHandler(true,'pubkey');
+			lipAlert(errorFinder('pubkey'));
 		}
 	} else {
 		if (testPubKey(result)) {
@@ -22,7 +22,7 @@ const keyImportProcess = function($type,result){
 			importPubKey('file');
 		} else {
 			$type.val('');
-			opgpErrorHandler(true,'pubkey');
+			lipAlert(errorFinder('pubkey'));
 		}
 	}
 }
@@ -62,7 +62,7 @@ const keyImport = function($type){
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
-			opgpErrorHandler(true,'keyimportfail');
+			lipAlert(errorFinder('keyimportfail'));
 			//
 		}
 	}
@@ -77,7 +77,7 @@ const importPubkeyStr = function(){
 		session.pubKey = pubKeyPaste;
 		return true
 	} else {
-		opgpErrorHandler(true,'pubkey');
+		lipAlert(errorFinder('pubkey'));
 		return false
 	}
 }
@@ -100,7 +100,6 @@ const importPubKey = function(type) {
 	async function main() {
 	  try {
 	    const pubKeyOutput = await resolvePubKey(session.pubKey);
-			if (opgpErrorHandler(pubKeyOutput.err,'pubkey')) return;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -129,7 +128,7 @@ const importPubKey = function(type) {
 				writeKeyStatus();
 			}
 	  } catch (e) {
-	   	opgpErrorHandler(true,'pubkey');
+	   	lipAlert(e);
 	  }
 	}
 	main();

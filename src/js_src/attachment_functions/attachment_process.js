@@ -6,15 +6,13 @@ const encryptAttachment = function(){
 		let $attachmentImport = $('.attachment-import');
 		async function main() {
 			try {
-				const fileReader = await resolveLoadFileBuffer($attachmentImport[0].files[0]);
+				const fileReader = await resolveLoadFileBuffer($attachmentImport);
 				const pbKeyObj = await resolvePubKey(session.pubKey);
-				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const options = {
-						message: openpgp.message.fromBinary(new Uint8Array(fileReader.result)),
-						publicKeys: data.keys
+						message: openpgp.message.fromBinary(new Uint8Array(fileReader)),
+						publicKeys: pbKeyObj.keys
 				};
 				const ciphertext = await resolveEncMsg(options);
-				if (opgpErrorHandler(ciphertext.err,'encattach')) return;
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
@@ -31,7 +29,7 @@ const encryptAttachment = function(){
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
-				opgpErrorHandler(true,'encattach');
+				lipAlert(e);
 			}
 		}
 		main();
@@ -46,15 +44,11 @@ const decryptAttachment = function(){
 		const $attachmentImport = $('.attachment-import');
 		async function main() {
 			try {
-				const readAttachment = await resolveLoadFileText($attachmentImport[0].files[0]);
-				const privKeyObj = await resolvePrivKey(session.privKey).keys[0];
-				if (opgpErrorHandler(privKeyObj.err,'privkey')) return;
+				const readAttachment = await resolveLoadFileText($attachmentImport);
+				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.attachment-passphrase').val());
-				if (opgpErrorHandler(decryptPrivKey.err,'decpriv')) return;
-				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
-				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
+				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
 				const msg = await resolveDecMsgPrep(readAttachment);
-				if (opgpErrorHandler(msg.err,'parseattach')) return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
@@ -62,7 +56,6 @@ const decryptAttachment = function(){
 					format: 'binary'
 				}
 				const plaintext = await resolveDecMsg(options);
-				if (opgpErrorHandler(plaintext.err,'decattach')) return;
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
 				});
@@ -77,7 +70,7 @@ const decryptAttachment = function(){
 				$('.attachment-view').removeAttr('disabled');
 			} catch(e) {
 				session.running = false;
-				opgpErrorHandler(true,'decattach');
+				lipAlert(e);
 				$body.removeClass('loading');
 			}
 		}

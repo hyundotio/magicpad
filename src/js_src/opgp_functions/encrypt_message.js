@@ -37,15 +37,12 @@ const encryptMessage = function(msg, signedToggle) {
 		  try {
 				const $stgHost = $('.stg-host');
 				const pbKeyObj = await resolvePubKey(session.pubKey);
-				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const opgpMsg = await resolveTextMsg(msg);
-				if (opgpErrorHandler(opgpMsg.err,'privkey')) return;
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
 				}
 				const ciphertext = await resolveEncMsg(options);
-				if (opgpErrorHandler(ciphertext.err,'encmsg')) return;
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
@@ -62,7 +59,7 @@ const encryptMessage = function(msg, signedToggle) {
 					const imgConvert = await resolveImg(imgInfom);
 					if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
 						$stgHost.val('');
-						opgpErrorHandler(true,'steglen');
+						lipAlert(errorFinder('steglen'));
 					} else {
 						createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
 						$(imgCanvas).remove();
@@ -83,7 +80,7 @@ const encryptMessage = function(msg, signedToggle) {
 				//
 				session.running = false;
 				$body.removeClass('loading');
-				opgpErrorHandler(true,'encmsg');
+				lipAlert(e);
 			}
 		}
 		main();
