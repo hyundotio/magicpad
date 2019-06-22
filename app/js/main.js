@@ -317,10 +317,10 @@ const attachmentFormcheck = function(){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
 			if(attachmentImport == ''){
-				$attachmentView.attr('disabled','disabled');
 				$attachmentSize.text('No file selected');
 				$attachmentFilename.text('');
 			}
+			$attachmentView.attr('disabled','disabled');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else if (attachmentRadio == 'encrypt'){
@@ -328,10 +328,10 @@ const attachmentFormcheck = function(){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
 			if(attachmentImport == ''){
-				$attachmentView.attr('disabled','disabled');
 				$attachmentSize.text('No file selected');
 				$attachmentFilename.text('');
 			}
+			$attachmentView.attr('disabled','disabled');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else {
@@ -339,10 +339,10 @@ const attachmentFormcheck = function(){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
 			if(attachmentImport == ''){
-				$attachmentView.attr('disabled','disabled');
 				$attachmentSize.text('No file selected');
 				$attachmentFilename.text('');
 			}
+			$attachmentView.attr('disabled','disabled');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	}
