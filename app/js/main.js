@@ -28,8 +28,7 @@ const attachmentFilename = function($type) {
 			let $filenameEl = $('.attachment-filename');
 			const filename = getFilename($type.val());
 			$filenameEl.text(' - ' + filename);
-			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.
-				size));
+			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.size));
 			$('.attachment-import-label').find('span').text('Reselect file');
 		} catch(e) {
 			$type.val('');
@@ -312,28 +311,38 @@ const attachmentFormcheck = function(){
 	let $attachmentSize = $('.attachment-size');
 	let $attachmentFilename = $('.attachment-filename');
 	let $attachmentProcess = $('.attachment-process');
+	let $attachmentView = $('.attachment-view');
 	if(attachmentRadio == 'decrypt'){
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
-			$attachmentSize.text('No file selected');
-			$attachmentFilename.text('');
+			if(attachmentImport == ''){
+				$attachmentView.attr('disabled','disabled');
+				$attachmentSize.text('No file selected');
+				$attachmentFilename.text('');
+			}
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else if (attachmentRadio == 'encrypt'){
 		if(attachmentImport.length > 0 && session.pubKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
-			$attachmentSize.text('No file selected');
-			$attachmentFilename.text('');
+			if(attachmentImport == ''){
+				$attachmentView.attr('disabled','disabled');
+				$attachmentSize.text('No file selected');
+				$attachmentFilename.text('');
+			}
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else {
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
-			$attachmentSize.text('No file selected');
-			$attachmentFilename.text('');
+			if(attachmentImport == ''){
+				$attachmentView.attr('disabled','disabled');
+				$attachmentSize.text('No file selected');
+				$attachmentFilename.text('');
+			}
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	}

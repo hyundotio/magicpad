@@ -6,8 +6,7 @@ const attachmentFilename = function($type) {
 			let $filenameEl = $('.attachment-filename');
 			const filename = getFilename($type.val());
 			$filenameEl.text(' - ' + filename);
-			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.
-				size));
+			$('.attachment-size').text('File size: '+bytesToSize(attachment.file.size));
 			$('.attachment-import-label').find('span').text('Reselect file');
 		} catch(e) {
 			$type.val('');

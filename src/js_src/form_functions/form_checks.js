@@ -68,28 +68,38 @@ const attachmentFormcheck = function(){
 	let $attachmentSize = $('.attachment-size');
 	let $attachmentFilename = $('.attachment-filename');
 	let $attachmentProcess = $('.attachment-process');
+	let $attachmentView = $('.attachment-view');
 	if(attachmentRadio == 'decrypt'){
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
-			$attachmentSize.text('No file selected');
-			$attachmentFilename.text('');
+			if(attachmentImport == ''){
+				$attachmentSize.text('No file selected');
+				$attachmentFilename.text('');
+			}
+			$attachmentView.attr('disabled','disabled');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else if (attachmentRadio == 'encrypt'){
 		if(attachmentImport.length > 0 && session.pubKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
-			$attachmentSize.text('No file selected');
-			$attachmentFilename.text('');
+			if(attachmentImport == ''){
+				$attachmentSize.text('No file selected');
+				$attachmentFilename.text('');
+			}
+			$attachmentView.attr('disabled','disabled');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else {
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
-			$attachmentSize.text('No file selected');
-			$attachmentFilename.text('');
+			if(attachmentImport == ''){
+				$attachmentSize.text('No file selected');
+				$attachmentFilename.text('');
+			}
+			$attachmentView.attr('disabled','disabled');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	}
