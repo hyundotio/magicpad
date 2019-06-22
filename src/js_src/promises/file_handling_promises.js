@@ -31,7 +31,9 @@ const resolveLoadFileText = function($type){
 		reader.onload = function(){
 			resolve(reader.result);
 		}
-		reader.readAsText(file);
+		if(file != undefined){
+			reader.readAsText(file);
+		}
 	})
 }
 
@@ -43,7 +45,9 @@ const resolveLoadFileBuffer = function($type){
 		reader.onload = function(){
 			resolve(reader.result);
 		}
-		reader.readAsArrayBuffer(file);
+		if(file != undefined){
+			reader.readAsArrayBuffer(file);
+		}
 	})
 }
 
@@ -61,6 +65,8 @@ const resolveLoadFileURL = function($type){
 			 }
 			 resolve(returnObj);
 		 }
-		 reader.readAsDataURL(file);
+		 if(file != undefined){
+			 reader.readAsDataURL(file);
+		 }
 	})
 }

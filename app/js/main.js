@@ -1017,7 +1017,9 @@ const resolveLoadFileText = function($type){
 		reader.onload = function(){
 			resolve(reader.result);
 		}
-		reader.readAsText(file);
+		if(file != undefined){
+			reader.readAsText(file);
+		}
 	})
 }
 
@@ -1029,7 +1031,9 @@ const resolveLoadFileBuffer = function($type){
 		reader.onload = function(){
 			resolve(reader.result);
 		}
-		reader.readAsArrayBuffer(file);
+		if(file != undefined){
+			reader.readAsArrayBuffer(file);
+		}
 	})
 }
 
@@ -1047,7 +1051,9 @@ const resolveLoadFileURL = function($type){
 			 }
 			 resolve(returnObj);
 		 }
-		 reader.readAsDataURL(file);
+		 if(file != undefined){
+			 reader.readAsDataURL(file);
+		 }
 	})
 }
 
@@ -1727,13 +1733,15 @@ $('.stg-host').change(function(){
 	let file = $this[0].files[0];
 	let reader = new FileReader();
 	let $stgClear = $('.clear-steg-host');
-	if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
-		$('.stg-host-label').text('Reselect steganograph host');
-		$stgClear.addClass('active');
-	} else {
-		$(this).val('');
-		$stgClear.removeClass('active');
-		lipAlert('The imported file is not a valid image to be used as a steganograph host');
+	if(file != undefined){
+		if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
+			$('.stg-host-label').text('Reselect steganograph host');
+			$stgClear.addClass('active');
+		} else {
+			$(this).val('');
+			$stgClear.removeClass('active');
+			lipAlert('The imported file is not a valid image to be used as a steganograph host');
+		}
 	}
 })
 

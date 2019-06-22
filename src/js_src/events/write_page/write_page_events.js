@@ -18,13 +18,15 @@ $('.stg-host').change(function(){
 	let file = $this[0].files[0];
 	let reader = new FileReader();
 	let $stgClear = $('.clear-steg-host');
-	if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
-		$('.stg-host-label').text('Reselect steganograph host');
-		$stgClear.addClass('active');
-	} else {
-		$(this).val('');
-		$stgClear.removeClass('active');
-		lipAlert('The imported file is not a valid image to be used as a steganograph host');
+	if(file != undefined){
+		if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
+			$('.stg-host-label').text('Reselect steganograph host');
+			$stgClear.addClass('active');
+		} else {
+			$(this).val('');
+			$stgClear.removeClass('active');
+			lipAlert('The imported file is not a valid image to be used as a steganograph host');
+		}
 	}
 })
 
