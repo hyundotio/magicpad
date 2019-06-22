@@ -47,12 +47,11 @@ const encryptAttachment = function(){
 		async function main() {
 			try {
 				const fileReader = await resolveLoadFileBuffer($attachmentImport);
-				const pbKeyObj = await resolvePubKey(session.pubKey);
+				const pbKeyObj = await openpgp.readArmored.key(session.pubKey);
 				const options = {
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader)),
 						publicKeys: pbKeyObj.keys
 				};
-				const ciphertext = await resolveEncMsg(options);
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
@@ -85,10 +84,10 @@ const decryptAttachment = function(){
 		async function main() {
 			try {
 				const readAttachment = await resolveLoadFileText($attachmentImport);
-				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.attachment-passphrase').val());
-				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveDecMsgPrep(readAttachment);
+				const privKeyObj = (await openpgp.readArmored.key(session.privKey)).keys[0];
+				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.attachment-passphrase').val());
+				const pbKeyObj = (await openpgp.readArmored.key(session.pubKey)).keys;
+				const msg = await openpgp.message.readArmored(readAttachment);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
@@ -201,7 +200,7 @@ const errorDict = [
   },
   {
     input: 'searchresultkey',
-    output: 'A key was retrieved but was unabled to read fingerprint. Use another key or proceed with caution.'
+    output: 'A key was retrieved but is corrected. Search / use another key.'
   },
   {
     input: 'searchgeneral',
@@ -381,11 +380,16 @@ const lookupKey = function(query,server) {
 			server = 'http:'+server
 		}
 		try {
-			const hkpLookup = await resolveSearchKey(query,server);
+			const hkp = new openpgp.HKP(server);
+			const hkpLookup = await hkp.lookup({ query: query });
 			if(hkpLookup != undefined){
 				if(hkpLookup.length > 0){
 					session.searchedKey = hkpLookup.trim();
-					const searchedKey = await resolvePubKey(session.searchedKey);
+					const searchedKey = await openpgp.key.readArmored(session.searchedKey);
+					if(searchedKey.err != undefined){
+						$searchStatus.text('Error');
+						throw errorFinder('searchresultkey');
+					}
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 					$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
@@ -424,8 +428,9 @@ const uploadKey = function(type){
 		if(testPubKey(session.keyToUploadFile, server)){
 			async function main() {
 				try {
-					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
-					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
+					const hkp = new openpgp.HKP(server);
+					const hkpUpload = await hkp.upload(session.keyToUploadFile);
+					const pbKeyObj = await openpgp.readArmored.key(session.keyToUploadFile);
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 					if(type !== 'import'){
@@ -460,16 +465,16 @@ const decryptMessage = function() {
 		async function main() {
 		  try {
 				session.lastEncPaste = $('.text-read').val();
-				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
-				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveDecMsgPrep(session.lastEncPaste);
+				const privKeyObj = (await openpgp.readArmored(session.privKey)).keys[0];
+				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.text-read-passphrase').val());
+				const pbKeyObj = (await openpgp.readArmored.key(session.pubKey)).keys;
+				const msg = await openpgp.message.readArmored(session.lastEncPaste);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
-				const plaintext = (await resolveDecMsg(options));
+				const plaintext = (await openpgp.decrypt(options));
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;
@@ -543,13 +548,13 @@ const encryptMessage = function(msg, signedToggle) {
 		async function main() {
 		  try {
 				const $stgHost = $('.stg-host');
-				const pbKeyObj = await resolvePubKey(session.pubKey);
-				const opgpMsg = await resolveTextMsg(msg);
+				const pbKeyObj = await openpgp.key.readArmored(session.pubKey);
+				const opgpMsg = await openpgp.message.fromText(msg);
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
 				}
-				const ciphertext = await resolveEncMsg(options);
+				const ciphertext = await openpgp.encrypt(options);
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
@@ -611,7 +616,13 @@ const generateKeys = function() {
 		}
 		async function main() {
 			try {
-				const generateKey = await resolveGenKey(options);
+				const generateKey = await openpgp.generateKey(options);
+				if(pubKeyOutput.err != undefined){
+					session.running = false;
+					$body.removeClass('cursor-loading');
+					newKeyReset();
+					throw errorFinder('genkey');
+				}
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();
@@ -663,29 +674,11 @@ const newKeyReset = function() {
 //Process imported keys
 const keyImportProcess = function($type,result){
 	if ($type.hasClass('key-priv-import')) {
-		if (testPrivKey(result)) {
-			session.privKey = result;
-			importPrivKey();
-		} else {
-			$type.val('');
-			lipAlert(errorFinder('privkey'));
-		}
+		importPrivKey(result,$type);
 	} else if ($type.hasClass('server-key-pub-import')){
-		if (testPubKey(result)) {
-			session.keyToUploadFile = result;
-			validatePubKeyUpload();
-		} else {
-			$type.val('');
-			lipAlert(errorFinder('pubkey'));
-		}
+		validatePubKeyUpload(result);
 	} else {
-		if (testPubKey(result)) {
-			session.pubKey = result;
-			importPubKey('file');
-		} else {
-			$type.val('');
-			lipAlert(errorFinder('pubkey'));
-		}
+		importPubKey('file',result,$type);
 	}
 }
 
@@ -735,33 +728,54 @@ const keyImport = function($type){
 const importPubkeyStr = function(){
 	const $pubkeyInput = $('.pubkey-input');
 	const pubKeyPaste = $pubkeyInput.val().trim();
-	if (testPubKey(pubKeyPaste)) {
-		session.pubKey = pubKeyPaste;
-		return true
-	} else {
-		lipAlert(errorFinder('pubkey'));
-		return false
+	async function main(){
+		try {
+			const pubKeyOutput = await openpgp.key.readArmored(pubKeyPaste);
+			if(pubKeyOutput.err != undefined || !testPubKey(pubKeyPaste)){
+				$input.val('');
+				throw errorFinder('pubkey');
+			}
+			session.pubKey = pubKeyPaste;
+			return true
+		} catch {
+			lipAlert(e);
+			return false
+		}
 	}
+	main();
 }
 
 //Import private key button function
-const importPrivKey = function() {
+const importPrivKey = function(key,$input) {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
-	$('.key-priv-import-label').find('span').text('Reimport key');
-	/*
-	writeFormCheck();
-	readFormCheck();
-	attachmentFormcheck();
-	*/
-	writeKeyStatus();
+	async function main(){
+		try {
+			const pvKeyOutput = await openpgp.key.readArmored(key);
+			if(pvKeyOutput.err != undefined || !testPrivKey(key)) {
+				$input.val('');
+				throw errorFinder('privkey');
+			}
+			session.privKey = key;
+			$('.key-priv-import-label').find('span').text('Reimport key');
+			writeKeyStatus();
+		} catch(e) {
+			lipAlert(e);
+		}
+	}
+	main();
 }
 
 //process public key from import
-const importPubKey = function(type) {
+const importPubKey = function(type,key,$input) {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	async function main() {
 	  try {
-	    const pubKeyOutput = await resolvePubKey(session.pubKey);
+	    const pubKeyOutput = await openpgp.key.readArmored(key);
+			if(pubKeyOutput.err != undefined || !testPubKey(key)){
+				$input.val('');
+				throw errorFinder('pubkey');
+			}
+			session.pubKey = key;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -803,13 +817,13 @@ const signMessage = function() {
 		let $body = $('body');
 		async function main() {
 			try {
-				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-write-passphrase').val());
+				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
+				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.text-write-passphrase').val());
 				const options = {
 					message: openpgp.cleartext.fromText($('.text-write').val()),
 					privateKeys: [privKeyObj]
 				};
-				const signMsg = await resolveSignMsg(options);
+				const signMsg = await openpgp.sign(options);
 				const cleartext = signMsg.data.trim();
 				session.running = false;
 				encryptMessage(cleartext,true);
@@ -842,13 +856,24 @@ const testPrivKey = function(privKey){
 }
 
 //Import public key button function
-const validatePubKeyUpload = function(){
+const validatePubKeyUpload = function(key){
 	async function main() {
 		try {
-			const readPubKey = await resolvePubKey(session.pubKey);
-			$('.public-key-upload-filename').text('  -  '+getFilename($('.server-key-pub-import').val()));
-			$('.server-pub-key-import-label').find('span').text('Reselect key');
-			$('.server-key-pub-import-upload').removeAttr('disabled');
+			let $publicKeyUploadFilename = $('.public-key-upload-filename');
+			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
+			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
+			const readPubKey = await openpgp.key.readArmored(key);
+			if(readPubKey.err != undefined){
+				$('.server-key-pub-import').val('');
+				$publicKeyUploadFilename.text('');
+				$serverPubKeyImportLabel.find('span').text('Select key');
+				$serverKeyPubImportUpload.attr('disabled','disabled');
+				throw errorFinder('pubkey');
+			}
+			session.keyToUploadFile = key;
+			$publicKeyUploadFilename.text('  -  '+getFilename($('.server-key-pub-import').val()));
+			$serverPubKeyImportLabel.find('span').text('Reselect key');
+			$serverKeyPubImportUpload.removeAttr('disabled');
 		} catch (e) {
 			lipAlert(e);
 		}
@@ -864,13 +889,13 @@ const verifySignature = function() {
 		let $processedAside = $('.processed-aside');
 		async function main() {
 			try {
-				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
+				const msg = await openpgp.cleartext.readArmored(session.lastDec.data);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
 				}
-				const verified = await resolveVerifyMsg(options);
+				const verified = await openpgp.verify(options);
 				validity = verified.signatures[0].valid;
 				if (validity) {
 					session.lastDecStatus = 'Message decrypted. Signature valid.';

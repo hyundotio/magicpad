@@ -12,11 +12,16 @@ const lookupKey = function(query,server) {
 			server = 'http:'+server
 		}
 		try {
-			const hkpLookup = await resolveSearchKey(query,server);
+			const hkp = new openpgp.HKP(server);
+			const hkpLookup = await hkp.lookup({ query: query });
 			if(hkpLookup != undefined){
 				if(hkpLookup.length > 0){
 					session.searchedKey = hkpLookup.trim();
-					const searchedKey = await resolvePubKey(session.searchedKey);
+					const searchedKey = await openpgp.key.readArmored(session.searchedKey);
+					if(searchedKey.err != undefined){
+						$searchStatus.text('Error');
+						throw errorFinder('searchresultkey');
+					}
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 					$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());

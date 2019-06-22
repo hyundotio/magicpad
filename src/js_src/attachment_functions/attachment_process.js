@@ -7,12 +7,12 @@ const encryptAttachment = function(){
 		async function main() {
 			try {
 				const fileReader = await resolveLoadFileBuffer($attachmentImport);
-				const pbKeyObj = await resolvePubKey(session.pubKey);
+				const pbKeyObj = await openpgp.readArmored.key(session.pubKey);
 				const options = {
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader)),
 						publicKeys: pbKeyObj.keys
 				};
-				const ciphertext = await resolveEncMsg(options);
+				const ciphertext = await openpgp.encrypt(options);
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
@@ -45,10 +45,10 @@ const decryptAttachment = function(){
 		async function main() {
 			try {
 				const readAttachment = await resolveLoadFileText($attachmentImport);
-				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.attachment-passphrase').val());
-				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveDecMsgPrep(readAttachment);
+				const privKeyObj = (await openpgp.readArmored.key(session.privKey)).keys[0];
+				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.attachment-passphrase').val());
+				const pbKeyObj = (await openpgp.readArmored.key(session.pubKey)).keys;
+				const msg = await openpgp.message.readArmored(readAttachment);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,

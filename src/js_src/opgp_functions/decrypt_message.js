@@ -6,16 +6,16 @@ const decryptMessage = function() {
 		async function main() {
 		  try {
 				session.lastEncPaste = $('.text-read').val();
-				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
-				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveDecMsgPrep(session.lastEncPaste);
+				const privKeyObj = (await openpgp.readArmored(session.privKey)).keys[0];
+				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.text-read-passphrase').val());
+				const pbKeyObj = (await openpgp.readArmored.key(session.pubKey)).keys;
+				const msg = await openpgp.message.readArmored(session.lastEncPaste);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
-				const plaintext = (await resolveDecMsg(options));
+				const plaintext = (await openpgp.decrypt(options));
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;

@@ -16,8 +16,9 @@ const uploadKey = function(type){
 		if(testPubKey(session.keyToUploadFile, server)){
 			async function main() {
 				try {
-					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
-					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
+					const hkp = new openpgp.HKP(server);
+					const hkpUpload = await hkp.upload(session.keyToUploadFile);
+					const pbKeyObj = await openpgp.readArmored.key(session.keyToUploadFile);
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 					if(type !== 'import'){

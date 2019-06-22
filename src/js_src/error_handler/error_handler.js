@@ -81,7 +81,7 @@ const errorDict = [
   },
   {
     input: 'searchresultkey',
-    output: 'A key was retrieved but was unabled to read fingerprint. Use another key or proceed with caution.'
+    output: 'A key was retrieved but is corrected. Search / use another key.'
   },
   {
     input: 'searchgeneral',

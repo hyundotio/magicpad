@@ -6,13 +6,13 @@ const verifySignature = function() {
 		let $processedAside = $('.processed-aside');
 		async function main() {
 			try {
-				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
-				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
+				const msg = await openpgp.cleartext.readArmored(session.lastDec.data);
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
 				}
-				const verified = await resolveVerifyMsg(options);
+				const verified = await openpgp.verify(options);
 				validity = verified.signatures[0].valid;
 				if (validity) {
 					session.lastDecStatus = 'Message decrypted. Signature valid.';

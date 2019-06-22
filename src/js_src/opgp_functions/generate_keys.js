@@ -15,7 +15,10 @@ const generateKeys = function() {
 		}
 		async function main() {
 			try {
-				const generateKey = await resolveGenKey(options);
+				const generateKey = await openpgp.generateKey(options);
+				if(pubKeyOutput.err != undefined){
+					throw errorFinder('genkey');
+				}
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();

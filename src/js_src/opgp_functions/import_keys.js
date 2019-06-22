@@ -1,29 +1,11 @@
 //Process imported keys
 const keyImportProcess = function($type,result){
 	if ($type.hasClass('key-priv-import')) {
-		if (testPrivKey(result)) {
-			session.privKey = result;
-			importPrivKey();
-		} else {
-			$type.val('');
-			lipAlert(errorFinder('privkey'));
-		}
+		importPrivKey(result,$type);
 	} else if ($type.hasClass('server-key-pub-import')){
-		if (testPubKey(result)) {
-			session.keyToUploadFile = result;
-			validatePubKeyUpload();
-		} else {
-			$type.val('');
-			lipAlert(errorFinder('pubkey'));
-		}
+		validatePubKeyUpload(result);
 	} else {
-		if (testPubKey(result)) {
-			session.pubKey = result;
-			importPubKey('file');
-		} else {
-			$type.val('');
-			lipAlert(errorFinder('pubkey'));
-		}
+		importPubKey('file',result,$type);
 	}
 }
 
@@ -51,19 +33,16 @@ const keyImport = function($type){
 		try {
 			const selectedFile = await resolveLoadFileURL($type); //reuse function to get url
 			if($.inArray(selectedFile.file['type'], ['image/png']) > -1){
-				//reader.readAsDataURL(file);
 				const img = await resolveImg(selectedFile.result);
 				const result = readSteg(img);
 				$(img).remove();
 				keyImportProcess($type,result);
 			} else {
-				//reader.readAsText(file);
 				const loadedFile = await resolveLoadFileText($type);
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
 			lipAlert(errorFinder('keyimportfail'));
-			//
 		}
 	}
 	main();
@@ -71,35 +50,56 @@ const keyImport = function($type){
 
 //read public key from pasted button
 const importPubkeyStr = function(){
-	const $pubkeyInput = $('.pubkey-input');
-	const pubKeyPaste = $pubkeyInput.val().trim();
-	if (testPubKey(pubKeyPaste)) {
-		session.pubKey = pubKeyPaste;
-		return true
-	} else {
-		lipAlert(errorFinder('pubkey'));
-		return false
+	async function main(){
+		try {
+			const $pubkeyInput = $('.pubkey-input');
+			const pubKeyPaste = $pubkeyInput.val().trim();
+			const pubKeyOutput = await openpgp.key.readArmored(pubKeyPaste);
+			if(pubKeyOutput.err != undefined || !testPubKey(pubKeyPaste)){
+				$input.val('');
+				throw errorFinder('pubkey');
+			}
+			session.pubKey = pubKeyPaste;
+			return true
+		} catch {
+			lipAlert(e);
+			return false
+		}
 	}
+	main();
 }
 
 //Import private key button function
-const importPrivKey = function() {
+const importPrivKey = function(key,$input) {
 	//$('.read').find('.fingerprint').text(openpgp.key.primaryKey.fingerprint);
-	$('.key-priv-import-label').find('span').text('Reimport key');
-	/*
-	writeFormCheck();
-	readFormCheck();
-	attachmentFormcheck();
-	*/
-	writeKeyStatus();
+	async function main(){
+		try {
+			const pvKeyOutput = await openpgp.key.readArmored(key);
+			if(pvKeyOutput.err != undefined || !testPrivKey(key)) {
+				$input.val('');
+				throw errorFinder('privkey');
+			}
+			session.privKey = key;
+			$('.key-priv-import-label').find('span').text('Reimport key');
+			writeKeyStatus();
+		} catch(e) {
+			lipAlert(e);
+		}
+	}
+	main();
 }
 
 //process public key from import
-const importPubKey = function(type) {
+const importPubKey = function(type,key,$input) {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	async function main() {
 	  try {
-	    const pubKeyOutput = await resolvePubKey(session.pubKey);
+	    const pubKeyOutput = await openpgp.key.readArmored(key);
+			if(pubKeyOutput.err != undefined || !testPubKey(key)){
+				$input.val('');
+				throw errorFinder('pubkey');
+			}
+			session.pubKey = key;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -114,12 +114,6 @@ const importPubKey = function(type) {
 				$pubkeyInputOpenText.text('Paste key');
 				$keyPubImportLabel.text('Reimport key');
 			}
-			//$('.view-pub-key').addClass('active');
-			/*
-			attachmentFormcheck();
-			writeFormCheck();
-			readFormCheck();
-			*/
 			if($pubkeyInputWindow.hasClass('active')){
 				writeKeyStatus(true);
 				$('.popup-filter').removeClass('active');

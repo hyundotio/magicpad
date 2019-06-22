@@ -36,13 +36,13 @@ const encryptMessage = function(msg, signedToggle) {
 		async function main() {
 		  try {
 				const $stgHost = $('.stg-host');
-				const pbKeyObj = await resolvePubKey(session.pubKey);
-				const opgpMsg = await resolveTextMsg(msg);
+				const pbKeyObj = await openpgp.key.readArmored(session.pubKey);
+				const opgpMsg = await openpgp.message.fromText(msg);
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
 				}
-				const ciphertext = await resolveEncMsg(options);
+				const ciphertext = await openpgp.encrypt(options);
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
