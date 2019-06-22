@@ -22,5 +22,12 @@ $('.server-key-pub-import-upload').bind('click',function(){
 
 //Process selected key file
 $('.server-key-pub-import').change(function(){
-	keyImport($(this));
+	const $this = $(this);
+	if($this.val() != ''){
+		keyImport($(this));
+	} else {
+		$('.public-key-upload-filename').text('');
+		$('.server-pub-key-import-label').find('span').text('Select key');
+		$('.server-key-pub-import-upload').attr('disabled','disabled');
+	}
 })

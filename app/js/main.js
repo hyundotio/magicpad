@@ -309,23 +309,31 @@ const attachmentFormcheck = function(){
 	const attachmentRadio = $('.attachment-radio:checked').val();
 	const attachmentImport = $('.attachment-import').val();
 	const attachmentPassphrase = $('.attachment-passphrase').val();
+	let $attachmentSize = $('.attachment-size');
+	let $attachmentFilename = $('.attachment-filename');
 	let $attachmentProcess = $('.attachment-process');
 	if(attachmentRadio == 'decrypt'){
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
+			$attachmentSize.text('No file selected');
+			$attachmentFilename.text('');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else if (attachmentRadio == 'encrypt'){
 		if(attachmentImport.length > 0 && session.pubKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
+			$attachmentSize.text('No file selected');
+			$attachmentFilename.text('');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	} else {
 		if(attachmentPassphrase.length > 0 && attachmentImport.length > 0 && session.privKey.length > 0 && session.pubKey.length > 0){
 			$attachmentProcess.removeAttr('disabled');
 		} else {
+			$attachmentSize.text('No file selected');
+			$attachmentFilename.text('');
 			$attachmentProcess.attr('disabled','disabled');
 		}
 	}
@@ -829,10 +837,8 @@ const validatePubKeyUpload = function(){
 	async function main() {
 		try {
 			const readPubKey = await resolvePubKey(session.pubKey);
-			let $serverKeyPubImport = $('.server-key-pub-import');
-			let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
-			$h3Text.text('  -  '+getFilename($serverKeyPubImport.val()));
-			$serverKeyPubImport.prev('.label-container').find('span').text('Reselect key');
+			$('.public-key-upload-filename').text('  -  '+getFilename($('.server-key-pub-import').val()));
+			$('.server-pub-key-import-label').find('span').text('Reselect key');
 			$('.server-key-pub-import-upload').removeAttr('disabled');
 		} catch (e) {
 			lipAlert(e);
@@ -1571,7 +1577,14 @@ $('.server-key-pub-import-upload').bind('click',function(){
 
 //Process selected key file
 $('.server-key-pub-import').change(function(){
-	keyImport($(this));
+	const $this = $(this);
+	if($this.val() != ''){
+		keyImport($(this));
+	} else {
+		$('.public-key-upload-filename').text('');
+		$('.server-pub-key-import-label').find('span').text('Select key');
+		$('.server-key-pub-import-upload').attr('disabled','disabled');
+	}
 })
 
 //Copy to clipboard button
@@ -1733,15 +1746,21 @@ $('.stg-host').change(function(){
 	let file = $this[0].files[0];
 	let reader = new FileReader();
 	let $stgClear = $('.clear-steg-host');
+	let $stgHostLabel = $('.stg-host-label');
 	if(file != undefined){
 		if($.inArray(file['type'], ["image/gif", "image/jpeg", "image/png"]) > -1){
-			$('.stg-host-label').text('Reselect steganograph host');
+			$stgHostLabel.text('Reselect steganograph host');
 			$stgClear.addClass('active');
 		} else {
+			$stgHostLabel.text('Select steganograph host');
 			$(this).val('');
 			$stgClear.removeClass('active');
 			lipAlert('The imported file is not a valid image to be used as a steganograph host');
 		}
+	} else {
+		$stgHostLabel.text('Select steganograph host');
+		$stgClear.removeClass('active');
+		$(this).val('');
 	}
 })
 
