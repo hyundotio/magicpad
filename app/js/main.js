@@ -1130,19 +1130,16 @@ const convertStegKey = function($type){
 			const img = await resolveImg(imgSrc.result);
 			const retrievedKey = readSteg(img);
 			$(img).remove();
-			//Also fill in key textArea
-			//Open convereted-key-window;
-			if(testPubKey(retrievedKey) || testPrivKey(retrievedKey)){
-				$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
-				$('.key-convert-label').find('span').text('Reimport image');
-				$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
-				$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
-				$('.copy-converted').removeAttr('disabled');
-				$('.converted-aside').text('Key converted.');
-			} else {
-				$type.val('');
-				lipAlert(errorFinder('stegkeyread'));
+			const keyOutput = await openpgp.key.readArmored(retrievedKey);
+			if(keyOutput.err != undefined || (!testPubKey(retrievedKey) && !testPrivKey(retrievedKey))){
+				throw errorFinder('stegkeyread');
 			}
+			$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
+			$('.key-convert-label').find('span').text('Reimport image');
+			$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
+			$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
+			$('.copy-converted').removeAttr('disabled');
+			$('.converted-aside').text('Key converted.');
 		} catch(e) {
 			$type.val('');
 			lipAlert(e);
