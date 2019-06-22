@@ -3,6 +3,7 @@ const resolveImg = function(src){
 	return new Promise(resolve => {
 		const img = document.createElement('img');
 		img.onload = function(){
+			img.setAttribute('crossOrigin', 'anonymous');
 			resolve(img);
 			$(img).remove();
 		}

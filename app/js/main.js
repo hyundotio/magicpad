@@ -33,7 +33,7 @@ const attachmentFilename = function($type) {
 			$('.attachment-import-label').find('span').text('Reselect file');
 		} catch(e) {
 			$type.val('');
-			lipAlert('Failed to load selected file.');
+			opgpErrorHandler(true,'file');
 		}
 	}
 	main();
@@ -49,11 +49,13 @@ const encryptAttachment = function(){
 			try {
 				const fileReader = await resolveLoadFileBuffer($attachmentImport[0].files[0]);
 				const pbKeyObj = await resolvePubKey(session.pubKey);
+				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const options = {
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader.result)),
 						publicKeys: data.keys
 				};
 				const ciphertext = await resolveEncMsg(options);
+				if (opgpErrorHandler(ciphertext.err,'encattach')) return;
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
@@ -70,46 +72,10 @@ const encryptAttachment = function(){
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
-				lipAlert(e);
+				opgpErrorHandler(true,'encattach');
 			}
 		}
 		main();
-/*
-		let encrypt = new Promise((resolve,reject) => {
-			fileReader.onload = async () => {
-				openpgp.key.readArmored(session.pubKey).then(data => {
-					let options = {
-							message: openpgp.message.fromBinary(new Uint8Array(fileReader.result)),
-              publicKeys: data.keys
-					};
-					openpgp.encrypt(options).then(ciphertext => {
-						let blob = new Blob([ciphertext.data], {
-						  type: 'application/octet-stream'
-						});
-						let url = URL.createObjectURL(blob);
-						session.lastEncFile = url;
-						session.lastEncFilename = 'encrypted_' + getFilename($('.attachment-import').val());
-						session.lastEncFileSigned = false;
-						$('.attachment-download').attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
-						session.running = false;
-						$body.removeClass('loading');
-						$('.popup-filter').addClass('active');
-						$('.attachment-window').addClass('active').find('.window-title').find('span').text('Encrypted attachment');
-						$('.attachment-view').removeAttr('disabled');
-					}).catch(function(e){
-						session.running = false;
-						$body.removeClass('loading');
-						lipAlert('Cannot encrypt attachment. Try testing a different file and/or using different keys.');
-					})
-				}).catch(function(e){
-					session.running = false;
-					$body.removeClass('loading');
-					lipAlert('The public key cannot be read. It may be corrupted.');
-				})
-			}
-			fileReader.readAsArrayBuffer(file);
-		})
-		*/
 	}
 }
 
@@ -123,9 +89,13 @@ const decryptAttachment = function(){
 			try {
 				const readAttachment = await resolveLoadFileText($attachmentImport[0].files[0]);
 				const privKeyObj = await resolvePrivKey(session.privKey).keys[0];
+				if (opgpErrorHandler(privKeyObj.err,'privkey')) return;
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.attachment-passphrase').val());
+				if (opgpErrorHandler(decryptPrivKey.err,'decpriv')) return;
 				const pbKeyObj = await resolvePubKey(session.pubKey).keys;
+				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const msg = await resolveDecMsgPrep(readAttachment);
+				if (opgpErrorHandler(msg.err,'parseattach')) return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
@@ -133,6 +103,7 @@ const decryptAttachment = function(){
 					format: 'binary'
 				}
 				const plaintext = await resolveDecMsg(options);
+				if (opgpErrorHandler(plaintext.err,'decattach')) return;
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
 				});
@@ -147,84 +118,126 @@ const decryptAttachment = function(){
 				$('.attachment-view').removeAttr('disabled');
 			} catch(e) {
 				session.running = false;
-				lipAlert(e);
+				opgpErrorHandler(true,'decattach');
 				$body.removeClass('loading');
 			}
 		}
 		main();
-
-		/*
-		let file = $attachmentImport[0].files[0];
-		let fileReader = new FileReader();
-		let encrypt = new Promise((resolve,reject) => {
-			fileReader.onload = async () => {
-				openpgp.key.readArmored(session.privKey).then(pvKeys => {
-					privKeyObj = pvKeys.keys[0];
-					privKeyObj.decrypt($('.attachment-passphrase').val()).then(output => {
-						//console.log(fileReader.result);
-						openpgp.key.readArmored(session.pubKey).then(pbKeys => {
-							pbKeyObj = pbKeys.keys;
-							openpgp.message.readArmored(fileReader.result).then(msg => {
-								let options = {
-									message: msg,
-									publicKeys: pbKeyObj,
-									privateKeys: [privKeyObj],
-									format: 'binary'
-								}
-								openpgp.decrypt(options).then(plaintext => {
-									let blob = new Blob([plaintext.data], {
-									  type: 'application/octet-stream'
-									});
-									let url = URL.createObjectURL(blob);
-									session.lastDecFile = url;
-									session.lastDecFilename = 'decrypted_' + getFilename($('.attachment-import').val());
-									$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
-									session.running = false;
-									$body.removeClass('loading');
-									$('.attachment-window').addClass('active').find('.window-title').find('span').text('Decrypted attachment');
-									$('.popup-filter').addClass('active');
-									$('.attachment-view').removeAttr('disabled');
-								}).catch(function(e){
-									session.running = false;
-									lipAlert('Cannot decrypt message. Try a different private key.');
-									$body.removeClass('loading');
-								})
-							}).catch(function(e){
-								session.running = false;
-								lipAlert('The encrypted attachment cannot be read. It may be corrupted.');
-								$body.removeClass('loading');
-							})
-						}).catch(function(e){
-							session.running = false;
-							lipAlert('The public key cannot be read. It may be corrupted.');
-							$body.removeClass('loading');
-						})
-					}).catch(function(e){
-						session.running = false;
-						lipAlert('The private key passphrase is incorrect.');
-						$body.removeClass('loading');
-					})
-				}).catch(function(e){
-					session.running = false;
-					lipAlert('The private key cannot be read. It may be corrupted.');
-					$body.removeClass('loading');
-				})
-			}
-			fileReader.readAsText(file);
-		})
-		*/
 	}
 }
 
-const errorDict = [{
-  input: 'whatever',
-  output: 'yay!'
-}]
+const errorDict = [
+  {
+    input: 'privkey',
+    output: 'The private key cannot be read. It may be corrupted.'
+  },
+  {
+    input: 'pubkey',
+    output: 'The public key cannot be read. It may be corrupted.'
+  },
+  {
+    input: 'decpriv',
+    output: 'The private key passphrase is incorrect.'
+  },
+  {
+    input: 'signfail',
+    output: 'Cannot sign message. Try again with a different message and/or keys.'
+  },
+  {
+    input: 'parsemsg',
+    output: 'The encrypted message cannot be read. It may be corrupted.'
+  },
+  {
+    input: 'parseattach',
+    output: 'The encrypted attachment cannot be read. It may be corrupted.'
+  },
+  {
+    input: 'genkey',
+    output: 'Keys could not be generated. Try again.'
+  },
+  {
+    input: 'encmsg',
+    output: 'Cannot encrypt message. Try a different private key.'
+  },
+  {
+    input: 'stegkeyread',
+    output: 'The imported image does not contain a valid key.'
+  },
+  {
+    input: 'stegkey',
+    output: 'The imported file is not a valid image key.'
+  },
+  {
+    input: 'stegkeygen',
+    output: 'Failed to create image keys.'
+  },
+  {
+    input: 'stegnomsg',
+    output: 'The imported steganograph does not contain a message.'
+  },
+  {
+    input: 'stegmsggeneral',
+    outout: 'Failed to process imported steganograph.'
+  },
+  {
+    input: 'steglen',
+    output:'Selected steganograph host cannot store the encrypted message. Try a larger image.'
+  },
+  {
+    input: 'parsesignmsg',
+    output: 'The signature cannot be read. It maybe corrupted.'
+  },
+  {
+    input: 'invalidsign',
+    output: 'The signature is corrupted. Proceed with caution.'
+  },
+  {
+    input: 'decmsg',
+    output: 'Cannot decrypt message. Try a different private key.'
+  },
+  {
+    input: 'upload',
+    output: 'The public key could not be uploaded. Try again.'
+  },
+  {
+    input: 'uploadcomplete',
+    output: 'The fingerprint could not be generated from the uploaded key. Proceed with caution.'
+  },
+  {
+    input: 'searchconnection',
+    output:'Could not connect to key server. Try again.'
+  },
+  {
+    input: 'searchresultkey',
+    output: 'A key was retrieved but was unabled to read fingerprint. Use another key or proceed with caution.'
+  },
+  {
+    input: 'searchgeneral',
+    output: 'Failed to search. Try again with a different server and/or key.'
+  },
+  {
+    input: 'encattach',
+    output: 'Cannot encrypt attachment. Try testing a different file and/or using different keys.'
+  },
+  {
+    input: 'decattach',
+    output: 'Cannot decrypt attachment. Try a different private key.'
+  },
+  {
+    input: 'file',
+    output: 'Failed to load selected file.'
+  },
+  {
+    input: 'keyimportfail',
+    output: 'Failed to import key. Try another file.'
+  }
+]
 
-const opgpErrorHandler = function(opgp){
+const opgpErrorHandler = function(opgp,type){
   if(opgp){
-		alert('error!');
-    return true
+    const ret = errorFinder(type);
+		lipAlert(ret);
+    return ret
 	} else {
 		return false
 	}
@@ -357,10 +370,12 @@ const lookupKey = function(query,server) {
 		}
 		try {
 			const hkpLookup = await resolveSearchKey(query,server);
+			if (opgpErrorHandler(hkpLookup.err,'searchconnection')) return;
 			if(hkpLookup != undefined){
 				if(hkpLookup.length > 0){
 					session.searchedKey = hkpLookup.trim();
 					const searchedKey = await resolvePubKey(session.searchedKey);
+					if (opgpErrorHandler(searchedKey.err,'searchresultkey')) return;
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 					$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
@@ -375,49 +390,10 @@ const lookupKey = function(query,server) {
 			}
 		} catch(e) {
 			$searchStatus.text('Error');
-			lipAlert(e);
-			//lipAlert("Key retrieved but was unabled to read fingerprint. Please use another key.");
+			opgpErrorHandler(true,'searchgeneral');
 		}
 	}
 	main();
-/*
-		ndew Promise((resolve, reject) => {
-			hkp.lookup({ query: query }).then(function(keys) {
-				if(keys != undefined){
-					if (keys.length > 0){
-						//copy keys
-						async function main() {
-						  try {
-								session.searchedKey = keys.trim();
-								const searchedKey = resolvePubKey(session.searchedKey);
-								const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
-								$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
-								$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
-								createStegKey('./ui/publickeyreference.jpg','search',session.searchedKey);
-								$('.searched-key-download-steg').attr('download', 'searchedKey_public_steg.png')
-								$searchResults.addClass('search-complete');
-								$searchStatus.text('Key found');
-							} catch(e) {
-								$searchStatus.text('Error');
-								lipAlert("Key retrieved but was unabled to read fingerprint. Please use another key.");
-							}
-						}
-						main();
-					}
-				} else {
-					//clear keys
-					$('.search-complete').removeClass('search-complete');
-					$searchStatus.text('Nothing found');
-				}
-			}).catch(function(e){
-				$searchStatus.text('Search error');
-				lipAlert('Could not retrieve key. Please try again.');
-			})
-		}).catch(function(e){
-			$searchStatus.text('Search error');
-			$('.create-key-progress').find('span').text('Failed generating keys').removeClass('active');
-			lipAlert('Could not connect to key server. Please try again.');
-		})*/
 }
 
 //Function to upload key
@@ -439,7 +415,9 @@ const uploadKey = function(type){
 			async function main() {
 				try {
 					const hkpUpload = await resolveUploadKey(session.keyToUploadFile);
+					if (opgpErrorHandler(hkpUpload.err,'upload')) return;
 					const pbKeyObj = await resolvePubKey(session.keyToUploadFile);
+					if (opgpErrorHandler(pbKeyObj.err,'uploadcomplete')) return;
 					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 					if(type !== 'import'){
@@ -453,41 +431,14 @@ const uploadKey = function(type){
 					session.running = false;
 				} catch(e) {
 					$uploadProgress.removeClass('active').find('span').text('Upload failed');
-					lipAlert(e);
+					opgpErrorHandler(true,'upload');
 					session.running = false;
 				}
 			}
 			main();
-
-			/*
-			hkp.upload(session.keyToUploadFile).then(function() {
-				//downloadlink
-				openpgp.key.readArmored(session.keyToUploadFile).then(data => {
-					const buffer = new Uint8Array(data.keys[0].primaryKey.fingerprint).buffer;
-					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
-					if(type !== 'import'){
-						//paste
-						$('.paste-upload-link').addClass('active').attr('href',downloadLink);
-					} else {
-						$('.import-upload-link').addClass('active').attr('href',downloadLink);
-						//import
-					}
-					$('.upload-progress').removeClass('active').find('span').text('Upload complete');
-					session.running = false;
-				}).catch(function(e){
-					$('.upload-progress').removeClass('active').find('span').text('Upload failed');
-					lipAlert("The fingerprint could not be generated from the uploaded key. Please try again.");
-					session.running = false;
-				})
-			}).catch(function(e){
-				$('.upload-progress').removeClass('active').find('span').text('Upload failed');
-				lipAlert('The public key could not be uploaded. Please try again.');
-				session.running = false;
-			});
-			*/
 		} else {
 			$('.upload-progress').removeClass('active').find('span').text('Upload failed');
-			lipAlert("Oops! This doesn't seem like a valid public key. Please choose a different file.");
+			opgpErrorHandler(true,'pubkey');
 			session.running = false;
 		}
 	}
@@ -502,15 +453,20 @@ const decryptMessage = function() {
 		  try {
 				session.lastEncPaste = $('.text-read').val();
 				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
+				if (opgpErrorHandler(privKeyObj.err,'privkey')) return;
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-read-passphrase').val());
+				if (opgpErrorHandler(decryptPrivKey.err,'decpriv')) return;
 				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
+				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const msg = await resolveDecMsgPrep(session.lastEncPaste);
+				if (opgpErrorHandler(msg.err,'parsemsg')) return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj,
 					privateKeys: [privKeyObj]
 				}
 				const plaintext = (await resolveDecMsg(options));
+				if (opgpErrorHandler(plaintext.err,'decmsg')) return;
 				const $processedAside = $('.processed-aside');
 				session.lastDec = plaintext;
 				session.running = false;
@@ -526,41 +482,13 @@ const decryptMessage = function() {
 				}
 			} catch (e) {
 				session.running = false;
-				lipAlert(e);
-				//
+				opgpErrorHandler(true,'decmsg');
 				$body.removeClass('loading');
 			}
 		}
 		main();
 	}
 }
-/*
-}).catch(function(e) {
-							session.running = false;
-							lipAlert('Cannot decrypt message. Try a different private key.');
-							$body.removeClass('loading');
-						});
-					}).catch(function(e) {
-						session.running = false;
-						lipAlert('The encrypted message cannot be parsed and/or is formatted incorrectly.');
-						$body.removeClass('loading');
-					});
-				}).catch(function(e) {
-					session.running = false;
-					lipAlert('The public key cannot be read. It may be corrupted.');
-					$body.removeClass('loading');
-				});
-			}).catch(function(e) {
-			session.running = false;
-			lipAlert('The private key passphrase is incorrect.');
-			$body.removeClass('loading');
-		});
-	}).catch(function(e) {
-		session.running = false;
-		lipAlert('The private key cannot be read. It may be corrupted.');
-		$body.removeClass('loading');
-	});
-				*/
 
 //View decrypted message
 const viewDecMsg = function() {
@@ -613,16 +541,19 @@ const encryptMessage = function(msg, signedToggle) {
 		  try {
 				const $stgHost = $('.stg-host');
 				const pbKeyObj = await resolvePubKey(session.pubKey);
+				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const opgpMsg = await resolveTextMsg(msg);
+				if (opgpErrorHandler(opgpMsg.err,'privkey')) return;
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
 				}
 				const ciphertext = await resolveEncMsg(options);
+				if (opgpErrorHandler(ciphertext.err,'encmsg')) return;
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
-					const stegSrc = await resolveLoadFileURL($stgHost)
+					const stegSrc = await resolveLoadFileURL($stgHost);
 					const newImg = await resolveImg(stegSrc.result);
 					const imgCanvas = document.createElement("canvas");
 					let imgContext = imgCanvas.getContext("2d");
@@ -635,7 +566,7 @@ const encryptMessage = function(msg, signedToggle) {
 					const imgConvert = await resolveImg(imgInfom);
 					if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
 						$stgHost.val('');
-						lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
+						opgpErrorHandler(true,'steglen');
 					} else {
 						createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
 						$(imgCanvas).remove();
@@ -656,79 +587,10 @@ const encryptMessage = function(msg, signedToggle) {
 				//
 				session.running = false;
 				$body.removeClass('loading');
-				lipAlert(e);
+				opgpErrorHandler(true,'encmsg');
 			}
 		}
 		main();
-		/*
-		openpgp.key.readArmored(session.pubKey).then(data => {
-			let options, cleartext, validity;
-			options = {
-				message: openpgp.message.fromText(msg), // input as Message object
-				publicKeys: data.keys
-			}
-			openpgp.encrypt(options).then(ciphertext => {
-				encrypted = ciphertext.data.trim() // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
-				session.lastEnc = encrypted;
-				if ($('.stg-host').val().length > 0){
-					let reader = new FileReader();
-					reader.onload = function(e){
-						let newImg = document.createElement('img');
-						let imgConvert = document.createElement('img');
-						newImg.onload = function(){
-							let imgCanvas = document.createElement("canvas");
-							let imgContext = imgCanvas.getContext("2d");
-							imgContext.canvas.width = newImg.width;
-							imgContext.canvas.height = newImg.height;
-							imgContext.fillStyle = '#FFFFFF';
-							imgContext.fillRect(0,0,newImg.width,newImg.height);
-							imgContext.drawImage(newImg, 0, 0, newImg.width, newImg.height);
-							let imgInfom = imgCanvas.toDataURL("image/jpeg", 1.0);
-							imgConvert.onload = function(){
-								if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
-									lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
-								} else {
-									createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
-									$(imgCanvas).remove();
-									$(newImg).remove();
-									$(imgConvert).remove();
-									encryptStatus(signedToggle);
-									session.running = false;
-									$body.removeClass('loading');
-									viewEncMsg(true);
-								}
-							}
-							imgConvert.src = imgInfom;
-							if(parseInt(steg.getHidingCapacity(newImg)) >= session.lastEnc){
-								lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
-							} else {
-								createSteg(newImg,$('.steg-msg-download'),session.lastEnc);
-								$(newImg).remove();
-								encryptStatus(signedToggle);
-								session.running = false;
-								$body.removeClass('loading');
-								viewEncMsg(true);
-							}
-						}
-						newImg.src = e.target.result;
-					}
-					reader.readAsDataURL($('.stg-host')[0].files[0]);
-				} else {
-					encryptStatus(signedToggle);
-					session.running = false;
-					$body.removeClass('loading');
-					viewEncMsg(false);
-				}
-			}).catch(function(e) {
-				session.running = false;
-				$body.removeClass('loading');
-				lipAlert('Cannot encrypt message. Try testing a different message and/or using different keys.');
-			});
-		}).catch(function(e) {
-			session.running = false;
-			$body.removeClass('loading');
-			lipAlert('The public key cannot be read. It may be corrupted.');
-		});*/
 	}
 }
 
@@ -750,6 +612,7 @@ const generateKeys = function() {
 		async function main() {
 			try {
 				const generateKey = await resolveGenKey(options);
+				if (opgpErrorHandler(generateKey.err,'genkey')) return;
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();
@@ -759,7 +622,7 @@ const generateKeys = function() {
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('cursor-loading');
-				lipAlert('Keys could not be generated. Please try again.');
+				opgpErrorHandler(true,'genkey');
 				newKeyReset();
 			}
 		}
@@ -806,7 +669,7 @@ const keyImportProcess = function($type,result){
 			importPrivKey();
 		} else {
 			$type.val('');
-			lipAlert("The imported file is not a valid private key. Please choose a different file.");
+			opgpErrorHandler(true,'privkey');
 		}
 	} else if ($type.hasClass('server-key-pub-import')){
 		if (testPubKey(result)) {
@@ -814,7 +677,7 @@ const keyImportProcess = function($type,result){
 			validatePubKeyUpload();
 		} else {
 			$type.val('');
-			lipAlert("The imported file is not a valid public key. Please choose a different file.");
+			opgpErrorHandler(true,'pubkey');
 		}
 	} else {
 		if (testPubKey(result)) {
@@ -822,7 +685,7 @@ const keyImportProcess = function($type,result){
 			importPubKey('file');
 		} else {
 			$type.val('');
-			lipAlert("The imported file is not a valid public key. Please choose a different file.");
+			opgpErrorHandler(true,'pubkey');
 		}
 	}
 }
@@ -862,7 +725,7 @@ const keyImport = function($type){
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
-			lipAlert(e);
+			opgpErrorHandler(true,'keyimportfail');
 			//
 		}
 	}
@@ -877,7 +740,7 @@ const importPubkeyStr = function(){
 		session.pubKey = pubKeyPaste;
 		return true
 	} else {
-		lipAlert("The imported file is not a valid public key. Please choose a different file.");
+		opgpErrorHandler(true,'pubkey');
 		return false
 	}
 }
@@ -900,7 +763,7 @@ const importPubKey = function(type) {
 	async function main() {
 	  try {
 	    const pubKeyOutput = await resolvePubKey(session.pubKey);
-			if (opgpErrorHandler(pubKeyOutput.err)) return;
+			if (opgpErrorHandler(pubKeyOutput.err,'pubkey')) return;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -929,7 +792,7 @@ const importPubKey = function(type) {
 				writeKeyStatus();
 			}
 	  } catch (e) {
-	    lipAlert(e);
+	   	opgpErrorHandler(true,'pubkey');
 	  }
 	}
 	main();
@@ -943,51 +806,25 @@ const signMessage = function() {
 		async function main() {
 			try {
 				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
+				if (opgpErrorHandler(privKeyObj.err,'privkey')) return;
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-write-passphrase').val());
+				if (opgpErrorHandler(decryptPrivKey.err,'decpriv')) return;
 				const options = {
 					message: openpgp.cleartext.fromText($('.text-write').val()),
 					privateKeys: [privKeyObj]
 				};
 				const signMsg = await resolveSignMsg(options);
+				if (opgpErrorHandler(signMsg.err,'signfail')) return;
 				const cleartext = signMsg.data.trim();
 				session.running = false;
 				encryptMessage(cleartext);
 			} catch(e) {
-				//
 				session.running = false;
 				$body.removeClass('loading');
-				lipAlert(e);
+				opgpErrorHandler(true,'signfail');
 			}
 		}
 		main();
-		/*
-		openpgp.key.readArmored(session.privKey).then(data => {
-			let options, cleartext, validity;
-			let privKeyObj = data.keys[0];
-			privKeyObj.decrypt($('.text-write-passphrase').val()).then(output => {
-				options = {
-					message: openpgp.cleartext.fromText($('.text-write').val()),
-					privateKeys: [privKeyObj]
-				};
-				openpgp.sign(options).then(function(signed) {
-					cleartext = signed.data.trim();
-					session.running = false;
-					encryptMessage(cleartext, true);
-				}).catch(function(e) {
-					session.running = false;
-					$body.removeClass('loading');
-					lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
-				});
-			}).catch(function(e) {
-				session.running = false;
-				$body.removeClass('loading');
-				lipAlert('The private key passphrase is incorrect.');
-			});
-		}).catch(function(e) {
-			session.running = false;
-			$body.removeClass('loading');
-			lipAlert('The private key cannot be read. It may be corrupted.');
-		});*/
 	}
 }
 
@@ -1014,13 +851,14 @@ const validatePubKeyUpload = function(){
 	async function main() {
 		try {
 			const readPubKey = await resolvePubKey(session.pubKey);
+			if (opgpErrorHandler(readPubKey.err,'pubkey')) return;
 			let $serverKeyPubImport = $('.server-key-pub-import');
 			let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
 			$h3Text.text('  -  '+getFilename($serverKeyPubImport.val()));
 			$serverKeyPubImport.prev('.label-container').find('span').text('Reselect key');
 			$('.server-key-pub-import-upload').removeAttr('disabled');
 		} catch (e) {
-			lipAlert('The public key cannot be read. It may be corrupted.');
+			opgpErrorHandler(true,'pubkey');
 		}
 	}
 	main();
@@ -1035,12 +873,15 @@ const verifySignature = function() {
 		async function main() {
 			try {
 				const pbKeyObj = (await resolvePubKey(session.pubKey)).keys;
+				if (opgpErrorHandler(pbKeyObj.err, 'pubkey')) return;
 				const msg = await resolveVerifyMsgPrep(session.lastDec.data);
+				if (opgpErrorHandler(msg.err), 'parsesignmsg') return;
 				const options = {
 					message: msg,
 					publicKeys: pbKeyObj
 				}
 				const verified = await resolveVerifyMsg(options);
+				if (opgpErrorHandler(verified.err), 'invalidsign') return;
 				validity = verified.signatures[0].valid;
 				if (validity) {
 					session.lastDecStatus = 'Message decrypted. Signature valid.';
@@ -1053,53 +894,12 @@ const verifySignature = function() {
 				session.running = false;
 				viewDecMsg();
 			} catch(e) {
-				//
-				lipAlert(e);
+				opgpErrorHandler(true,'parsesignmsg');
 				session.running = false;
 				$body.removeClass('loading');
 			}
 		}
 		main();
-
-
-/*
-		openpgp.key.readArmored(session.pubKey).then(pbKeys => {
-			pbKeyObj = pbKeys.keys;
-			openpgp.cleartext.readArmored(session.lastDec.data).then(msg => {
-				let options = {
-					message: msg,
-					publicKeys: pbKeyObj
-				}
-				openpgp.verify(options).then(function(verified) {
-					let $processedAside = $('.processed-aside');
-					validity = verified.signatures[0].valid;
-					if (validity) {
-						session.lastDecStatus = 'Message decrypted. Signature valid.';
-					} else {
-						session.lastDecStatus = 'Message decrypted. Signature not valid.';
-					}
-					$processedAside.text(session.lastDecStatus);
-					$('.view-message-decrypted').removeAttr('disabled');
-					$body.removeClass('loading');
-					session.running = false;
-					viewDecMsg();
-				}).catch(function(e) {
-					session.running = false;
-					$body.removeClass('loading');
-					lipAlert('The signature cannot be verified. It may be corrupted.');
-				});
-			}).catch(function(e) {
-				session.running = false;
-				$body.removeClass('loading');
-				lipAlert('The signature cannot be read. It maybe corrupted.');
-			});
-		}).catch(function(e) {
-			session.running = false;
-			$body.removeClass('loading');
-			lipAlert('The public key cannot be read. It may be corrupted.');
-			//console.log('readpubkey'+e);
-		});
-	*/
 	}
 }
 
@@ -1215,6 +1015,7 @@ const resolveImg = function(src){
 	return new Promise(resolve => {
 		const img = document.createElement('img');
 		img.onload = function(){
+			img.setAttribute('crossOrigin', 'anonymous');
 			resolve(img);
 			$(img).remove();
 		}
@@ -1275,8 +1076,9 @@ const resolveGenKey = function(options){
 //promise wrapper for parsing public key
 //session.pubKey
 const resolvePubKey = function(pubKey){
-	return new Promise(resolve => {
-		const pubKeyResolve = openpgp.key.readArmored(pubKey);
+	let pubKeyResolve;
+	const prom = new Promise(resolve => {
+		pubKeyResolve = openpgp.key.readArmored(pubKey);
 		resolve(pubKeyResolve);
 	})
 }
@@ -1378,7 +1180,7 @@ const createStegKey = function(input,type,str){
 			$(loadedImg).remove();
 			$(newImg).remove();
 		} catch(e) {
-			lipAlert('Failed to create image keys.');
+			lipAlert(opgpErrorHandler(true,'stegkey'));
 		}
 	}
 	main();
@@ -1407,11 +1209,11 @@ const convertStegMsg = function($type){
 				readFormCheck();
 			} else {
 				$type.val('');
-				lipAlert('The imported steganograph does not contain a message.');
+				lipAlert(opgpErrorHandler(true,'stegnomsg'));
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert('Failed to process imported steganograph.');
+			lipAlert(opgpErrorHandler(true,'stegmsggeneral'));
 		}
 	}
 	main();
@@ -1436,11 +1238,11 @@ const convertStegKey = function($type){
 				$('.converted-aside').text('Key converted.');
 			} else {
 				$type.val('');
-				lipAlert('The imported image does not contain a valid key.');
+				lipAlert(opgpErrorHandler(true,'stegkeyread'));
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert('The imported file is not a valid image key.');
+			lipAlert(opgpErrorHandler(true,'stegkey'));
 		}
 	}
 	main();

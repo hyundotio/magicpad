@@ -35,7 +35,7 @@ const createStegKey = function(input,type,str){
 			$(loadedImg).remove();
 			$(newImg).remove();
 		} catch(e) {
-			lipAlert('Failed to create image keys.');
+			lipAlert(opgpErrorHandler(true,'stegkey'));
 		}
 	}
 	main();
@@ -64,11 +64,11 @@ const convertStegMsg = function($type){
 				readFormCheck();
 			} else {
 				$type.val('');
-				lipAlert('The imported steganograph does not contain a message.');
+				lipAlert(opgpErrorHandler(true,'stegnomsg'));
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert('Failed to process imported steganograph.');
+			lipAlert(opgpErrorHandler(true,'stegmsggeneral'));
 		}
 	}
 	main();
@@ -93,11 +93,11 @@ const convertStegKey = function($type){
 				$('.converted-aside').text('Key converted.');
 			} else {
 				$type.val('');
-				lipAlert('The imported image does not contain a valid key.');
+				lipAlert(opgpErrorHandler(true,'stegkeyread'));
 			}
 		} catch(e) {
 			$type.val('');
-			lipAlert('The imported file is not a valid image key.');
+			lipAlert(opgpErrorHandler(true,'stegkey'));
 		}
 	}
 	main();

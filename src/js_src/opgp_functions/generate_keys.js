@@ -16,7 +16,7 @@ const generateKeys = function() {
 		async function main() {
 			try {
 				const generateKey = await resolveGenKey(options);
-				if (opgpErrorHandler(generateKey.err)) return;
+				if (opgpErrorHandler(generateKey.err,'genkey')) return;
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();
@@ -26,7 +26,7 @@ const generateKeys = function() {
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('cursor-loading');
-				lipAlert('Keys could not be generated. Please try again.');
+				opgpErrorHandler(true,'genkey');
 				newKeyReset();
 			}
 		}

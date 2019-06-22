@@ -6,7 +6,7 @@ const keyImportProcess = function($type,result){
 			importPrivKey();
 		} else {
 			$type.val('');
-			lipAlert("The imported file is not a valid private key. Please choose a different file.");
+			opgpErrorHandler(true,'privkey');
 		}
 	} else if ($type.hasClass('server-key-pub-import')){
 		if (testPubKey(result)) {
@@ -14,7 +14,7 @@ const keyImportProcess = function($type,result){
 			validatePubKeyUpload();
 		} else {
 			$type.val('');
-			lipAlert("The imported file is not a valid public key. Please choose a different file.");
+			opgpErrorHandler(true,'pubkey');
 		}
 	} else {
 		if (testPubKey(result)) {
@@ -22,7 +22,7 @@ const keyImportProcess = function($type,result){
 			importPubKey('file');
 		} else {
 			$type.val('');
-			lipAlert("The imported file is not a valid public key. Please choose a different file.");
+			opgpErrorHandler(true,'pubkey');
 		}
 	}
 }
@@ -62,7 +62,7 @@ const keyImport = function($type){
 				keyImportProcess($type,loadedFile);
 			}
 		} catch(e) {
-			lipAlert(e);
+			opgpErrorHandler(true,'keyimportfail');
 			//
 		}
 	}
@@ -77,7 +77,7 @@ const importPubkeyStr = function(){
 		session.pubKey = pubKeyPaste;
 		return true
 	} else {
-		lipAlert("The imported file is not a valid public key. Please choose a different file.");
+		opgpErrorHandler(true,'pubkey');
 		return false
 	}
 }
@@ -100,7 +100,7 @@ const importPubKey = function(type) {
 	async function main() {
 	  try {
 	    const pubKeyOutput = await resolvePubKey(session.pubKey);
-			if (opgpErrorHandler(pubKeyOutput.err)) return;
+			if (opgpErrorHandler(pubKeyOutput.err,'pubkey')) return;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
@@ -129,7 +129,7 @@ const importPubKey = function(type) {
 				writeKeyStatus();
 			}
 	  } catch (e) {
-	    lipAlert(e);
+	   	opgpErrorHandler(true,'pubkey');
 	  }
 	}
 	main();

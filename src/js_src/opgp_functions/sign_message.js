@@ -6,53 +6,24 @@ const signMessage = function() {
 		async function main() {
 			try {
 				const privKeyObj = (await resolvePrivKey(session.privKey)).keys[0];
-				if (opgpErrorHandler(privKeyObj.err)) return;
+				if (opgpErrorHandler(privKeyObj.err,'privkey')) return;
 				const decryptPrivKey = await resolveDecKey(privKeyObj,$('.text-write-passphrase').val());
-				if (opgpErrorHandler(decryptPrivKey.err)) return;
+				if (opgpErrorHandler(decryptPrivKey.err,'decpriv')) return;
 				const options = {
 					message: openpgp.cleartext.fromText($('.text-write').val()),
 					privateKeys: [privKeyObj]
 				};
 				const signMsg = await resolveSignMsg(options);
-				if (opgpErrorHandler(signMsg.err)) return;
+				if (opgpErrorHandler(signMsg.err,'signfail')) return;
 				const cleartext = signMsg.data.trim();
 				session.running = false;
 				encryptMessage(cleartext);
 			} catch(e) {
-				//
 				session.running = false;
 				$body.removeClass('loading');
-				lipAlert(e);
+				opgpErrorHandler(true,'signfail');
 			}
 		}
 		main();
-		/*
-		openpgp.key.readArmored(session.privKey).then(data => {
-			let options, cleartext, validity;
-			let privKeyObj = data.keys[0];
-			privKeyObj.decrypt($('.text-write-passphrase').val()).then(output => {
-				options = {
-					message: openpgp.cleartext.fromText($('.text-write').val()),
-					privateKeys: [privKeyObj]
-				};
-				openpgp.sign(options).then(function(signed) {
-					cleartext = signed.data.trim();
-					session.running = false;
-					encryptMessage(cleartext, true);
-				}).catch(function(e) {
-					session.running = false;
-					$body.removeClass('loading');
-					lipAlert('Cannot sign message. Please try again with a different message and/or keys.');
-				});
-			}).catch(function(e) {
-				session.running = false;
-				$body.removeClass('loading');
-				lipAlert('The private key passphrase is incorrect.');
-			});
-		}).catch(function(e) {
-			session.running = false;
-			$body.removeClass('loading');
-			lipAlert('The private key cannot be read. It may be corrupted.');
-		});*/
 	}
 }

@@ -21,14 +21,14 @@ const validatePubKeyUpload = function(){
 	async function main() {
 		try {
 			const readPubKey = await resolvePubKey(session.pubKey);
-			if (opgpErrorHandler(readPubKey.err)) return;
+			if (opgpErrorHandler(readPubKey.err,'pubkey')) return;
 			let $serverKeyPubImport = $('.server-key-pub-import');
 			let $h3Text = $serverKeyPubImport.parent().find('h3').find('span');
 			$h3Text.text('  -  '+getFilename($serverKeyPubImport.val()));
 			$serverKeyPubImport.prev('.label-container').find('span').text('Reselect key');
 			$('.server-key-pub-import-upload').removeAttr('disabled');
 		} catch (e) {
-			lipAlert('The public key cannot be read. It may be corrupted.');
+			opgpErrorHandler(true,'pubkey');
 		}
 	}
 	main();

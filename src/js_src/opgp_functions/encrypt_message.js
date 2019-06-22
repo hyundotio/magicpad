@@ -37,15 +37,15 @@ const encryptMessage = function(msg, signedToggle) {
 		  try {
 				const $stgHost = $('.stg-host');
 				const pbKeyObj = await resolvePubKey(session.pubKey);
-				if (opgpErrorHandler(pbKeyObj.err)) return;
+				if (opgpErrorHandler(pbKeyObj.err,'pubkey')) return;
 				const opgpMsg = await resolveTextMsg(msg);
-				if (opgpErrorHandler(opgpMsg.err)) return;
+				if (opgpErrorHandler(opgpMsg.err,'privkey')) return;
 				const options = {
 					message: opgpMsg, // input as Message object
 					publicKeys: pbKeyObj.keys
 				}
 				const ciphertext = await resolveEncMsg(options);
-				if (opgpErrorHandler(ciphertext.err)) return;
+				if (opgpErrorHandler(ciphertext.err,'encmsg')) return;
 				encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
 				if ($stgHost.val().length > 0){
@@ -62,7 +62,7 @@ const encryptMessage = function(msg, signedToggle) {
 					const imgConvert = await resolveImg(imgInfom);
 					if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
 						$stgHost.val('');
-						lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
+						opgpErrorHandler(true,'steglen');
 					} else {
 						createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
 						$(imgCanvas).remove();
@@ -83,78 +83,9 @@ const encryptMessage = function(msg, signedToggle) {
 				//
 				session.running = false;
 				$body.removeClass('loading');
-				lipAlert(e);
+				opgpErrorHandler(true,'encmsg');
 			}
 		}
 		main();
-		/*
-		openpgp.key.readArmored(session.pubKey).then(data => {
-			let options, cleartext, validity;
-			options = {
-				message: openpgp.message.fromText(msg), // input as Message object
-				publicKeys: data.keys
-			}
-			openpgp.encrypt(options).then(ciphertext => {
-				encrypted = ciphertext.data.trim() // '-----BEGIN PGP MESSAGE ... END PGP MESSAGE-----'
-				session.lastEnc = encrypted;
-				if ($('.stg-host').val().length > 0){
-					let reader = new FileReader();
-					reader.onload = function(e){
-						let newImg = document.createElement('img');
-						let imgConvert = document.createElement('img');
-						newImg.onload = function(){
-							let imgCanvas = document.createElement("canvas");
-							let imgContext = imgCanvas.getContext("2d");
-							imgContext.canvas.width = newImg.width;
-							imgContext.canvas.height = newImg.height;
-							imgContext.fillStyle = '#FFFFFF';
-							imgContext.fillRect(0,0,newImg.width,newImg.height);
-							imgContext.drawImage(newImg, 0, 0, newImg.width, newImg.height);
-							let imgInfom = imgCanvas.toDataURL("image/jpeg", 1.0);
-							imgConvert.onload = function(){
-								if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
-									lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
-								} else {
-									createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
-									$(imgCanvas).remove();
-									$(newImg).remove();
-									$(imgConvert).remove();
-									encryptStatus(signedToggle);
-									session.running = false;
-									$body.removeClass('loading');
-									viewEncMsg(true);
-								}
-							}
-							imgConvert.src = imgInfom;
-							if(parseInt(steg.getHidingCapacity(newImg)) >= session.lastEnc){
-								lipAlert('Selected steganograph host cannot store the encrypted message. Please try a larger image.');
-							} else {
-								createSteg(newImg,$('.steg-msg-download'),session.lastEnc);
-								$(newImg).remove();
-								encryptStatus(signedToggle);
-								session.running = false;
-								$body.removeClass('loading');
-								viewEncMsg(true);
-							}
-						}
-						newImg.src = e.target.result;
-					}
-					reader.readAsDataURL($('.stg-host')[0].files[0]);
-				} else {
-					encryptStatus(signedToggle);
-					session.running = false;
-					$body.removeClass('loading');
-					viewEncMsg(false);
-				}
-			}).catch(function(e) {
-				session.running = false;
-				$body.removeClass('loading');
-				lipAlert('Cannot encrypt message. Try testing a different message and/or using different keys.');
-			});
-		}).catch(function(e) {
-			session.running = false;
-			$body.removeClass('loading');
-			lipAlert('The public key cannot be read. It may be corrupted.');
-		});*/
 	}
 }

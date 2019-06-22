@@ -11,7 +11,7 @@ const attachmentFilename = function($type) {
 			$('.attachment-import-label').find('span').text('Reselect file');
 		} catch(e) {
 			$type.val('');
-			lipAlert('Failed to load selected file.');
+			opgpErrorHandler(true,'file');
 		}
 	}
 	main();
