@@ -16,7 +16,7 @@ const generateKeys = function() {
 		async function main() {
 			try {
 				const generateKey = await openpgp.generateKey(options);
-				if(pubKeyOutput.err != undefined){
+				if(generateKey.err != undefined){
 					throw errorFinder('genkey');
 				}
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();

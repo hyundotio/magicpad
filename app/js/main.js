@@ -385,12 +385,12 @@ const lookupKey = function(query,server) {
 			const hkpLookup = await hkp.lookup({ query: query });
 			if(hkpLookup != undefined){
 				if(hkpLookup.length > 0){
-					session.searchedKey = hkpLookup.trim();
-					const searchedKey = await openpgp.key.readArmored(session.searchedKey);
+					const searchedKey = await openpgp.key.readArmored(hkpLookup.trim());
 					if(searchedKey.err != undefined){
 						$searchStatus.text('Error');
 						throw errorFinder('searchresultkey');
 					}
+					session.searchedKey = hkpLookup.trim();
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
 					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 					$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
@@ -426,35 +426,29 @@ const uploadKey = function(type){
 		} else {
 			server = 'http:'+server
 		}
-		if(testPubKey(session.keyToUploadFile, server)){
-			async function main() {
-				try {
-					const hkp = new openpgp.HKP(server);
-					const hkpUpload = await hkp.upload(session.keyToUploadFile);
-					const pbKeyObj = await openpgp.readArmored.key(session.keyToUploadFile);
-					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
-					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
-					if(type !== 'import'){
-						//paste
-						$('.paste-upload-link').addClass('active').attr('href',downloadLink);
-					} else {
-						$('.import-upload-link').addClass('active').attr('href',downloadLink);
-						//import
-					}
-					$uploadProgress.removeClass('active').find('span').text('Upload complete');
-					session.running = false;
-				} catch(e) {
-					$uploadProgress.removeClass('active').find('span').text('Upload failed');
-					lipAlert(e);
-					session.running = false;
+		async function main() {
+			try {
+				const pbKeyObj = await openpgp.key.readArmored(session.keyToUploadFile);
+				const hkp = new openpgp.HKP(server);
+				const hkpUpload = await hkp.upload(session.keyToUploadFile);
+				const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
+				let downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
+				if(type !== 'import'){
+					//paste
+					$('.paste-upload-link').addClass('active').attr('href',downloadLink);
+				} else {
+					$('.import-upload-link').addClass('active').attr('href',downloadLink);
+					//import
 				}
+				$uploadProgress.removeClass('active').find('span').text('Upload complete');
+				session.running = false;
+			} catch(e) {
+				$uploadProgress.removeClass('active').find('span').text('Upload failed');
+				lipAlert(e);
+				session.running = false;
 			}
-			main();
-		} else {
-			$('.upload-progress').removeClass('active').find('span').text('Upload failed');
-			lipAlert(errorFinder('pubkey'));
-			session.running = false;
 		}
+		main();
 	}
 }
 
@@ -618,7 +612,7 @@ const generateKeys = function() {
 		async function main() {
 			try {
 				const generateKey = await openpgp.generateKey(options);
-				if(pubKeyOutput.err != undefined){
+				if(generateKey.err != undefined){
 					throw errorFinder('genkey');
 				}
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
@@ -848,17 +842,17 @@ const testPrivKey = function(privKey){
 const validatePubKeyUpload = function(key){
 	async function main() {
 		try {
+			let $publicKeyUploadFilename = $('.public-key-upload-filename');
+			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
+			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 			const readPubKey = await openpgp.key.readArmored(key);
-			if(readPubKey.err != undefined){
+			if(readPubKey.err != undefined || !testPubKey(key)){
 				$('.server-key-pub-import').val('');
 				$publicKeyUploadFilename.text('');
 				$serverPubKeyImportLabel.find('span').text('Select key');
 				$serverKeyPubImportUpload.attr('disabled','disabled');
 				throw errorFinder('pubkey');
 			}
-			let $publicKeyUploadFilename = $('.public-key-upload-filename');
-			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
-			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 			session.keyToUploadFile = key;
 			$publicKeyUploadFilename.text('  -  '+getFilename($('.server-key-pub-import').val()));
 			$serverPubKeyImportLabel.find('span').text('Reselect key');

@@ -13,34 +13,28 @@ const uploadKey = function(type){
 		} else {
 			server = 'http:'+server
 		}
-		if(testPubKey(session.keyToUploadFile, server)){
-			async function main() {
-				try {
-					const hkp = new openpgp.HKP(server);
-					const hkpUpload = await hkp.upload(session.keyToUploadFile);
-					const pbKeyObj = await openpgp.readArmored.key(session.keyToUploadFile);
-					const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
-					let downloadLink = $('.upload-key-server-list').val() + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
-					if(type !== 'import'){
-						//paste
-						$('.paste-upload-link').addClass('active').attr('href',downloadLink);
-					} else {
-						$('.import-upload-link').addClass('active').attr('href',downloadLink);
-						//import
-					}
-					$uploadProgress.removeClass('active').find('span').text('Upload complete');
-					session.running = false;
-				} catch(e) {
-					$uploadProgress.removeClass('active').find('span').text('Upload failed');
-					lipAlert(e);
-					session.running = false;
+		async function main() {
+			try {
+				const pbKeyObj = await openpgp.key.readArmored(session.keyToUploadFile);
+				const hkp = new openpgp.HKP(server);
+				const hkpUpload = await hkp.upload(session.keyToUploadFile);
+				const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
+				let downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
+				if(type !== 'import'){
+					//paste
+					$('.paste-upload-link').addClass('active').attr('href',downloadLink);
+				} else {
+					$('.import-upload-link').addClass('active').attr('href',downloadLink);
+					//import
 				}
+				$uploadProgress.removeClass('active').find('span').text('Upload complete');
+				session.running = false;
+			} catch(e) {
+				$uploadProgress.removeClass('active').find('span').text('Upload failed');
+				lipAlert(e);
+				session.running = false;
 			}
-			main();
-		} else {
-			$('.upload-progress').removeClass('active').find('span').text('Upload failed');
-			lipAlert(errorFinder('pubkey'));
-			session.running = false;
 		}
+		main();
 	}
 }

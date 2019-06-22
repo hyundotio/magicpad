@@ -20,17 +20,17 @@ const testPrivKey = function(privKey){
 const validatePubKeyUpload = function(key){
 	async function main() {
 		try {
+			let $publicKeyUploadFilename = $('.public-key-upload-filename');
+			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
+			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 			const readPubKey = await openpgp.key.readArmored(key);
-			if(readPubKey.err != undefined){
+			if(readPubKey.err != undefined || !testPubKey(key)){
 				$('.server-key-pub-import').val('');
 				$publicKeyUploadFilename.text('');
 				$serverPubKeyImportLabel.find('span').text('Select key');
 				$serverKeyPubImportUpload.attr('disabled','disabled');
 				throw errorFinder('pubkey');
 			}
-			let $publicKeyUploadFilename = $('.public-key-upload-filename');
-			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
-			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 			session.keyToUploadFile = key;
 			$publicKeyUploadFilename.text('  -  '+getFilename($('.server-key-pub-import').val()));
 			$serverPubKeyImportLabel.find('span').text('Reselect key');
