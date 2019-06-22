@@ -6,7 +6,7 @@ const signMessage = function() {
 		async function main() {
 			try {
 				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
-				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.text-write-passphrase').val());
+				const decryptPrivKey = await privKeyObj.decrypt($('.text-write-passphrase').val());
 				const options = {
 					message: openpgp.cleartext.fromText($('.text-write').val()),
 					privateKeys: [privKeyObj]

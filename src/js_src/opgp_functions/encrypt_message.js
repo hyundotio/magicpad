@@ -36,11 +36,11 @@ const encryptMessage = function(msg, signedToggle) {
 		async function main() {
 		  try {
 				const $stgHost = $('.stg-host');
-				const pbKeyObj = await openpgp.key.readArmored(session.pubKey);
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
 				const opgpMsg = await openpgp.message.fromText(msg);
 				const options = {
 					message: opgpMsg, // input as Message object
-					publicKeys: pbKeyObj.keys
+					publicKeys: pbKeyObj
 				}
 				const ciphertext = await openpgp.encrypt(options);
 				encrypted = ciphertext.data.trim();

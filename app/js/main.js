@@ -47,10 +47,10 @@ const encryptAttachment = function(){
 		async function main() {
 			try {
 				const fileReader = await resolveLoadFileBuffer($attachmentImport);
-				const pbKeyObj = await openpgp.readArmored.key(session.pubKey);
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
 				const options = {
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader)),
-						publicKeys: pbKeyObj.keys
+						publicKeys: pbKeyObj
 				};
 				const ciphertext = await openpgp.encrypt(options);
 				const blob = new Blob([ciphertext.data], {
@@ -85,9 +85,9 @@ const decryptAttachment = function(){
 		async function main() {
 			try {
 				const readAttachment = await resolveLoadFileText($attachmentImport);
-				const privKeyObj = (await openpgp.readArmored.key(session.privKey)).keys[0];
-				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.attachment-passphrase').val());
-				const pbKeyObj = (await openpgp.readArmored.key(session.pubKey)).keys;
+				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
+				const decryptPrivKey = await privKeyObj.decrypt($('.attachment-passphrase').val());
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
 				const msg = await openpgp.message.readArmored(readAttachment);
 				const options = {
 					message: msg,
@@ -95,7 +95,7 @@ const decryptAttachment = function(){
 					privateKeys: [privKeyObj],
 					format: 'binary'
 				}
-				const plaintext = await resolveDecMsg(options);
+				const plaintext = await openpgp.decrypt(options);
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
 				});
@@ -466,9 +466,9 @@ const decryptMessage = function() {
 		async function main() {
 		  try {
 				session.lastEncPaste = $('.text-read').val();
-				const privKeyObj = (await openpgp.readArmored(session.privKey)).keys[0];
-				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.text-read-passphrase').val());
-				const pbKeyObj = (await openpgp.readArmored.key(session.pubKey)).keys;
+				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
+				const decryptPrivKey = await privKeyObj.decrypt($('.text-read-passphrase').val());
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
 				const msg = await openpgp.message.readArmored(session.lastEncPaste);
 				const options = {
 					message: msg,
@@ -549,11 +549,11 @@ const encryptMessage = function(msg, signedToggle) {
 		async function main() {
 		  try {
 				const $stgHost = $('.stg-host');
-				const pbKeyObj = await openpgp.key.readArmored(session.pubKey);
+				const pbKeyObj = (await openpgp.key.readArmored(session.pubKey)).keys;
 				const opgpMsg = await openpgp.message.fromText(msg);
 				const options = {
 					message: opgpMsg, // input as Message object
-					publicKeys: pbKeyObj.keys
+					publicKeys: pbKeyObj
 				}
 				const ciphertext = await openpgp.encrypt(options);
 				encrypted = ciphertext.data.trim();
@@ -807,7 +807,7 @@ const signMessage = function() {
 		async function main() {
 			try {
 				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
-				const decryptPrivKey = await openpgp.decrypt(privKeyObj,$('.text-write-passphrase').val());
+				const decryptPrivKey = await privKeyObj.decrypt($('.text-write-passphrase').val());
 				const options = {
 					message: openpgp.cleartext.fromText($('.text-write').val()),
 					privateKeys: [privKeyObj]
