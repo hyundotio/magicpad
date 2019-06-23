@@ -56,7 +56,6 @@ const importPubkeyStr = function(){
 			const pubKeyPaste = $pubkeyInput.val().trim();
 			const pubKeyOutput = await openpgp.key.readArmored(pubKeyPaste);
 			if(pubKeyOutput.err != undefined || !testPubKey(pubKeyPaste)){
-				$input.val('');
 				throw errorFinder('pubkey');
 			}
 			session.pubKey = pubKeyPaste;
@@ -94,16 +93,19 @@ const importPubKey = function(type,key,$input) {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	async function main() {
 	  try {
-	    const pubKeyOutput = await openpgp.key.readArmored(key);
-			if(pubKeyOutput.err != undefined || !testPubKey(key)){
-				$input.val('');
-				throw errorFinder('pubkey');
-			}
-			session.pubKey = key;
-			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
+			let pubKey = key;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
 			let $pubkeyInputWindow = $('.pubkey-input-window');
+			if(type == 'paste'){
+				pubKey = $('.pubkey-input').val().trim();
+			}
+	    const pubKeyOutput = await openpgp.key.readArmored(pubKey);
+			if(pubKeyOutput.err != undefined || !testPubKey(pubKey)){
+				throw errorFinder('pubkey');
+			}
+			session.pubKey = pubKey;
+			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			session.pubKeyFingerprint = buf2hex(buffer);
 			$('.fingerprint').addClass('active');
 			$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
@@ -119,9 +121,10 @@ const importPubKey = function(type,key,$input) {
 				$('.popup-filter').removeClass('active');
 				$pubkeyInputWindow.removeClass('active');
 			} else {
-				writeKeyStatus();
+				writeKeyStatus(false);
 			}
 	  } catch (e) {
+			if($input) $input.val('');
 	   	lipAlert(e);
 	  }
 	}

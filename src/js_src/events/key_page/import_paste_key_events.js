@@ -1,8 +1,6 @@
 //import pasted pubkey
 $('.import-pubkey-str').bind('click',function(){
-	if(importPubkeyStr()){
 		importPubKey('paste');
-	}
 })
 
 //check if pubkey paste textarea is filled
