@@ -28,8 +28,8 @@ const generateKeys = function() {
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('cursor-loading');
-				lipAlert(e);
 				newKeyReset();
+				lipAlert(e);
 			}
 		}
 		main();

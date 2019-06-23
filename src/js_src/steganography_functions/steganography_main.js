@@ -55,7 +55,6 @@ const convertStegMsg = function($type){
 			const img = await resolveImg(imgSrc.result);
 			const retrievedMsg = readSteg(img);
 			$(img).remove();
-
 			//Also fill in key textArea
 			//Open convereted-key-window;
 			if(retrievedMsg.length > 0){
@@ -63,8 +62,7 @@ const convertStegMsg = function($type){
 				$('.text-read').val(retrievedMsg).text(retrievedMsg).scrollTop(0,0);
 				readFormCheck();
 			} else {
-				$type.val('');
-				lipAlert(errorFinder('stegnomsg'));
+				throw (errorFinder('stegnomsg'));
 			}
 		} catch(e) {
 			$type.val('');
