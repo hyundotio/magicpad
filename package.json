@@ -1,6 +1,6 @@
 {
   "name": "magicpad",
-  "version": "0.0.3-18",
+  "version": "0.0.3-19",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "devDependencies": {
