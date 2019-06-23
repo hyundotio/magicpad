@@ -21,11 +21,9 @@ const uploadKey = function(type){
 				const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 				let downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 				if(type !== 'import'){
-					//paste
 					$('.paste-upload-link').addClass('active').attr('href',downloadLink);
 				} else {
 					$('.import-upload-link').addClass('active').attr('href',downloadLink);
-					//import
 				}
 				$uploadProgress.removeClass('active').find('span').text('Upload complete');
 				session.running = false;

@@ -434,11 +434,9 @@ const uploadKey = function(type){
 				const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 				let downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 				if(type !== 'import'){
-					//paste
 					$('.paste-upload-link').addClass('active').attr('href',downloadLink);
 				} else {
 					$('.import-upload-link').addClass('active').attr('href',downloadLink);
-					//import
 				}
 				$uploadProgress.removeClass('active').find('span').text('Upload complete');
 				session.running = false;
@@ -758,16 +756,19 @@ const importPubKey = function(type,key,$input) {
 	//$('.fingerprint').text(getFingerprint(pubKey));
 	async function main() {
 	  try {
-	    const pubKeyOutput = await openpgp.key.readArmored(key);
-			if(pubKeyOutput.err != undefined || !testPubKey(key)){
-				$input.val('');
-				throw errorFinder('pubkey');
-			}
-			session.pubKey = key;
-			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
+			let pubKey = key;
 			let $pubkeyInputOpenText = $('.pubkey-input-open').find('span');
 			let $keyPubImportLabel = $('.key-pub-import-label').find('span');
 			let $pubkeyInputWindow = $('.pubkey-input-window');
+			if(type == 'paste'){
+				pubKey = $('.pubkey-input').val().trim();
+			}
+	    const pubKeyOutput = await openpgp.key.readArmored(pubKey);
+			if(pubKeyOutput.err != undefined || !testPubKey(pubKey)){
+				throw errorFinder('pubkey');
+			}
+			session.pubKey = pubKey;
+			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			session.pubKeyFingerprint = buf2hex(buffer);
 			$('.fingerprint').addClass('active');
 			$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
@@ -783,9 +784,10 @@ const importPubKey = function(type,key,$input) {
 				$('.popup-filter').removeClass('active');
 				$pubkeyInputWindow.removeClass('active');
 			} else {
-				writeKeyStatus();
+				writeKeyStatus(false);
 			}
 	  } catch (e) {
+			if($input) $input.val('');
 	   	lipAlert(e);
 	  }
 	}
@@ -1330,9 +1332,7 @@ $('.key-import').change(function() {
 
 //import pasted pubkey
 $('.import-pubkey-str').bind('click',function(){
-	if(importPubkeyStr()){
 		importPubKey('paste');
-	}
 })
 
 //check if pubkey paste textarea is filled
@@ -1548,7 +1548,7 @@ $('a').bind('click',function(e){
 
 //Password show toggler
 $('.pw-toggle').change(function() {
-	let $passphraseBox = $('.passphrase-box');
+	let $passphraseBox = $(this).parent().prev('input');
 	if (this.checked) {
 		$passphraseBox.attr('type', 'text');
 	} else {
