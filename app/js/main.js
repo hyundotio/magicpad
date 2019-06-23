@@ -110,8 +110,8 @@ const decryptAttachment = function(){
 				$('.attachment-view').removeAttr('disabled');
 			} catch(e) {
 				session.running = false;
-				lipAlert(e);
 				$body.removeClass('loading');
+				lipAlert(e);
 			}
 		}
 		main();
@@ -566,7 +566,7 @@ const encryptMessage = function(msg, signedToggle) {
 					const imgConvert = await resolveImg(imgInfom);
 					if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
 						$stgHost.val('');
-						lipAlert(errorFinder('steglen'));
+						throw (errorFinder('steglen'));
 					} else {
 						createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
 						$(imgCanvas).remove();
@@ -624,8 +624,8 @@ const generateKeys = function() {
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('cursor-loading');
-				lipAlert(e);
 				newKeyReset();
+				lipAlert(e);
 			}
 		}
 		main();
@@ -721,7 +721,6 @@ const importPubkeyStr = function(){
 			const pubKeyPaste = $pubkeyInput.val().trim();
 			const pubKeyOutput = await openpgp.key.readArmored(pubKeyPaste);
 			if(pubKeyOutput.err != undefined || !testPubKey(pubKeyPaste)){
-				$input.val('');
 				throw errorFinder('pubkey');
 			}
 			session.pubKey = pubKeyPaste;
@@ -1097,7 +1096,6 @@ const convertStegMsg = function($type){
 			const img = await resolveImg(imgSrc.result);
 			const retrievedMsg = readSteg(img);
 			$(img).remove();
-
 			//Also fill in key textArea
 			//Open convereted-key-window;
 			if(retrievedMsg.length > 0){
@@ -1105,8 +1103,7 @@ const convertStegMsg = function($type){
 				$('.text-read').val(retrievedMsg).text(retrievedMsg).scrollTop(0,0);
 				readFormCheck();
 			} else {
-				$type.val('');
-				lipAlert(errorFinder('stegnomsg'));
+				throw (errorFinder('stegnomsg'));
 			}
 		} catch(e) {
 			$type.val('');
