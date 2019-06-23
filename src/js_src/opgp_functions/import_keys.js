@@ -56,7 +56,6 @@ const importPubkeyStr = function(){
 			const pubKeyPaste = $pubkeyInput.val().trim();
 			const pubKeyOutput = await openpgp.key.readArmored(pubKeyPaste);
 			if(pubKeyOutput.err != undefined || !testPubKey(pubKeyPaste)){
-				$input.val('');
 				throw errorFinder('pubkey');
 			}
 			session.pubKey = pubKeyPaste;

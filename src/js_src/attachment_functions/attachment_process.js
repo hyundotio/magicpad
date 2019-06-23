@@ -70,8 +70,8 @@ const decryptAttachment = function(){
 				$('.attachment-view').removeAttr('disabled');
 			} catch(e) {
 				session.running = false;
-				lipAlert(e);
 				$body.removeClass('loading');
+				lipAlert(e);
 			}
 		}
 		main();
