@@ -19,16 +19,12 @@ const testPrivKey = function(privKey){
 //Import public key button function
 const validatePubKeyUpload = function(key){
 	async function main() {
+		let $publicKeyUploadFilename = $('.public-key-upload-filename');
+		let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
+		let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 		try {
-			let $publicKeyUploadFilename = $('.public-key-upload-filename');
-			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
-			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 			const readPubKey = await openpgp.key.readArmored(key);
 			if(readPubKey.err != undefined || !testPubKey(key)){
-				$('.server-key-pub-import').val('');
-				$publicKeyUploadFilename.text('');
-				$serverPubKeyImportLabel.find('span').text('Select key');
-				$serverKeyPubImportUpload.attr('disabled','disabled');
 				throw errorFinder('pubkey');
 			}
 			session.keyToUploadFile = key;
@@ -36,6 +32,11 @@ const validatePubKeyUpload = function(key){
 			$serverPubKeyImportLabel.find('span').text('Reselect key');
 			$serverKeyPubImportUpload.removeAttr('disabled');
 		} catch (e) {
+			session.keyToUploadFile = '';
+			$('.server-key-pub-import').val('');
+			$publicKeyUploadFilename.text('');
+			$serverPubKeyImportLabel.find('span').text('Select key');
+			$serverKeyPubImportUpload.attr('disabled','disabled');
 			lipAlert(e);
 		}
 	}

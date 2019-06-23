@@ -31,10 +31,11 @@ const lookupKey = function(query,server) {
 					$searchStatus.text('Key found');
 				}
 			} else {
-				$('.search-complete').removeClass('search-complete');
+				$searchResults.removeClass('search-complete');
 				$searchStatus.text('Nothing found');
 			}
 		} catch(e) {
+			$searchResults.removeClass('search-complete');
 			$searchStatus.text('Error');
 			lipAlert(e);
 		}

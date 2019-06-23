@@ -400,10 +400,11 @@ const lookupKey = function(query,server) {
 					$searchStatus.text('Key found');
 				}
 			} else {
-				$('.search-complete').removeClass('search-complete');
+				$searchResults.removeClass('search-complete');
 				$searchStatus.text('Nothing found');
 			}
 		} catch(e) {
+			$searchResults.removeClass('search-complete');
 			$searchStatus.text('Error');
 			lipAlert(e);
 		}
@@ -738,13 +739,13 @@ const importPrivKey = function(key,$input) {
 		try {
 			const pvKeyOutput = await openpgp.key.readArmored(key);
 			if(pvKeyOutput.err != undefined || !testPrivKey(key)) {
-				$input.val('');
 				throw errorFinder('privkey');
 			}
 			session.privKey = key;
 			$('.key-priv-import-label').find('span').text('Reimport key');
 			writeKeyStatus();
 		} catch(e) {
+			$input.val('');
 			lipAlert(e);
 		}
 	}
@@ -798,7 +799,6 @@ const importPubKey = function(type,key,$input) {
 const signMessage = function() {
 	if (!session.running) {
 		session.running = true;
-		let $body = $('body');
 		async function main() {
 			try {
 				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
@@ -813,7 +813,7 @@ const signMessage = function() {
 				encryptMessage(cleartext,true);
 			} catch(e) {
 				session.running = false;
-				$body.removeClass('loading');
+				$('body').removeClass('loading');
 				lipAlert(e);
 			}
 		}
@@ -842,16 +842,12 @@ const testPrivKey = function(privKey){
 //Import public key button function
 const validatePubKeyUpload = function(key){
 	async function main() {
+		let $publicKeyUploadFilename = $('.public-key-upload-filename');
+		let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
+		let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 		try {
-			let $publicKeyUploadFilename = $('.public-key-upload-filename');
-			let $serverPubKeyImportLabel = $('.server-pub-key-import-label');
-			let $serverKeyPubImportUpload = $('.server-key-pub-import-upload');
 			const readPubKey = await openpgp.key.readArmored(key);
 			if(readPubKey.err != undefined || !testPubKey(key)){
-				$('.server-key-pub-import').val('');
-				$publicKeyUploadFilename.text('');
-				$serverPubKeyImportLabel.find('span').text('Select key');
-				$serverKeyPubImportUpload.attr('disabled','disabled');
 				throw errorFinder('pubkey');
 			}
 			session.keyToUploadFile = key;
@@ -859,6 +855,11 @@ const validatePubKeyUpload = function(key){
 			$serverPubKeyImportLabel.find('span').text('Reselect key');
 			$serverKeyPubImportUpload.removeAttr('disabled');
 		} catch (e) {
+			session.keyToUploadFile = '';
+			$('.server-key-pub-import').val('');
+			$publicKeyUploadFilename.text('');
+			$serverPubKeyImportLabel.find('span').text('Select key');
+			$serverKeyPubImportUpload.attr('disabled','disabled');
 			lipAlert(e);
 		}
 	}

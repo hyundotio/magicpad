@@ -2,7 +2,6 @@
 const signMessage = function() {
 	if (!session.running) {
 		session.running = true;
-		let $body = $('body');
 		async function main() {
 			try {
 				const privKeyObj = (await openpgp.key.readArmored(session.privKey)).keys[0];
@@ -17,7 +16,7 @@ const signMessage = function() {
 				encryptMessage(cleartext,true);
 			} catch(e) {
 				session.running = false;
-				$body.removeClass('loading');
+				$('body').removeClass('loading');
 				lipAlert(e);
 			}
 		}

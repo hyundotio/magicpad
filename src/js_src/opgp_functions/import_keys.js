@@ -75,13 +75,13 @@ const importPrivKey = function(key,$input) {
 		try {
 			const pvKeyOutput = await openpgp.key.readArmored(key);
 			if(pvKeyOutput.err != undefined || !testPrivKey(key)) {
-				$input.val('');
 				throw errorFinder('privkey');
 			}
 			session.privKey = key;
 			$('.key-priv-import-label').find('span').text('Reimport key');
 			writeKeyStatus();
 		} catch(e) {
+			$input.val('');
 			lipAlert(e);
 		}
 	}
