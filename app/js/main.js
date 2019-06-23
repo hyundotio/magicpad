@@ -110,8 +110,8 @@ const decryptAttachment = function(){
 				$('.attachment-view').removeAttr('disabled');
 			} catch(e) {
 				session.running = false;
-				lipAlert(e);
 				$body.removeClass('loading');
+				lipAlert(e);
 			}
 		}
 		main();
@@ -434,11 +434,9 @@ const uploadKey = function(type){
 				const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 				let downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 				if(type !== 'import'){
-					//paste
 					$('.paste-upload-link').addClass('active').attr('href',downloadLink);
 				} else {
 					$('.import-upload-link').addClass('active').attr('href',downloadLink);
-					//import
 				}
 				$uploadProgress.removeClass('active').find('span').text('Upload complete');
 				session.running = false;
@@ -566,7 +564,7 @@ const encryptMessage = function(msg, signedToggle) {
 					const imgConvert = await resolveImg(imgInfom);
 					if(parseInt(steg.getHidingCapacity(imgConvert)) >= session.lastEnc){
 						$stgHost.val('');
-						lipAlert(errorFinder('steglen'));
+						throw (errorFinder('steglen'));
 					} else {
 						createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
 						$(imgCanvas).remove();
@@ -624,8 +622,8 @@ const generateKeys = function() {
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('cursor-loading');
-				lipAlert(e);
 				newKeyReset();
+				lipAlert(e);
 			}
 		}
 		main();
@@ -1100,7 +1098,6 @@ const convertStegMsg = function($type){
 			const img = await resolveImg(imgSrc.result);
 			const retrievedMsg = readSteg(img);
 			$(img).remove();
-
 			//Also fill in key textArea
 			//Open convereted-key-window;
 			if(retrievedMsg.length > 0){
@@ -1108,8 +1105,7 @@ const convertStegMsg = function($type){
 				$('.text-read').val(retrievedMsg).text(retrievedMsg).scrollTop(0,0);
 				readFormCheck();
 			} else {
-				$type.val('');
-				lipAlert(errorFinder('stegnomsg'));
+				throw (errorFinder('stegnomsg'));
 			}
 		} catch(e) {
 			$type.val('');
