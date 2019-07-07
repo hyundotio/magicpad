@@ -11,7 +11,7 @@ You can run MagicPad four ways:
 2. Run `./app/index.html` via web browser
 3. Build and run executable (saved at `./dist`):
 ```
-npm i magicpad
+git clone https://github.com/hyundotio/magicpad.git
 npm install
 npm run dist
 ```
@@ -22,9 +22,8 @@ sudo apt-get install rpm
 ```
 4. Run Electron via Node from command line:
 ```
-npm i magicpad
-npm install
-npm start
+npm i -g magicpad
+magicpad
 ```
 
 ## Build explained

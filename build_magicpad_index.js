@@ -2,7 +2,6 @@ module.exports = {
   build: function () {
     const fs = require('fs-extra');
     const path = require('path');
-    let compressor = require('node-minify');
     let ncp = require('ncp');
     let jsdom = require('jsdom').JSDOM;
     let indexHtml = fs.readFileSync('./src/html_src/index/index.html',{encoding:'utf-8'});
