@@ -8,14 +8,13 @@ MagicPad is an OpenPGP encryption / decryption tool for beginners. It is designe
 
 You can run MagicPad four ways:
 1. Download executable at `https://www.magicpad.io`
-2. Run `./app/index.html` via web browser
-3. Build and run executable (saved at `./dist`):
+2. Clone and run `./app/index.html` via web browser
+3. Clone, build and run executable (saved at `./dist`):
 ```
-git clone https://github.com/hyundotio/magicpad.git
 npm install
 npm run dist
 ```
-To create only compiled html without running electron, run: `node build_magicpad_index.js`
+To only build html/css/js without running electron, run: `node build_magicpad_index.js`
 If building from Ubuntu, run this first:
 ```
 sudo apt-get install rpm
