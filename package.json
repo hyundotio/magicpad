@@ -1,6 +1,6 @@
 {
   "name": "magicpad",
-  "version": "0.0.3-29",
+  "version": "0.0.3-30",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "bin": {
@@ -13,6 +13,7 @@
   "preferGlobal": true,
   "scripts": {
     "start": "node build_index.js && electron .",
+    "buildwebapp": "node build_magicpad_index.js",
     "dist": "build"
   },
   "keywords": [

@@ -14,12 +14,12 @@ You can run MagicPad four ways:
 npm install
 npm run dist
 ```
-To only build html/css/js without running electron, run: `node build_magicpad_index.js`
+To only build html/css/js without running electron, run: `npm run buildwebapp`
 If building from Ubuntu, run this first:
 ```
 sudo apt-get install rpm
 ```
-4. Run Electron via Node from command line (might need sudo):
+4. Run Electron via Node from command line:
 ```
 npm i -g magicpad
 magicpad
