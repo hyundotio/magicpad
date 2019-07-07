@@ -22,6 +22,7 @@ sudo apt-get install rpm
 4. Run Electron via Node from command line:
 ```
 npm i -g magicpad
+npm i -g electron
 magicpad
 ```
 
