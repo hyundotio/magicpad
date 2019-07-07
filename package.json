@@ -1,10 +1,10 @@
 {
   "name": "magicpad",
-  "version": "0.0.3-22",
+  "version": "0.0.3-23",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "bin": {
-    "magicpad": "npx electron ."
+    "magicpad": "app.js"
   },
   "devDependencies": {
     "electron": "^5.0.6",
