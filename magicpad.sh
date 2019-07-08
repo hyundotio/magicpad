@@ -1,4 +1,4 @@
-pushd $(dirname "${0}") > /dev/null
-basedir=$(pwd -L)
-popd > /dev/null
-npm start --prefix ${basedir}
+OUTPUT="$(npm root -g)"
+COMMAND="$OUTPUT/magicpad"
+echo $COMMAND
+npm start --prefix $COMMAND
