@@ -19,10 +19,9 @@ If building from Ubuntu, run this first:
 ```
 sudo apt-get install rpm
 ```
-4. Run Electron via Node from command line (you need Electron globally installed):
+4. Run Electron via Node from command line:
 ```
 npm i -g magicpad
-npm i -g electron
 magicpad
 ```
 
