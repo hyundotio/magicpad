@@ -5,6 +5,7 @@ let session = {
 	generatedPrivKey:'',
 	generatedRevKey:'',
 	pubKeyFingerprint: '',
+	privKeyFingerprint:'',
 	running: false,
 	lastDec: '',
 	lastEnc: '',

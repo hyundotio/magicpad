@@ -78,6 +78,10 @@ const importPrivKey = function(key,$input) {
 				throw errorFinder('privkey');
 			}
 			session.privKey = key;
+			const buffer = new Uint8Array(pvKeyOutput.keys[0].primaryKey.fingerprint).buffer;
+			session.privKeyFingerprint = buf2hex(buffer);
+			$('.fingerprint-priv').addClass('active');
+			$('.fingerprint-priv-str').text(session.privKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 			$('.key-priv-import-label').find('span').text('Reimport key');
 			writeKeyStatus();
 		} catch(e) {
@@ -107,8 +111,8 @@ const importPubKey = function(type,key,$input) {
 			session.pubKey = pubKey;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			session.pubKeyFingerprint = buf2hex(buffer);
-			$('.fingerprint').addClass('active');
-			$('.fingerprint-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
+			$('.fingerprint-pub').addClass('active');
+			$('.fingerprint-pub-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 			if(type == 'paste'){
 				$pubkeyInputOpenText.text('Repaste key');
 				$keyPubImportLabel.text('Select key');
