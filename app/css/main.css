@@ -7,6 +7,11 @@ html, body {
  html {
      -webkit-text-size-adjust: 100%;
 }
+.mp-share {
+  clear:both;
+  float:none;
+  margin-top:0.25em;
+}
  .attachment-stats {
      line-height: 1.33em;
      clear: both;
