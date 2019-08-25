@@ -8,7 +8,7 @@
 	<script src="./js_include/jquery-3.4.1.min.js">
 	</script>
   <meta http-equiv="x-ua-compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui">
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="application-name" content="MagicPad">
 	<meta name="apple-mobile-web-app-title" content="MagicPad">
@@ -53,7 +53,7 @@
 	</div>
 	<nav class="main-nav">
 	
-  <button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg"></button>
+  <button class="mobile-menu"><img class="icon-button" src="./ui/menu.svg" alt="Activate or exit menu"></button>
   <ul>
     <li>
       <a class="keys-tab tab active" data-tab="keys" href="#">Keys</a>
@@ -83,8 +83,8 @@
 			<div></div>
 		</div>
 		<div class="lips">
-			<div class="online-flag lip">You are currently online. For extra security, use an air-gapped computer. <img class="icon-button lip-exit" src="./ui/exit-black.svg"></div>
-			<div class="message-flag lip"><span>Error message.</span> <img class="icon-button lip-exit" src="./ui/exit-black.svg"></div>
+			<div class="online-flag lip">You are currently online. For extra security, use an air-gapped computer. <img class="icon-button lip-exit" src="./ui/exit-black.svg" alt="Exit online alert lip"></div>
+			<div class="message-flag lip"><span>Error message.</span> <img class="icon-button lip-exit" src="./ui/exit-black.svg" alt="Exit alert lip"></div>
 		</div>
 		<div class="popups">
 			<div class="popup-filter popup-exit"></div>
@@ -92,7 +92,7 @@
 <div class="attachment-window popup">
   <div class="window-title">
     <span>Processed attachment output</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit attachment window"></div>
   </div>
   <div class="popup-contents">
     <a href="#" download="" target="_blank" class="attachment-download button-1"><span>Download<br>processed file</span><img src="./ui/download.svg"></a>
@@ -102,8 +102,8 @@
 <div class="converted-key-window popup">
   <div class="window-title">
     <span>Converted key output</span>
-    <div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="popup-expand icon-button"><img src="./ui/expand.svg" alt="Expand window for converted key"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit converted key window"></div>
   </div>
   <div class="popup-contents">
     <textarea class="converted-output" id="converted-output" spellcheck="false" readonly="readonly"></textarea>
@@ -112,7 +112,7 @@
       <div class="converted-aside"></div>
     </div>
     <section>
-      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted" download="convertedKey.asc" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy converted key contents"></button> <a class="button-2 save-converted" download="convertedKey.asc" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download converted key as .asc text file"></a>
     </section>
   </div>
 </div>
@@ -120,7 +120,7 @@
 <div class="create-key-window popup">
   <div class="window-title">
     <span>New key set</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit key generation window"></div>
   </div>
   <div class="popup-contents">
     <div class="create-key-progress">
@@ -148,18 +148,18 @@
           <input autocomplete="off" class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
         </div>
         <section class="bottom-buttons">
-          <button class="button-1 key-generate" disabled=""><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg"></button> <button class="button-2 popup-exit">Cancel</button>
+          <button class="button-1 key-generate" disabled=""><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg" alt="Generate key"></button> <button class="button-2 popup-exit">Cancel</button>
         </section>
       </li>
       <li class="key-new-done">
-        <a class="big-button-third-half button-1 key-private-download" href="#" target="_blank"><span>Download<br>private key</span><img src="./ui/download.svg"></a>
-        <a class="big-button-third-half button-1 key-public-download" href="#" target="_blank"><span>Download<br>public key</span><img src="./ui/download.svg"></a>
-        <a class="big-button-third-half button-2 key-private-img-download" href="#" target="_blank"><span>Download private<br>key as an image</span><img src="./ui/download.svg"></a>
-        <a class="big-button-third-half button-2 key-public-img-download" href="#" target="_blank"><span>Download public<br>key as an image</span><img src="./ui/download.svg"></a>
+        <a class="big-button-third-half button-1 key-private-download" href="#" target="_blank"><span>Download<br>private key</span><img src="./ui/download.svg" alt="Download generated private key"></a>
+        <a class="big-button-third-half button-1 key-public-download" href="#" target="_blank"><span>Download<br>public key</span><img src="./ui/download.svg" alt="Download generated public key"></a>
+        <a class="big-button-third-half button-2 key-private-img-download" href="#" target="_blank"><span>Download private<br>key as an image</span><img src="./ui/download.svg" alt="Download generated private key as an image"></a>
+        <a class="big-button-third-half button-2 key-public-img-download" href="#" target="_blank"><span>Download public<br>key as an image</span><img src="./ui/download.svg" alt="Download generated public key as an image"></a>
         <!--<a class="big-button-third-half button-1 key-rev-download force-hidden" href="#"><span>Download<br>
         revocation key</span><img src="./ui/download.svg"></a>!-->
-        <a class="big-button-third-half button-2 copy-generated-public-key no-bottom-border" href="#"><span>Copy public key<br>to clipboard</span><img src="./ui/copy.svg"><span class="copied">Copied</span></a>
-        <a class="big-button-third-half button-2 key-generate-reset no-bottom-border" href="#"><span>Clear keys<br>and restart</span><img src="./ui/restart.svg"></a>
+        <a class="big-button-third-half button-2 copy-generated-public-key no-bottom-border" href="#"><span>Copy public key<br>to clipboard</span><img src="./ui/copy.svg" alt="Copy generated public key to clipboard"><span class="copied">Copied</span></a>
+        <a class="big-button-third-half button-2 key-generate-reset no-bottom-border" href="#"><span>Clear keys<br>and restart</span><img src="./ui/restart.svg" alt="Restart key generation process"></a>
       </li>
     </ul>
   </div>
@@ -168,7 +168,7 @@
 <div class="key-server-browser-window popup paged-popup">
   <div class="window-title">
     <span>Browse key server</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit key server search and uploader window"></div>
   </div>
   <div class="upload-progress">
     <div class="progress-container">
@@ -212,14 +212,14 @@
           <textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
         </section>
         <section>
-          <button class="button-1 upload upload-public-key-paste" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
+          <button class="button-1 upload upload-public-key-paste" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload pasted public key string"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
         </section>
         <section>
           <h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
-          <a class="label-container button-2 server-pub-key-import-label" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
+          <a class="label-container button-2 server-pub-key-import-label" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a>
           <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
           <a class="key-link import-upload-link b-link" href="#">Link</a>
-          <button class="button-1 server-key-pub-import-upload init-disabled" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+          <button class="button-1 server-key-pub-import-upload init-disabled" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload selected public key file"></button>
         </section>
       </div>
       <div class="pubkeyserver-search popup-tab-page">
@@ -249,9 +249,9 @@
             <li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
             <li class="search-result">
               <div class="downloaded-fingerprint-container">
-                <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"></a>
-                <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg"></button>
-                <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg"></a>
+                <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key"></a>
+                <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy searched key to clipboard"></button>
+                <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key as an image"></a>
               </div>
               <div>
                 <h3>Fingerprint</h3>
@@ -268,13 +268,13 @@
 <div class="processed-output-window popup">
   <div class="window-title">
     <span>Processed output</span>
-    <div class="popup-expand icon-button"><img src="./ui/expand.svg"></div>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="popup-expand icon-button"><img src="./ui/expand.svg" alt="Expand processed output window"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit processed output window"></div>
   </div>
   <div class="popup-contents">
     <section class="no-margin-section steg-section">
       <h3>Steganograph output</h3>
-      <a href="#" class="button-2 steg-msg-download" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+      <a href="#" class="button-2 steg-msg-download" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download processed output contents as txt file"></a>
     </section>
     <section class="output-section">
       <h3>Text output</h3>
@@ -285,7 +285,7 @@
       </div>
     </section>
     <section>
-      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-processed" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy processed output to clipboard"></button> <a class="button-2 save-processed" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download processed output as txt file"></a>
     </section>
   </div>
 </div>
@@ -293,12 +293,12 @@
 <div class="pubkey-input-window popup">
   <div class="window-title">
     <span>Public key paste</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit public key input window"></div>
   </div>
   <div class="popup-contents">
     <textarea class="pubkey-input" id="pubkey-input" spellcheck="false" placeholder="Paste public key here"></textarea>
     <section>
-      <button class="button-1 import-pubkey-str" disabled=""><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+      <button class="button-1 import-pubkey-str" disabled=""><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Import pasted public key"></button>
     </section>
   </div>
 </div>
@@ -306,12 +306,12 @@
 <div class="steg-key-converter-window popup">
   <div class="window-title">
     <span>Convert image key</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit image key conversion window"></div>
   </div>
   <div class="popup-contents">
     <section class="no-margin-section">
       <h3>Image key for conversion<span class="convert-filename"></span></h3>
-      <a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".png" class="key-convert" id="key-convert" type="file">
+      <a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key image file for import"></a> <input accept=".png" class="key-convert" id="key-convert" type="file">
     </section>
     <section>
       <h3>Converted key output</h3>
@@ -322,7 +322,7 @@
       </div>
     </section>
     <section>
-      <button class="button-2 copy-converted init-disabled" disabled=""><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg"></a>
+      <button class="button-2 copy-converted init-disabled" disabled=""><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy converted key output"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download converted key output as .asc file"></a>
     </section>
   </div>
 </div>
@@ -352,7 +352,7 @@
   <h2>Attach</h2>
     <section>
       <h3>Your attachment <span class="attachment-filename"></span></h3>
-      <a class="label-container button-2 attachment-import-label" href="#"><label for="attachment-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input class="attachment-import" id="attachment-import" type="file">
+      <a class="label-container button-2 attachment-import-label" href="#"><label for="attachment-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a> <input class="attachment-import" id="attachment-import" type="file">
       <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
     </section>
     <section>
@@ -371,7 +371,7 @@
       </div>
     </section>
     <section>
-      <button class="button-1 attachment-process attachment-encrypt" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button><button class="button-2 attachment-view init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+      <button class="button-1 attachment-process attachment-encrypt" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt file"></button><button class="button-2 attachment-view init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View processed file output"></button>
     </section>
 </div>
 <div class="keys tab-window active">
@@ -384,7 +384,7 @@
       <h3>Your private key <span class="key-status private-key-filename"></span></h3>
     </div>
     <div>
-      <a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
+      <a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your private key"></a> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
     </div>
   </section>
   <section>
@@ -398,7 +398,7 @@
       <h3>Recipient/Sender public key <span class="key-status public-key-filename"></span></h3>
     </div>
     <div>
-      <a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+      <a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your recipient's public key"></a> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg"></button>
     </div>
   </section>
   <section>
@@ -408,11 +408,11 @@
     </div>
   </section>
   <section>
-    <h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Browse</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    <h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Browse</span><img class="button-icon-img" src="./ui/popup.svg" alt="Access public key servers"></button>
   </section>
   <section>
     <h3>Convert image key to universal .asc key</h3>
-    <button class="open-keyconverter button-2"><span>Convert</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    <button class="open-keyconverter button-2"><span>Convert</span><img class="button-icon-img" src="./ui/popup.svg" alt="Convert image key to .asc text key"></button>
   </section>
 </div>
 <div class="read tab-window">
@@ -433,7 +433,7 @@
     </div>
   </section>
   <section>
-    <button class="button-1 decrypt-message init-disabled" disabled=""><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg"></button> <button class="button-2 view-message-decrypted view-processed init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+    <button class="button-1 decrypt-message init-disabled" disabled=""><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg" alt="Decrypt message"></button> <button class="button-2 view-message-decrypted view-processed init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View decrypted message"></button>
   </section>
 </div>
 <div class="tutorial tab-window">
@@ -554,7 +554,7 @@
       </div>
     </section>
     <section>
-      <button class="button-1 encrypt-message init-disabled" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg"></button> <button class="button-2 view-message-encrypted view-processed init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg"></button>
+      <button class="button-1 encrypt-message init-disabled" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt message"></button> <button class="button-2 view-message-encrypted view-processed init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View encrypted message"></button>
     </section>
     <section class="mp-share">
       <a href="https://www.magicpost.io/post.php" target="_blank" class="b-link">Post message to MagicPost anonymously</a>

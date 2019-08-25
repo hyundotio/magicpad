@@ -2,7 +2,7 @@
 <div class="key-server-browser-window popup paged-popup">
   <div class="window-title">
     <span>Browse key server</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg"></div>
+    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit key server search and uploader window"></div>
   </div>
   <div class="upload-progress">
     <div class="progress-container">
@@ -46,14 +46,14 @@
           <textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
         </section>
         <section>
-          <button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
+          <button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload pasted public key string"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
         </section>
         <section>
           <h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
-          <a class="label-container button-2 server-pub-key-import-label" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg"></a>
+          <a class="label-container button-2 server-pub-key-import-label" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a>
           <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
           <a class="key-link import-upload-link b-link" href="#">Link</a>
-          <button class="button-1 server-key-pub-import-upload init-disabled" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg"></button>
+          <button class="button-1 server-key-pub-import-upload init-disabled" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload selected public key file"></button>
         </section>
       </div>
       <div class="pubkeyserver-search popup-tab-page">
@@ -83,9 +83,9 @@
             <li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
             <li class="search-result">
               <div class="downloaded-fingerprint-container">
-                <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg"></a>
-                <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg"></button>
-                <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg"></a>
+                <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key"></a>
+                <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy searched key to clipboard"></button>
+                <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key as an image"></a>
               </div>
               <div>
                 <h3>Fingerprint</h3>
