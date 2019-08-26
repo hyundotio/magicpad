@@ -1181,10 +1181,7 @@ const init = function() {
 	attachmentFormcheck();
 	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	setTimeout(function () {
-      const viewheight = $(window).height();
-      const viewwidth = $(window).width();
-      const viewport = document.querySelector("meta[name=viewport]");
-      viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
+      resizeViewport();
   }, 300);
 }
 
@@ -1221,6 +1218,17 @@ const showCopied = function($copied){
 		$copied.removeClass('active');
 	}, 2000);
 }
+
+const resizeViewport = function() {
+	const viewheight = $(window).height();
+	const viewwidth = $(window).width();
+	const viewport = document.querySelector("meta[name=viewport]");
+	viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
+}
+
+window.addEventListener("orientationchange", function() {
+		resizeViewport();
+});
 
 //Show passphrase box if Decrypting
 $('.attachment-radio').bind('click',function(){
