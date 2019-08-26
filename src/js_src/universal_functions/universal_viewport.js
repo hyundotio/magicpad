@@ -8,3 +8,7 @@ const resizeViewport = function() {
 window.addEventListener("orientationchange", function() {
 		resizeViewport();
 });
+
+window.addEventListener('resize', function(event){
+	  resizeViewport();
+});

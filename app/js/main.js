@@ -1230,6 +1230,10 @@ window.addEventListener("orientationchange", function() {
 		resizeViewport();
 });
 
+window.addEventListener('resize', function(event){
+	  resizeViewport();
+});
+
 //Show passphrase box if Decrypting
 $('.attachment-radio').bind('click',function(){
   let $this = $(this);
