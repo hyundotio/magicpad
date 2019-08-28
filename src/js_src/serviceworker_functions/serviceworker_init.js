@@ -1,6 +1,6 @@
 if ("serviceWorker" in navigator && location.protocol == 'https:') {
   if (navigator.serviceWorker.controller) {
-    console.log("[PWA Builder] active service worker found, no need to register");
+    //console.log("[PWA Builder] active service worker found, no need to register");
   } else {
     // Register the service worker
     navigator.serviceWorker
@@ -8,7 +8,7 @@ if ("serviceWorker" in navigator && location.protocol == 'https:') {
         scope: "./"
       })
       .then(function (reg) {
-        console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
+        //console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
       });
   }
 }
