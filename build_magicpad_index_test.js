@@ -89,7 +89,7 @@ module.exports = {
       let pwaSrcV = 'let cacheName = "mp'+pkgVNum+'";\n\n';
       for (let i = 0; i < appFiles.length; i++){
         if(appFiles[i].split('app/').length > 1){
-          appFiles[i] = appFiles[i].substr(4);
+          appFiles[i] = '../'+appFiles[i].substr(4);
         }
       }
       let pwaSrcC = 'let contentToCache = ["'+appFiles.join('","')+'"];\n\n';
