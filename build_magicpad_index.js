@@ -43,6 +43,7 @@ module.exports = {
       return arr
     }
     function createMainJs(){
+      fs.mkdirSync('./app/js');
       let eventsJs = [];
       let newJs = [];
       for (let i = 0; i < js.length; i++){
