@@ -1,18 +1,18 @@
 <div class="attachments tab-window">
   <h2>Attach</h2>
-    <section>
+    <section class="cf">
       <h3>Your attachment <span class="attachment-filename"></span></h3>
-      <label for="attachment-import" class="label-container"><a class="button-2 attachment-import-label" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
+      <label for="attachment-import" class="label-container cf"><a class="button-2 attachment-import-label" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
       <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
     </section>
-    <section>
+    <section class="cf">
       <h3>Processing type</h3>
       <div class="attachment-selectors-container">
         <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked> Encrypt
         &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"> Decrypt
       </div>
     </section>
-    <section class="no-margin-section">
+    <section class="no-margin-section cf">
       <div class="attachment-credentials credentials-box disabled">
         <h3>Your private key passphrase</h3><input class="attachment-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
@@ -20,7 +20,7 @@
         </div>
       </div>
     </section>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-1 attachment-process attachment-encrypt" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt file"></button><button class="button-2 attachment-view init-disabled" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View processed file output"></button>
-    </section>
+    </div>
 </div>

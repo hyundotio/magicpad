@@ -38,19 +38,19 @@
             </option>
           </select>
         </div>
-        <section>
+        <section class="cf">
           <h3>Upload pasted public key</h3><!--
                           <input type="radio" name="upload-type" value="file" checked> File (.asc)
                           &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
                           !-->
           <textarea class="pubkey-upload-input" spellcheck="false" placeholder="Paste public key here"></textarea>
         </section>
-        <section>
+        <div class="top-margin-div cf">
           <button class="button-1 upload upload-public-key-paste" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload pasted public key string"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
-        </section>
-        <section>
+        </div>
+        <section class="cf">
           <h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
-          <label for="server-key-pub-import" class="label-container"><a class="button-2 server-pub-key-import-label" href="#"><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a></label>
+          <label for="server-key-pub-import" class="label-container cf"><a class="button-2 server-pub-key-import-label" href="#"><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a></label>
           <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
           <a class="key-link import-upload-link b-link" href="#">Link</a>
           <button class="button-1 server-key-pub-import-upload init-disabled" disabled><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload selected public key file"></button>
@@ -74,15 +74,15 @@
             </option>
           </select>
         </div>
-        <section class="search-wrapper">
+        <section class="search-wrapper cf">
           <h3>Search for public key</h3><input class="searchbox-pubkey" spellcheck="false" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-1 search-pubkey" disabled>Search</button>
         </section>
-        <section>
+        <section class="cf">
           <h3>Search result</h3>
           <ul class="search-results">
             <li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
             <li class="search-result">
-              <div class="downloaded-fingerprint-container">
+              <div class="downloaded-fingerprint-container cf">
                 <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key"></a>
                 <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy searched key to clipboard"></button>
                 <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key as an image"></a>

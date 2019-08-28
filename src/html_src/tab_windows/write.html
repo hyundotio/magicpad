@@ -1,7 +1,7 @@
 
   <div class="write tab-window">
     <h2>Write</h2>
-    <section>
+    <section class="cf">
       <h3>Your message</h3>
       <div class="import-img-host-container">
         <label for="stg-host" class="stg-host-label b-link">Select steganograph host</label>
@@ -10,14 +10,14 @@
       <div class="write-key-status key-status"></div>
       <textarea class="text-write" placeholder="Write your message here"></textarea>
     </section>
-    <section class="checkbox-section">
+    <div class="checkbox-section cf">
       <div class="sign-toggle checkbox-offset">
         <input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
       </div>
       <a href="#" class="clear-steg-host b-link">Clear steganograph host</a>
-    </section>
+    </div>
 
-    <section class="no-margin-section">
+    <section class="no-margin-section cf">
       <div class="sign-credentials disabled credentials-box">
         <h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
@@ -25,10 +25,10 @@
         </div>
       </div>
     </section>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-1 encrypt-message init-disabled" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt message"></button> <button class="button-2 view-message-encrypted view-processed init-disabled" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View encrypted message"></button>
-    </section>
-    <section class="mp-share">
+    </div>
+    <div class="mp-share">
       <a href="https://www.magicpost.io/post.php" target="_blank" class="b-link" rel="noopener noreferrer nofollow">Post message to MagicPost anonymously</a>
-    </section>
+    </div>
   </div>

@@ -113,9 +113,9 @@
       <span class="copied">Copied</span>
       <div class="converted-aside"></div>
     </div>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy converted key contents"></button> <a class="button-2 save-converted" download="convertedKey.asc" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download converted key as .asc text file"></a>
-    </section>
+    </div>
   </div>
 </div>
 
@@ -137,21 +137,21 @@
     </div>
     <ul class="pages">
       <li class="key-new-form">
-        <section>
+        <section class="cf">
           <h3>Identifier / Name</h3><input autocomplete="off" class="form-name" placeholder="John Smith" spellcheck="false" type="text">
         </section>
-        <section>
+        <section class="cf">
           <h3>Your email</h3><input autocomplete="off" class="form-email" placeholder="johnsmith@email.com" spellcheck="false" type="email">
         </section>
-        <section>
+        <section class="cf">
           <h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
         </section>
         <div class="pw-view-toggler checkbox-offset">
           <input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
         </div>
-        <section class="bottom-buttons">
+        <div class="bottom-buttons">
           <button class="button-1 key-generate" disabled=""><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg" alt="Generate key"></button> <button class="button-2 popup-exit">Cancel</button>
-        </section>
+        </div>
       </li>
       <li class="key-new-done">
         <a class="big-button-third-half button-1 key-private-download" href="#" target="_blank"><span>Download<br>private key</span><img src="./ui/download.svg" alt="Download generated private key"></a>
@@ -206,19 +206,19 @@
             </option>
           </select>
         </div>
-        <section>
+        <section class="cf">
           <h3>Upload pasted public key</h3><!--
                           <input type="radio" name="upload-type" value="file" checked> File (.asc)
                           &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
                           !-->
           <textarea class="pubkey-upload-input" spellcheck="false" placeholder="Paste public key here"></textarea>
         </section>
-        <section>
+        <div class="top-margin-div cf">
           <button class="button-1 upload upload-public-key-paste" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload pasted public key string"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
-        </section>
-        <section>
+        </div>
+        <section class="cf">
           <h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
-          <label for="server-key-pub-import" class="label-container"><a class="button-2 server-pub-key-import-label" href="#"><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a></label>
+          <label for="server-key-pub-import" class="label-container cf"><a class="button-2 server-pub-key-import-label" href="#"><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a></label>
           <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
           <a class="key-link import-upload-link b-link" href="#">Link</a>
           <button class="button-1 server-key-pub-import-upload init-disabled" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload selected public key file"></button>
@@ -242,15 +242,15 @@
             </option>
           </select>
         </div>
-        <section class="search-wrapper">
+        <section class="search-wrapper cf">
           <h3>Search for public key</h3><input class="searchbox-pubkey" spellcheck="false" placeholder="Email, fingerprint, or key ID" type="text"> <button class="button-1 search-pubkey" disabled="">Search</button>
         </section>
-        <section>
+        <section class="cf">
           <h3>Search result</h3>
           <ul class="search-results">
             <li><span class="search-status">Search not started</span><span class="copied">Copied</span></li>
             <li class="search-result">
-              <div class="downloaded-fingerprint-container">
+              <div class="downloaded-fingerprint-container cf">
                 <a class="button-1 searched-key-download" href="#" target="_blank"><span>Download key</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key"></a>
                 <button class="button-2 searched-key-copy"><span>Copy key</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy searched key to clipboard"></button>
                 <a class="button-2 searched-key-download-steg" href="#" target="_blank"><span>Download key as image</span><img class="button-icon-img" src="./ui/download.svg" alt="Download searched key as an image"></a>
@@ -274,11 +274,11 @@
     <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit processed output window"></div>
   </div>
   <div class="popup-contents">
-    <section class="no-margin-section steg-section">
+    <section class="no-margin-section steg-section cf">
       <h3>Steganograph output</h3>
       <a href="#" class="button-2 steg-msg-download" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download processed output contents as txt file"></a>
     </section>
-    <section class="output-section">
+    <section class="output-section cf">
       <h3>Text output</h3>
       <textarea class="processed-output" id="processed-output" spellcheck="false" readonly="readonly"></textarea>
       <div>
@@ -286,9 +286,9 @@
         <div class="processed-aside"></div>
       </div>
     </section>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy processed output to clipboard"></button> <a class="button-2 save-processed" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download processed output as txt file"></a>
-    </section>
+    </div>
   </div>
 </div>
 
@@ -299,9 +299,9 @@
   </div>
   <div class="popup-contents">
     <textarea class="pubkey-input" id="pubkey-input" spellcheck="false" placeholder="Paste public key here"></textarea>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-1 import-pubkey-str" disabled=""><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Import pasted public key"></button>
-    </section>
+    </div>
   </div>
 </div>
 
@@ -311,11 +311,11 @@
     <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit image key conversion window"></div>
   </div>
   <div class="popup-contents">
-    <section class="no-margin-section">
+    <section class="no-margin-section cf">
       <h3>Image key for conversion<span class="convert-filename"></span></h3>
-      <label for="key-convert" class="label-container"><a class="button-1 key-convert-label" href="#"><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key image file for import"></a></label> <input accept=".png" class="key-convert" id="key-convert" type="file">
+      <label for="key-convert" class="label-container cf"><a class="button-1 key-convert-label" href="#"><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key image file for import"></a></label> <input accept=".png" class="key-convert" id="key-convert" type="file">
     </section>
-    <section>
+    <section class="cf">
       <h3>Converted key output</h3>
       <textarea class="converted-key-output" readonly="readonly" placeholder="No steganograph imported"></textarea>
       <div>
@@ -323,9 +323,9 @@
         <div class="converted-aside">No image imported.</div>
       </div>
     </section>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-2 copy-converted init-disabled" disabled=""><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy converted key output"></button> <a class="button-2 save-converted disabled" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download converted key output as .asc file"></a>
-    </section>
+    </div>
   </div>
 </div>
 </div>
@@ -333,38 +333,38 @@
 		<div class="about tab-window">
   <h2>MagicPad 0.0.3</h2>
   <p>MagicPad is an easy to use, offline encryption suite. With MagicPad, you can encrypt/decrypt messages, hide messages in images i.e., steganographs, and encrypt/decrypt files. Other than to search / upload public keys, MagicPad works completely offline. Your information never touches a server and no usage data is collected.</p>
-  <section>
+  <section class="cf">
     <h3>Credits</h3>
     <ul class="credits-list">
       <li>Created by Hyun</li>
     </ul>
   </section>
-  <section>
+  <section class="cf">
     <h3>Links</h3>
     <ul class="credits-list">
       <li><a class="b-link" href="https://www.magicpad.io" target="_blank" rel="noopener noreferrer nofollow">MagicPad website</a></li>
       <li><a class="b-link" href="https://github.com/hyundotio/magicpad" target="_blank" rel="noopener noreferrer nofollow">MagicPad GitHub</a></li>
     </ul>
   </section>
-  <section>
+  <section class="cf">
     <h3>License</h3><span>MIT</span>
   </section>
 </div>
 <div class="attachments tab-window">
   <h2>Attach</h2>
-    <section>
+    <section class="cf">
       <h3>Your attachment <span class="attachment-filename"></span></h3>
-      <label for="attachment-import" class="label-container"><a class="button-2 attachment-import-label" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
+      <label for="attachment-import" class="label-container cf"><a class="button-2 attachment-import-label" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
       <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
     </section>
-    <section>
+    <section class="cf">
       <h3>Processing type</h3>
       <div class="attachment-selectors-container">
         <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked=""> Encrypt
         &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"> Decrypt
       </div>
     </section>
-    <section class="no-margin-section">
+    <section class="no-margin-section cf">
       <div class="attachment-credentials credentials-box disabled">
         <h3>Your private key passphrase</h3><input class="attachment-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
@@ -372,54 +372,54 @@
         </div>
       </div>
     </section>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-1 attachment-process attachment-encrypt" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt file"></button><button class="button-2 attachment-view init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View processed file output"></button>
-    </section>
+    </div>
 </div>
 <div class="keys tab-window active">
   <h2>Keys</h2>
-  <section>
+  <div class="top-margin-div cf">
     <a class="key-generate-start b-link" href="#">Create new private and public key set +</a>
-  </section>
-  <section>
+  </div>
+  <section class="cf">
     <div class="key-filename-container">
       <h3>Your private key <span class="key-status private-key-filename"></span></h3>
     </div>
     <div>
-      <label for="key-priv-import" class="label-container"><a class="button-1 key-priv-import-label" href="#"><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your private key"></a></label> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
+      <label for="key-priv-import" class="label-container cf"><a class="button-1 key-priv-import-label" href="#"><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your private key"></a></label> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
     </div>
   </section>
-  <section>
+  <section class="cf">
     <h3>Your fingerprint</h3>
     <div class="fingerprint fingerprint-priv">
       <span class="no-key">Your key is not imported</span> <span class="fingerprint-str fingerprint-priv-str"></span>
     </div>
   </section>
-  <section>
+  <section class="cf">
     <div class="key-filename-container">
       <h3>Recipient/Sender public key <span class="key-status public-key-filename"></span></h3>
     </div>
     <div>
-      <label for="key-pub-import" class="label-container"><a class="button-1 key-pub-import-label" href="#"><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your recipient's public key"></a></label> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg" alt="Import key by pasting key"></button>
+      <label for="key-pub-import" class="label-container cf"><a class="button-1 key-pub-import-label" href="#"><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your recipient's public key"></a></label> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg" alt="Import key by pasting key"></button>
     </div>
   </section>
-  <section>
+  <section class="cf">
     <h3>Recipient/Sender fingerprint</h3>
     <div class="fingerprint fingerprint-pub">
       <span class="no-key">Recipient/Sender key is not imported</span> <span class="fingerprint-str fingerprint-pub-str"></span>
     </div>
   </section>
-  <section>
+  <section class="cf">
     <h3>Access key servers</h3><button class="open-keybrowser button-2"><span>Browse</span><img class="button-icon-img" src="./ui/popup.svg" alt="Access public key servers"></button>
   </section>
-  <section>
+  <section class="cf">
     <h3>Convert image key to universal .asc key</h3>
     <button class="open-keyconverter button-2"><span>Convert</span><img class="button-icon-img" src="./ui/popup.svg" alt="Convert image key to .asc text key"></button>
   </section>
 </div>
 <div class="read tab-window">
   <h2>Read</h2>
-  <section>
+  <section class="cf">
     <h3>Received message</h3>
     <div class="import-img-msg-container">
       <label for="import-stg-msg" class="import-stg-msg-label b-link">Import steganograph</label>
@@ -428,15 +428,15 @@
     <div class="read-key-status key-status"></div>
     <textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
   </section>
-  <section>
+  <section class="cf">
     <h3>Your private key passphrase</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
     <div class="pw-view-toggler checkbox-offset">
       <input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
     </div>
   </section>
-  <section>
+  <div class="top-margin-div cf">
     <button class="button-1 decrypt-message init-disabled" disabled=""><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg" alt="Decrypt message"></button> <button class="button-2 view-message-decrypted view-processed init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View decrypted message"></button>
-  </section>
+  </div>
 </div>
 <div class="tutorial tab-window">
   <h2>Guide</h2>
@@ -531,7 +531,7 @@
 
   <div class="write tab-window">
     <h2>Write</h2>
-    <section>
+    <section class="cf">
       <h3>Your message</h3>
       <div class="import-img-host-container">
         <label for="stg-host" class="stg-host-label b-link">Select steganograph host</label>
@@ -540,14 +540,14 @@
       <div class="write-key-status key-status"></div>
       <textarea class="text-write" placeholder="Write your message here"></textarea>
     </section>
-    <section class="checkbox-section">
+    <div class="checkbox-section cf">
       <div class="sign-toggle checkbox-offset">
         <input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
       </div>
       <a href="#" class="clear-steg-host b-link">Clear steganograph host</a>
-    </section>
+    </div>
 
-    <section class="no-margin-section">
+    <section class="no-margin-section cf">
       <div class="sign-credentials disabled credentials-box">
         <h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
@@ -555,12 +555,12 @@
         </div>
       </div>
     </section>
-    <section>
+    <div class="top-margin-div cf">
       <button class="button-1 encrypt-message init-disabled" disabled=""><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt message"></button> <button class="button-2 view-message-encrypted view-processed init-disabled" disabled=""><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View encrypted message"></button>
-    </section>
-    <section class="mp-share">
+    </div>
+    <div class="mp-share">
       <a href="https://www.magicpost.io/post.php" target="_blank" class="b-link" rel="noopener noreferrer nofollow">Post message to MagicPost anonymously</a>
-    </section>
+    </div>
   </div>
 </div>
 	</main>

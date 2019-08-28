@@ -835,7 +835,7 @@ html, body {
  textarea.text-read {
      font-family: 'IBM Plex Mono', monospace;
 }
- section:after, .label-container:after, .downloaded-fingerprint-container {
+.cf:after {
      content: "";
      display: table;
      clear: both;
@@ -867,7 +867,7 @@ html, body {
      display: none;
      float: right;
 }
- section {
+ section, .top-margin-div{
      margin-top: 1.5em;
 }
  .window-title .popup-exit {

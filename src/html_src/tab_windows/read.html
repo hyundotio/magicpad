@@ -1,6 +1,6 @@
 <div class="read tab-window">
   <h2>Read</h2>
-  <section>
+  <section class="cf">
     <h3>Received message</h3>
     <div class="import-img-msg-container">
       <label for="import-stg-msg" class="import-stg-msg-label b-link">Import steganograph</label>
@@ -9,13 +9,13 @@
     <div class="read-key-status key-status"></div>
     <textarea class="text-read" placeholder="Paste encrypted message here" spellcheck="false"></textarea>
   </section>
-  <section>
+  <section class="cf">
     <h3>Your private key passphrase</h3><input class="passphrase-box text-read-passphrase" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
     <div class="pw-view-toggler checkbox-offset">
       <input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
     </div>
   </section>
-  <section>
+  <div class="top-margin-div cf">
     <button class="button-1 decrypt-message init-disabled" disabled><span>Decrypt</span><img class="button-icon-img" src="./ui/decrypt.svg" alt="Decrypt message"></button> <button class="button-2 view-message-decrypted view-processed init-disabled" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View decrypted message"></button>
-  </section>
+  </div>
 </div>
