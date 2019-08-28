@@ -72,7 +72,7 @@ module.exports = {
 
     function prependJs(){
       let bodyHtml = $('html').html();
-      bodyHtml = bodyHtml + '<script src="./js/main.js"></script>';
+      bodyHtml = bodyHtml + '<script src="./js/main.js"></script><script src="./js/pwa.js"></script>';
       $('html').html(bodyHtml);
     }
 
@@ -119,6 +119,7 @@ module.exports = {
                 console.log(err);
             }
           });
+          buildpwaJs();
         });
       });
     }
