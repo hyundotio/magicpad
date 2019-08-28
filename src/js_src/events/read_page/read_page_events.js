@@ -1,6 +1,8 @@
 //Convert imported steganography to text message on read page
 $('.import-stg-msg').change(function(){
-	convertStegMsg($(this));
+	let $this = $(this);
+	convertStegMsg($this);
+	$this.val('');
 })
 //Decrypt message on read page
 $('.decrypt-message').bind('click', function() {

@@ -428,17 +428,23 @@ const uploadKey = function(type){
 		} else {
 			server = 'http:'+server
 		}
+
+		let $pasteUploadLink = $('.paste-upload-link');
+		let $importUploadLink = $('.import-upload-link');
 		async function main() {
 			try {
 				const pbKeyObj = await openpgp.key.readArmored(session.keyToUploadFile);
+				if(pbKeyObj.err != undefined || !testPubKey(session.keyToUploadFile)){
+					throw errorFinder('pubkey');
+				}
 				const hkp = new openpgp.HKP(server);
 				const hkpUpload = await hkp.upload(session.keyToUploadFile);
 				const buffer = new Uint8Array(pbKeyObj.keys[0].primaryKey.fingerprint).buffer;
 				let downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + buf2hex(buffer);
 				if(type !== 'import'){
-					$('.paste-upload-link').addClass('active').attr('href',downloadLink);
+					$pasteUploadLink.addClass('active').attr('href',downloadLink);
 				} else {
-					$('.import-upload-link').addClass('active').attr('href',downloadLink);
+					$importUploadLink.addClass('active').attr('href',downloadLink);
 				}
 				$uploadProgress.removeClass('active').find('span').text('Upload complete');
 				session.running = false;
@@ -1524,7 +1530,9 @@ $('.copy-processed').bind('click', function() {
 
 //Convert imported steganography to text message on read page
 $('.import-stg-msg').change(function(){
-	convertStegMsg($(this));
+	let $this = $(this);
+	convertStegMsg($this);
+	$this.val('');
 })
 //Decrypt message on read page
 $('.decrypt-message').bind('click', function() {
