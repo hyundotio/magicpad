@@ -53,7 +53,6 @@ module.exports = {
         }
       }
       js = newJs.concat(eventsJs);
-      js = js.concat(['src/js_src/universal_functions/universal_onload.js']);
       js = removeArrItem('session.js',js);
       js.unshift('src/js_src/session/session.js');
       for (let i = 0; i < js.length; i++){

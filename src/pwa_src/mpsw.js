@@ -22,16 +22,6 @@ if (('serviceWorker' in navigator)) {
     );
   });
 
-  self.addEventListener('install', event => {
-    event.waitUntil(
-      caches
-        .open(cacheName)
-        .then(cache =>
-          return cache.addAll(contentToCache);
-        )
-    )
-  })
-
   self.addEventListener('fetch', (e) => {
     e.respondWith(
       caches.match(e.request).then((r) => {
@@ -46,4 +36,16 @@ if (('serviceWorker' in navigator)) {
       })
     );
   });
+  self.addEventListener('activate', (event) => {
+      let cacheKeeplist = [cacheName];
+      event.waitUntil(
+        caches.keys().then((keyList) => {
+          return Promise.all(keyList.map((key) => {
+            if (cacheKeeplist.indexOf(key) === -1) {
+              return caches.delete(key);
+            }
+          }));
+        })
+      );
+    });
 }

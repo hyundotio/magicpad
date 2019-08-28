@@ -1048,23 +1048,20 @@ const resolveLoadFileURL = function($type){
 }
 
 /*
-
-if ("serviceWorker" in navigator) {
+if ("serviceWorker" in navigator && location.protocol == 'https:') {
   if (navigator.serviceWorker.controller) {
     console.log("[PWA Builder] active service worker found, no need to register");
   } else {
     // Register the service worker
     navigator.serviceWorker
       .register("./js/pwa.js", {
-        scope: "./"
+        scope: "../"
       })
       .then(function (reg) {
         console.log("[PWA Builder] Service worker has been registered for scope: " + reg.scope);
       });
   }
 }
-
-
 */
 
 //convert steganograph to text
@@ -1206,14 +1203,14 @@ const init = function() {
 }
 
 //get rid of loading screen when all assets are loaded
-window.onload = function(){
+$(window).on('load',function(){
 	init();
 	let loadingStart = document.getElementById('loading-start');
 	loadingStart.style.opacity = 0;
 	setTimeout(function(){
 		$(loadingStart).remove();
 	},250);
-}
+})
 
 //Handles online notification lip (alerts user if they are online)
 window.addEventListener('online', function() {
@@ -1732,21 +1729,3 @@ $('.view-message-encrypted').bind('click', function() {
 		}
 	}
 })
-
-//get rid of loading screen when all assets are loaded
-window.onload = function(){
-	init();
-	let loadingStart = document.getElementById('loading-start');
-	loadingStart.style.opacity = 0;
-	setTimeout(function(){
-		$(loadingStart).remove();
-	},250);
-}
-
-//Handles online notification lip (alerts user if they are online)
-window.addEventListener('online', function() {
-	$('.online-flag').addClass('active');
-});
-window.addEventListener('offline', function() {
-	$('.online-flag').removeClass('active');
-});
