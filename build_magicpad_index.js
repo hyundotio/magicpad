@@ -94,7 +94,7 @@ module.exports = {
       }
       let pwaSrcC = 'let contentToCache = ["'+appFiles.join('","')+'"];\n\n';
       let jsContent = pwaSrcV + pwaSrcC + readJs;
-      fs.writeFileSync('./app/js/pwa.js',jsContent,{encoding:'utf-8'});
+      fs.writeFileSync('./app/pwa.js',jsContent,{encoding:'utf-8'});
       //console.log(readJs);
     }
 
@@ -118,7 +118,7 @@ module.exports = {
                 console.log(err);
             }
           });
-          //buildpwaJs();
+          buildpwaJs();
         });
       });
     }

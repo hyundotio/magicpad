@@ -36,6 +36,10 @@ In the build procedure, the following happens:
 4. All other files are static in `./app` and are not altered.
 5. Electron executable is created in a `./dist` folder.
 
+## PWA Config
+
+If you want to host your own MagicPad PWA, you must edit the `"start_url"` property `manifest.json` file in `/src`
+
 ## Packages
 
 Software used:
