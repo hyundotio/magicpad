@@ -56,13 +56,15 @@ const keyReady = function() {
 //Reset key generation form
 const newKeyReset = function() {
 	let $createKeyWindow = $('.create-key-window');
+	let $keyNewForm = $('.key-new-form');
 	$('.key-generate-start').text('Create new private and public key set +');
 	$createKeyWindow.find('.window-title').find('span').text('New key set');
 	$createKeyWindow.find('a').each(function() {
 		$(this).attr('href', '#').removeAttr('download');
 	})
 	$('.create-key-progress').removeClass('active');
-	$('.key-new-form').removeClass('next-page').find('input').val('');
+	$keyNewForm.removeClass('next-page').find('input').val('');
+	$keyNewForm.find('.pw-toggle').prop('checked',false).change();
 	$('.key-new-done').removeClass('active');
 	$('.key-generate').attr('disabled', 'disabled');
 }

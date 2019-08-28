@@ -7,7 +7,11 @@ $('a').bind('click',function(e){
 
 //Password show toggler
 $('.pw-toggle').change(function() {
-	let $passphraseBox = $(this).parent().prev('input');
+	let $thisPar = $(this).parent();
+	let $passphraseBox = $thisPar.prev('input');
+	if($passphraseBox.length == 0){
+		$passphraseBox = $thisPar.prev('section').find('.passphrase-box');
+	}
 	if (this.checked) {
 		$passphraseBox.attr('type', 'text');
 	} else {

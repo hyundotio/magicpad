@@ -1,58 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<title>MagicPad</title>
-	<meta charset="utf-8">
-	<script src="./js_include/openpgp.min.js">
-	</script>
-	<script type="text/javascript" src="./js_include/steganography.min.js">
-	</script>
-	<script src="./js_include/jquery-3.4.1.min.js">
-	</script>
-  <meta http-equiv="x-ua-compatible" content="IE=edge" />
-	<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui" />
-	<meta name="apple-mobile-web-app-capable" content="yes">
-	<meta name="application-name" content="MagicPad">
-	<meta name="apple-mobile-web-app-title" content="MagicPad">
-	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="description" content="Free encryption software: MagicPad - A simple and private offline encryption suite. 0 collected data and 100% open-source. For Mac, Windows, and Linux.">
-  <meta name="keywords" content="encryption,free,pgp,gpg,secure,message,mail,email">
-  <meta name="author" content="Hyun Kyu Seo">
-	<link href="./css_include/reset.css" rel="stylesheet">
-	<link href="./fonts/stylesheet.css" rel="stylesheet">
-	<link href="./css/main.css" rel="stylesheet">
-	<link href="./favicon/apple-icon-57x57.png" rel="apple-touch-icon" sizes="57x57">
-	<link href="./favicon/apple-icon-60x60.png" rel="apple-touch-icon" sizes="60x60">
-	<link href="./favicon/apple-icon-72x72.png" rel="apple-touch-icon" sizes="72x72">
-	<link href="./favicon/apple-icon-76x76.png" rel="apple-touch-icon" sizes="76x76">
-	<link href="./favicon/apple-icon-114x114.png" rel="apple-touch-icon" sizes="114x114">
-	<link href="./favicon/apple-icon-120x120.png" rel="apple-touch-icon" sizes="120x120">
-	<link href="./favicon/apple-icon-144x144.png" rel="apple-touch-icon" sizes="144x144">
-	<link href="./favicon/apple-icon-152x152.png" rel="apple-touch-icon" sizes="152x152">
-	<link href="./favicon/apple-icon-180x180.png" rel="apple-touch-icon" sizes="180x180">
-	<link href="./favicon/android-icon-192x192.png" rel="icon" sizes="192x192" type="image/png">
-	<link href="./favicon/favicon-32x32.png" rel="icon" sizes="32x32" type="image/png">
-	<link href="./favicon/favicon-96x96.png" rel="icon" sizes="96x96" type="image/png">
-	<link href="./favicon/favicon-16x16.png" rel="icon" sizes="16x16" type="image/png">
-	<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" href="./webapp/apple-launch-1242x2688.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-828x1792.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" href="./webapp/apple-launch-1125x2436.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 414px) and (device-height: 736px) and (-webkit-device-pixel-ratio: 3)" href="./webapp/apple-launch-1242x2208.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-750x1334.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-2048x2732.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2388.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2224.png">
-	<link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1536x2048.png">
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2732x2048.png" />
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2224x1668.png" />
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2388x1668.png" />
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2048x1536.png" />
-	<link href="./manifest.json" rel="manifest">
-	<meta content="#000000" name="msapplication-TileColor">
-	<meta content="./favicon/ms-icon-144x144.png" name="msapplication-TileImage">
-	<meta content="#000000" name="theme-color">
-</head>
-<body ontouchstart="">
+
 	<div id="loading-start" style="background-color:#FFF;width:100%;height:100%;z-index:12;top:0;left:0;position:fixed;opacity:1;transition:0.2s ease-out opacity;">
 		<span style="width: 10em;display: inline-block;text-align: center;position: absolute;top: 50%;left: 50%;margin: -0.5em 0 0 -5em;">Loading MagicPad...</span>
 	</div>
@@ -75,5 +21,3 @@
 		<div class="tab-windows">
 		</div>
 	</main>
-</body>
-</html>

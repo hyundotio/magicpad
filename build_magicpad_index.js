@@ -112,7 +112,9 @@ module.exports = {
           prependHtml(tabWindows,'.tab-windows');
           prependHtml(nav,'.main-nav');
           prependJs();
-          let finalHtml = '<!DOCTYPE html>'+window.document.documentElement.outerHTML;
+          let htmlStart = fs.readFileSync('./src/html_src/index/index_start.html',{encoding:'utf-8'});
+          let htmlEnd = fs.readFileSync('./src/html_src/index/index_end.html',{encoding:'utf-8'});
+          let finalHtml = htmlStart + window.document.documentElement.outerHTML.replace('<html>','').replace('</html>','') + htmlEnd;
           fs.writeFileSync("./app/index.html", finalHtml, function(err) {
             if (err) {
                 console.log(err);

@@ -1,12 +1,11 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
+<head>
 	<title>MagicPad</title>
 	<meta charset="utf-8">
-	<script src="./js_include/openpgp.min.js">
-	</script>
-	<script type="text/javascript" src="./js_include/steganography.min.js">
-	</script>
-	<script src="./js_include/jquery-3.4.1.min.js">
-	</script>
+	<script src="./js_include/openpgp.min.js"></script>
+	<script src="./js_include/steganography.min.js"></script>
+	<script src="./js_include/jquery-3.4.1.min.js"></script>
   <meta http-equiv="x-ua-compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, minimal-ui">
 	<meta name="apple-mobile-web-app-capable" content="yes">
@@ -41,17 +40,17 @@
 	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2388.png">
 	<link rel="apple-touch-startup-image" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1668x2224.png">
 	<link rel="apple-touch-startup-image" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" href="./webapp/apple-launch-1536x2048.png">
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2732x2048.png">
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2224x1668.png">
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2388x1668.png">
-	<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2048x1536.png">
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1366px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2732x2048.png" />
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1194px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2224x1668.png" />
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1112px) and (device-height: 834px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2388x1668.png" />
+	<link rel="apple-touch-startup-image" media="screen and (device-width: 1024px) and (device-height: 768px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)" href="./webapp/apple-launch-2048x1536.png" />
 	<link href="./manifest.json" rel="manifest">
 	<meta content="#000000" name="msapplication-TileColor">
 	<meta content="./favicon/ms-icon-144x144.png" name="msapplication-TileImage">
 	<meta content="#000000" name="theme-color">
-
-
-	<div id="loading-start" style="background-color:#FFF;width:100%;height:100%;z-index:12;top:0;left:0;position:fixed;opacity:1;transition:0.2s ease-out opacity;">
+</head>
+<body>
+<div id="loading-start" style="background-color:#FFF;width:100%;height:100%;z-index:12;top:0;left:0;position:fixed;opacity:1;transition:0.2s ease-out opacity;">
 		<span style="width: 10em;display: inline-block;text-align: center;position: absolute;top: 50%;left: 50%;margin: -0.5em 0 0 -5em;">Loading MagicPad...</span>
 	</div>
 	<nav class="main-nav">
@@ -98,7 +97,7 @@
     <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit attachment window"></div>
   </div>
   <div class="popup-contents">
-    <a href="#" download="" target="_blank" class="attachment-download button-1"><span>Download<br>processed file</span><img src="./ui/download.svg"></a>
+    <a href="#" download="" target="_blank" class="attachment-download button-1"><span>Download<br>processed file</span><img src="./ui/download.svg" alt="Download processed file"></a>
   </div>
 </div>
 
@@ -148,7 +147,7 @@
           <h3>Passphrase</h3><input autocomplete="off" class="form-passphrase passphrase-box" placeholder="Strong passphrase" spellcheck="false" type="password">
         </section>
         <div class="pw-view-toggler checkbox-offset">
-          <input autocomplete="off" class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+          <input class="pw-toggle styled-checkbox" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
         </div>
         <section class="bottom-buttons">
           <button class="button-1 key-generate" disabled=""><span>Generate</span><img class="button-icon-img" src="./ui/generate.svg" alt="Generate key"></button> <button class="button-2 popup-exit">Cancel</button>
@@ -166,7 +165,7 @@
       </li>
     </ul>
   </div>
-</div>s
+</div>
 
 <div class="key-server-browser-window popup paged-popup">
   <div class="window-title">
@@ -212,14 +211,14 @@
                           <input type="radio" name="upload-type" value="file" checked> File (.asc)
                           &nbsp;&nbsp;<input type="radio" name="upload-type" value="paste"> Paste
                           !-->
-          <textarea class="pubkey-upload-input" id="" spellcheck="false" placeholder="Paste public key here"></textarea>
+          <textarea class="pubkey-upload-input" spellcheck="false" placeholder="Paste public key here"></textarea>
         </section>
         <section>
           <button class="button-1 upload upload-public-key-paste" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload pasted public key string"></button> <a class="key-link paste-upload-link b-link" href="#">Link</a>
         </section>
         <section>
           <h3>Upload public key file<span class="public-key-upload-filename"></span></h3>
-          <a class="label-container button-2 server-pub-key-import-label" href="#"><label for="server-key-pub-import"></label><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a>
+          <label for="server-key-pub-import" class="label-container"><a class="button-2 server-pub-key-import-label" href="#"><span>Select key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key file"></a></label>
           <input accept=".asc,.png" class="server-key-pub-import" id="server-key-pub-import" type="file">
           <a class="key-link import-upload-link b-link" href="#">Link</a>
           <button class="button-1 server-key-pub-import-upload init-disabled" disabled=""><span>Upload key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Upload selected public key file"></button>
@@ -314,7 +313,7 @@
   <div class="popup-contents">
     <section class="no-margin-section">
       <h3>Image key for conversion<span class="convert-filename"></span></h3>
-      <a class="label-container button-1 key-convert-label" href="#"><label for="key-convert"></label><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key image file for import"></a> <input accept=".png" class="key-convert" id="key-convert" type="file">
+      <label for="key-convert" class="label-container"><a class="button-1 key-convert-label" href="#"><span>Import image</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key image file for import"></a></label> <input accept=".png" class="key-convert" id="key-convert" type="file">
     </section>
     <section>
       <h3>Converted key output</h3>
@@ -355,7 +354,7 @@
   <h2>Attach</h2>
     <section>
       <h3>Your attachment <span class="attachment-filename"></span></h3>
-      <a class="label-container button-2 attachment-import-label" href="#"><label for="attachment-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a> <input class="attachment-import" id="attachment-import" type="file">
+      <label for="attachment-import" class="label-container"><a class="button-2 attachment-import-label" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
       <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
     </section>
     <section>
@@ -387,7 +386,7 @@
       <h3>Your private key <span class="key-status private-key-filename"></span></h3>
     </div>
     <div>
-      <a class="label-container button-1 key-priv-import-label" href="#"><label for="key-priv-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your private key"></a> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
+      <label for="key-priv-import" class="label-container"><a class="button-1 key-priv-import-label" href="#"><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your private key"></a></label> <input accept=".asc,.png" class="key-import key-priv-import" id="key-priv-import" type="file">
     </div>
   </section>
   <section>
@@ -401,7 +400,7 @@
       <h3>Recipient/Sender public key <span class="key-status public-key-filename"></span></h3>
     </div>
     <div>
-      <a class="label-container button-1 key-pub-import-label" href="#"><label for="key-pub-import"></label><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your recipient's public key"></a> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg" alt="Import key by pasting key"></button>
+      <label for="key-pub-import" class="label-container"><a class="button-1 key-pub-import-label" href="#"><span>Import key</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Import your recipient's public key"></a></label> <input accept=".asc,.png" class="key-import key-pub-import" id="key-pub-import" type="file"> <button class="button-2 pubkey-input-open"><span>Paste key</span><img class="button-icon-img" src="./ui/popup.svg" alt="Import key by pasting key"></button>
     </div>
   </section>
   <section>
@@ -565,6 +564,5 @@
   </div>
 </div>
 	</main>
-
-
-<script src="./js/main.js"></script></html>
+<script src="./js/main.js"></script></body>
+</html>

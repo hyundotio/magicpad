@@ -657,6 +657,7 @@ html, body {
      z-index: 2;
 }
  .label-container {
+    float:left;
      display: inline-block;
      position: relative;
 }

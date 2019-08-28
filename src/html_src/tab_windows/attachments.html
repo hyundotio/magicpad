@@ -2,14 +2,14 @@
   <h2>Attach</h2>
     <section>
       <h3>Your attachment <span class="attachment-filename"></span></h3>
-      <a class="label-container button-2 attachment-import-label" href="#"><label for="attachment-import"></label><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a> <input class="attachment-import" id="attachment-import" type="file">
+      <label for="attachment-import" class="label-container"><a class="button-2 attachment-import-label" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
       <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
     </section>
     <section>
       <h3>Processing type</h3>
       <div class="attachment-selectors-container">
-        <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked/> Encrypt
-        &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"/> Decrypt
+        <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked> Encrypt
+        &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"> Decrypt
       </div>
     </section>
     <section class="no-margin-section">
