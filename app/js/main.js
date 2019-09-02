@@ -629,7 +629,7 @@ const generateKeys = function() {
 				keyReady();
 			} catch(e) {
 				session.running = false;
-				$body.removeClass('cursor-loading');
+				$body.removeClass('cursor-loading popup-uninterrupt');
 				newKeyReset();
 				lipAlert(e);
 			}
