@@ -1,0 +1,7 @@
+{
+  "name": "MagicPad",
+  "version": "0.0.4",
+  "description": "Free, simple, and private, offline encryption suite. 0 collected data and 100% open-source",
+  "permissions": ["storage"],
+  "manifest_version": 2
+}
