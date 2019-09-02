@@ -4,7 +4,7 @@ const generateKeys = function() {
 		session.running = true;
 		let $body = $('body');
     $('.create-key-progress').addClass('active').find('span').text('Generating keys...');
-		$body.addClass('cursor-loading');
+		$body.addClass('cursor-loading popup-uninterrupt');
 		const options = {
 			userIds: [{
 				name: ($('.form-name').val()),
@@ -48,8 +48,8 @@ const keyReady = function() {
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
 	$('.key-generate-start').text('Download generated keys');
-	$('.create-key-window').find('.window-title').find('span').text('Generated keys');
-	$('body').removeClass('cursor-loading');
+	$('.create-key-window').addClass('active').find('.window-title').find('span').text('Generated keys');
+	$('body').removeClass('cursor-loading popup-uninterrupt');
 	session.running = false;
 }
 

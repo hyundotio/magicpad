@@ -5,6 +5,10 @@ $('a').bind('click',function(e){
 	}
 })
 
+$('.no-link').bind('click',function(e){
+		e.preventDefault();
+})
+
 //Password show toggler
 $('.pw-toggle').change(function() {
 	let $thisPar = $(this).parent();
@@ -21,7 +25,6 @@ $('.pw-toggle').change(function() {
 
 //label container bind (input file is triggered by label for custom styling)
 $('.label-container').bind('click', function(e) {
-	e.preventDefault();
 	e.stopPropagation();
 	$(this).next('input').click();
 })

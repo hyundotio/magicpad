@@ -606,7 +606,7 @@ const generateKeys = function() {
 		session.running = true;
 		let $body = $('body');
     $('.create-key-progress').addClass('active').find('span').text('Generating keys...');
-		$body.addClass('cursor-loading');
+		$body.addClass('cursor-loading popup-uninterrupt');
 		const options = {
 			userIds: [{
 				name: ($('.form-name').val()),
@@ -650,8 +650,8 @@ const keyReady = function() {
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
 	$('.key-generate-start').text('Download generated keys');
-	$('.create-key-window').find('.window-title').find('span').text('Generated keys');
-	$('body').removeClass('cursor-loading');
+	$('.create-key-window').addClass('active').find('.window-title').find('span').text('Generated keys');
+	$('body').removeClass('cursor-loading popup-uninterrupt');
 	session.running = false;
 }
 
@@ -1228,10 +1228,12 @@ window.addEventListener('offline', function() {
 
 //Exits popup
 const popupExit = function(){
-	$('.popup').removeClass('active');
-	$('.main-nav').removeClass('mobile-active');
-	$('.mobile-menu').removeClass('active');
-	$('.popup-filter').removeClass('active');
+	if(!$('body').hasClass('popup-uninterrupt')){
+		$('.popup').removeClass('active');
+		$('.main-nav').removeClass('mobile-active');
+		$('.mobile-menu').removeClass('active');
+		$('.popup-filter').removeClass('active');
+	}
 }
 
 //Activate Copied alert when user clicks on Copy to clipboard button
@@ -1241,6 +1243,71 @@ const showCopied = function($copied){
 		$copied.removeClass('active');
 	}, 2000);
 }
+
+const loadPage = function(hashLoc){
+  let $main = $('main');
+  let $tabWindow = $main.find('.tab-window');
+  let $mainNav = $('.main-nav');
+  /*
+  let $this = $(this);
+  let nextTab = $this.attr('data-tab');
+
+  $this.addClass('active');
+  */
+  let $nextPage = $('.'+hashLoc[1]);
+  if($nextPage.length > 0){
+    popupExit();
+    $mainNav.find('.active').removeClass('active');
+    $mainNav.find('a').each(function(){
+      let $this = $(this);
+      if ($this.attr('data-tab').toLowerCase() == hashLoc[1]){
+        $this.addClass('active');
+      }
+    })
+    $tabWindow.removeClass('active');
+    $nextPage.addClass('active');
+
+    for (let i = 0; i < formChecker.length; i++){
+      if(formChecker[i].type == hashLoc[1]){
+        formChecker[i].runCheck();
+      }
+    }
+  } else {
+    window.location.hash = '#!'
+  }
+}
+
+const hashHandler = function(hashArray){
+    if (hashArray[0] === 'page'){
+      if(hashArray[1] !== undefined){
+          loadPage(hashArray);
+      } else {
+          window.location.hash = '#!'
+      }
+      //about
+    } else if (hashArray.length === 0){
+      //go home
+        window.location.hash = '#!/page/keys'
+    } else {
+        window.location.hash = '#!'
+    }
+}
+
+const hashCreator = function(firstTime){
+  let locHash = location.hash.split('/');
+  let cleanedHash = [];
+  for (let i = 0; i < locHash.length; i++){
+    if(locHash[i] !== '' && locHash[i] !== '#!'){
+      cleanedHash.push(locHash[i].toLowerCase());
+    }
+  }
+  hashHandler(cleanedHash);
+}
+
+window.addEventListener('hashchange',function(e){
+    hashCreator();
+},false);
+hashCreator(true);
 
 const resizeViewport = function() {
 	const viewheight = $(window).height();
@@ -1351,7 +1418,6 @@ $('.attachment-download').bind('click',function(e){
 //Logic to navigate list for Guide
 $('.tutorial-selectors').find('a').each(function(){
     $(this).bind('click',function(e){
-        e.preventDefault();
         let $this = $(this);
         let $tutorialPages = $('.tutorial-pages');
         let $tutorialPage = $tutorialPages.find('.'+$this.attr('data-tutorial'));
@@ -1423,7 +1489,6 @@ $('.key-new-form').find('input').each(function() {
 
 //Reset key generation form
 $('.key-generate-reset').bind('click', function(e) {
-	e.preventDefault();
 	newKeyReset();
 })
 
@@ -1445,7 +1510,6 @@ $('.key-generate').bind('click', function(e) {
 
 //copy generated public keys
 $('.copy-generated-public-key').bind('click',function(e){
-	e.preventDefault();
 	Clipboard.copy(session.generatedPubKey);
 	showCopied($(this).find('.copied'));
 })
@@ -1561,32 +1625,15 @@ $('.lip-exit').bind('click', function() {
 	$('.lip').removeClass('active');
 })
 
-//bindings for navigating between main nav tabs
-$('.tab').bind('click', function(e) {
-	e.preventDefault();
-	let $main = $('main');
-	let $tabWindow = $main.find('.tab-window');
-	let nextTab = $(this).attr('data-tab');
-	$('.main-nav').find('.active').removeClass('active');
-	$(this).addClass('active');
-	$tabWindow.removeClass('active').each(function() {
-		if ($(this).hasClass(nextTab)) {
-			popupExit();
-			$(this).addClass('active');
-		}
-		for (let i = 0; i < formChecker.length; i++){
-			if(formChecker[i].type == nextTab){
-				formChecker[i].runCheck();
-			}
-		}
-	})
-})
-
 //do not run <a> buttons with disabled class
 $('a').bind('click',function(e){
 	if ($(this).hasClass('disabled')){
 		e.preventDefault();
 	}
+})
+
+$('.no-link').bind('click',function(e){
+		e.preventDefault();
 })
 
 //Password show toggler
@@ -1605,7 +1652,6 @@ $('.pw-toggle').change(function() {
 
 //label container bind (input file is triggered by label for custom styling)
 $('.label-container').bind('click', function(e) {
-	e.preventDefault();
 	e.stopPropagation();
 	$(this).next('input').click();
 })

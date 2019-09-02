@@ -1,7 +1,6 @@
 //Logic to navigate list for Guide
 $('.tutorial-selectors').find('a').each(function(){
     $(this).bind('click',function(e){
-        e.preventDefault();
         let $this = $(this);
         let $tutorialPages = $('.tutorial-pages');
         let $tutorialPage = $tutorialPages.find('.'+$this.attr('data-tutorial'));

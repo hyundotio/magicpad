@@ -15,7 +15,6 @@ $('.key-new-form').find('input').each(function() {
 
 //Reset key generation form
 $('.key-generate-reset').bind('click', function(e) {
-	e.preventDefault();
 	newKeyReset();
 })
 
@@ -37,7 +36,6 @@ $('.key-generate').bind('click', function(e) {
 
 //copy generated public keys
 $('.copy-generated-public-key').bind('click',function(e){
-	e.preventDefault();
 	Clipboard.copy(session.generatedPubKey);
 	showCopied($(this).find('.copied'));
 })
