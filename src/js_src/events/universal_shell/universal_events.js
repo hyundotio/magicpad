@@ -1,3 +1,9 @@
+//Blob button fix for iOS
+$('.blob-download').bind('click',function(e){
+	e.preventDefault();
+	window.open($(this).attr('href'), "_blank");
+})
+
 //do not run <a> buttons with disabled class
 $('a').bind('click',function(e){
 	if ($(this).hasClass('disabled')){

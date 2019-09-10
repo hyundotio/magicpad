@@ -100,7 +100,7 @@ const decryptAttachment = function(){
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
 				});
-				const url = URL.createObjectURL(blob);
+				const url = window.URL.createObjectURL(blob);
 				session.lastDecFile = url;
 				session.lastDecFilename = 'decrypted_' + getFilename($attachmentImport.val());
 				$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
@@ -1115,7 +1115,7 @@ const createStegKey = function(input,type,str){
 
 //createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
 const createSteg = function(img,$dest,str){
-	$dest.attr('href',steg.encode(str, img));
+	$dest.attr('href',dataURItoBlobURL(steg.encode(str, img)));
 }
 
 //Convert steganograph to message
@@ -1175,9 +1175,30 @@ const lipAlert = function(str) {
 	$('.message-flag').addClass('active').find('span').text(str);
 }
 
+const dataURItoBlobURL = function(dataURI) {
+    // convert base64 to raw binary data held in a string
+    let byteString = atob(dataURI.split(',')[1]);
+
+    // separate out the mime component
+    let mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+    // write the bytes of the string to an ArrayBuffer
+    let arrayBuffer = new ArrayBuffer(byteString.length);
+    let _ia = new Uint8Array(arrayBuffer);
+    for (let i = 0; i < byteString.length; i++) {
+        _ia[i] = byteString.charCodeAt(i);
+    }
+
+    let dataView = new DataView(arrayBuffer);
+    let blob = new Blob([dataView], { type: mimeString });
+    let url = window.URL.createObjectURL(blob);
+    return url;
+}
+
 //initialize application
 const init = function() {
-	 $onlineFlag = $('.online-flag');
+	window.URL = window.URL || window.webkitURL;
+	let $onlineFlag = $('.online-flag');
 	if (window.navigator.onLine) {
 		$onlineFlag.addClass('active');
 	} else {
@@ -1623,6 +1644,12 @@ $('.read').keyup(function(e) {
 //Binding for exiting bottom lip alert
 $('.lip-exit').bind('click', function() {
 	$('.lip').removeClass('active');
+})
+
+//Blob button fix for iOS
+$('.blob-download').bind('click',function(e){
+	e.preventDefault();
+	window.open($(this).attr('href'), "_blank");
 })
 
 //do not run <a> buttons with disabled class

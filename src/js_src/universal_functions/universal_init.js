@@ -1,6 +1,7 @@
 //initialize application
 const init = function() {
-	 $onlineFlag = $('.online-flag');
+	window.URL = window.URL || window.webkitURL;
+	let $onlineFlag = $('.online-flag');
 	if (window.navigator.onLine) {
 		$onlineFlag.addClass('active');
 	} else {

@@ -59,7 +59,7 @@ const decryptAttachment = function(){
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
 				});
-				const url = URL.createObjectURL(blob);
+				const url = window.URL.createObjectURL(blob);
 				session.lastDecFile = url;
 				session.lastDecFilename = 'decrypted_' + getFilename($attachmentImport.val());
 				$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');

@@ -43,7 +43,7 @@ const createStegKey = function(input,type,str){
 
 //createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
 const createSteg = function(img,$dest,str){
-	$dest.attr('href',steg.encode(str, img));
+	$dest.attr('href',dataURItoBlobURL(steg.encode(str, img)));
 }
 
 //Convert steganograph to message
