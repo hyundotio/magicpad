@@ -10,7 +10,7 @@ const viewEncMsg = function(steg) {
 		$processedOutputWindow.removeClass('steg');
 	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
-	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc)).attr('download', 'encrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc))).attr('download', 'encrypted_message.txt');
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');

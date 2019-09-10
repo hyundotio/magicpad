@@ -87,7 +87,7 @@ const convertStegKey = function($type){
 			$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
 			$('.key-convert-label').find('span').text('Reimport image');
 			$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
-			$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
+			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey))).attr('download', 'convertedKey.asc');
 			$('.copy-converted').removeAttr('disabled');
 			$('.converted-aside').text('Key converted.');
 		} catch(e) {

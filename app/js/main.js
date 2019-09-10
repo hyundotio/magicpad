@@ -1,3 +1,5 @@
+let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+
 let session = {
 	privKey: '',
 	pubKey: '',
@@ -393,7 +395,7 @@ const lookupKey = function(query,server) {
 					}
 					session.searchedKey = hkpLookup.trim();
 					const buffer = new Uint8Array(searchedKey.keys[0].primaryKey.fingerprint).buffer;
-					$('.searched-key-download').attr('href', 'data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey)).attr('download', 'searchedKey_public.asc').attr('target','_blank');
+					$('.searched-key-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name=searchedKey_public.asc,' + btoa(session.searchedKey))).attr('download', 'searchedKey_public.asc').attr('target','_blank');
 					$('.downloaded-fingerprint').text(buf2hex(buffer).match(/.{1,4}/g).join(' ').toUpperCase());
 					createStegKey(pubDataUri,'search',session.searchedKey);
 					$('.searched-key-download-steg').attr('download', 'searchedKey_public_steg.png')
@@ -506,7 +508,7 @@ const viewDecMsg = function() {
 	$processedAside.text(session.lastDecStatus);
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
-	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;filename=decrypted_message.txt,' + encodeURIComponent(session.lastDec.data)).attr('download', 'decrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data))).attr('download', 'decrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('active').removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
 }
@@ -523,7 +525,7 @@ const viewEncMsg = function(steg) {
 		$processedOutputWindow.removeClass('steg');
 	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
-	$('.save-processed').removeClass('hidden').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc)).attr('download', 'encrypted_message.txt');
+	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc))).attr('download', 'encrypted_message.txt');
 	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
@@ -643,9 +645,9 @@ const keyReady = function() {
 	let formName = $('.form-name').val().split(' ')[0].toLowerCase().replace(/\s/g, '');
 	$('.key-public-img-download').attr('download',formName+'_pub_steg.png');
 	$('.key-private-img-download').attr('download',formName+'_priv_steg.png');
-	$('.key-public-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
-	$('.key-private-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
-	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
+	$('.key-public-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey))).attr('download', formName+'_public.asc');
+	$('.key-private-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey))).attr('download', formName+'_private.asc');
+	$('.key-rev-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey))).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
@@ -1159,7 +1161,7 @@ const convertStegKey = function($type){
 			$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
 			$('.key-convert-label').find('span').text('Reimport image');
 			$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
-			$('.save-converted').removeClass('disabled').attr('href', 'data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey)).attr('download', 'convertedKey.asc');
+			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey))).attr('download', 'convertedKey.asc');
 			$('.copy-converted').removeAttr('disabled');
 			$('.converted-aside').text('Key converted.');
 		} catch(e) {
@@ -1424,18 +1426,6 @@ $('.attachment-view').bind('click',function(){
   }
 })
 
-//
-$('.attachment-download').bind('click',function(e){
-  let link = $(this).attr('href');
-  let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
-  if(iOS){
-    e.preventDefault();
-    setTimeout(function(){
-        window.open(link);
-    }, 500);
-  }
-})
-
 //Logic to navigate list for Guide
 $('.tutorial-selectors').find('a').each(function(){
     $(this).bind('click',function(e){
@@ -1648,8 +1638,13 @@ $('.lip-exit').bind('click', function() {
 
 //Blob button fix for iOS
 $('.blob-download').bind('click',function(e){
-	e.preventDefault();
-	window.open($(this).attr('href'), "_blank");
+  if(iOS){
+    e.preventDefault();
+		let link = $(this).attr('href');
+    setTimeout(function(){
+        window.open(link, "_blank");
+    }, 500);
+  }
 })
 
 //do not run <a> buttons with disabled class

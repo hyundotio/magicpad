@@ -1,3 +1,5 @@
+let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
+
 let session = {
 	privKey: '',
 	pubKey: '',

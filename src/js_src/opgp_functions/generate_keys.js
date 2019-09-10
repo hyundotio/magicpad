@@ -41,9 +41,9 @@ const keyReady = function() {
 	let formName = $('.form-name').val().split(' ')[0].toLowerCase().replace(/\s/g, '');
 	$('.key-public-img-download').attr('download',formName+'_pub_steg.png');
 	$('.key-private-img-download').attr('download',formName+'_priv_steg.png');
-	$('.key-public-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey)).attr('download', formName+'_public.asc');
-	$('.key-private-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey)).attr('download', formName+'_private.asc');
-	$('.key-rev-download').attr('href', 'data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey)).attr('download', formName+'_revoke.asc');
+	$('.key-public-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey))).attr('download', formName+'_public.asc');
+	$('.key-private-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey))).attr('download', formName+'_private.asc');
+	$('.key-rev-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey))).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
