@@ -1,9 +1,17 @@
-# MagicPad v0.0.3
+# MagicPad v1.0.0
 
 MagicPad is an OpenPGP encryption / decryption tool for beginners. It is designed to be run standalone via the browser or as an executable (Electron).
 Using PGP as the main encryption engine, the encryption key generated in MagicPad are powerful 4096-bit keys.
 
 ![](demo.gif)
+
+## Why MagicPad...
+
+1. No data collection. Can be used offline. Available as a Chrome offline app, mobile progressive web app, and executables (Windows x64, macOS x64, .deb x64, .rpm x64).
+2. Create, upload, and search for PGP keys.
+3. Easy to understand language. You want to read, write, or attach?
+4. Mobile friendly (Progressive web app). Can be saved to home screen. Tested on Android and iOS.
+5. Hide encrypted messages in images.
 
 ## Installation
 
