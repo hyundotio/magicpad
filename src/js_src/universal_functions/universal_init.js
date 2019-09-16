@@ -8,14 +8,15 @@ const init = function() {
 		$onlineFlag.removeClass('active');
 	}
 	$('input').each(function(){
-		if($(this).attr('type') == 'radio'){
-			if($(this).index() == 0){
-					$(this).prop('checked',true);
+		let $this = $(this);
+		if($this.attr('type') == 'radio'){
+			if($this.index() == 0){
+					$this.prop('checked',true);
 			} else {
-					$(this).prop('checked',false);
+					$this.prop('checked',false);
 			}
 		} else {
-			$(this).val('').prop('checked',false);
+			$this.val('').prop('checked',false);
 		}
 	})
 	$('textarea').val('');

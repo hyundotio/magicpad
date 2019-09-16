@@ -5,15 +5,16 @@ $('.attachment-radio').bind('click',function(){
   let $attachmentProcess = $('.attachment-process');
   let $attachmentView = $('.attachment-view');
   if($this.is(':checked')){
+      let $attachmentDownload = $('.attachment-download');
+      let $attachmentWindowTitleSpan = $('.attachment-window').find('.window-title').find('span');
       if($this.val() == 'decrypt'){
         $attachmentCredentials.removeClass('disabled').find('input').removeAttr('disabled');
         $attachmentProcess.removeClass('attachment-encrypt').addClass('attachment-decrypt').find('span').text('Decrypt');
         $attachmentProcess.find('img').attr('src','./ui/decrypt.svg');
         if(session.lastDecFile.length > 0){
           $attachmentView.removeAttr('disabled');
-          $('.attachment-window').find('.window-title').find('span').text('Decrypted attachment');
-          $('.attachment-download').attr('href',session.lastDecFile).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
-          $('.attachment-view').removeAttr('disabled');
+          $attachmentWindowTitleSpan.text('Decrypted attachment');
+          $attachmentDownload.attr('href',session.lastDecFile).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
         } else {
           $attachmentView.attr('disabled','disabled');
         }
@@ -29,9 +30,8 @@ $('.attachment-radio').bind('click',function(){
           $attachmentProcess.addClass('attachment-encrypt');
           if(session.lastEncFile.length > 0){
             $attachmentView.removeAttr('disabled');
-            $('.attachment-window').find('.window-title').find('span').text('Encrypted attachment');
-            $('.attachment-download').attr('href',session.lastEncFile).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
-            $('.attachment-view').removeAttr('disabled');
+            $attachmentWindowTitleSpan.text('Encrypted attachment');
+            $attachmentDownload.attr('href',session.lastEncFile).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
           } else {
             $attachmentView.attr('disabled','disabled')
           }

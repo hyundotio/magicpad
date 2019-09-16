@@ -1242,14 +1242,15 @@ const init = function() {
 		$onlineFlag.removeClass('active');
 	}
 	$('input').each(function(){
-		if($(this).attr('type') == 'radio'){
-			if($(this).index() == 0){
-					$(this).prop('checked',true);
+		let $this = $(this);
+		if($this.attr('type') == 'radio'){
+			if($this.index() == 0){
+					$this.prop('checked',true);
 			} else {
-					$(this).prop('checked',false);
+					$this.prop('checked',false);
 			}
 		} else {
-			$(this).val('').prop('checked',false);
+			$this.val('').prop('checked',false);
 		}
 	})
 	$('textarea').val('');
@@ -1389,15 +1390,16 @@ $('.attachment-radio').bind('click',function(){
   let $attachmentProcess = $('.attachment-process');
   let $attachmentView = $('.attachment-view');
   if($this.is(':checked')){
+      let $attachmentDownload = $('.attachment-download');
+      let $attachmentWindowTitleSpan = $('.attachment-window').find('.window-title').find('span');
       if($this.val() == 'decrypt'){
         $attachmentCredentials.removeClass('disabled').find('input').removeAttr('disabled');
         $attachmentProcess.removeClass('attachment-encrypt').addClass('attachment-decrypt').find('span').text('Decrypt');
         $attachmentProcess.find('img').attr('src','./ui/decrypt.svg');
         if(session.lastDecFile.length > 0){
           $attachmentView.removeAttr('disabled');
-          $('.attachment-window').find('.window-title').find('span').text('Decrypted attachment');
-          $('.attachment-download').attr('href',session.lastDecFile).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
-          $('.attachment-view').removeAttr('disabled');
+          $attachmentWindowTitleSpan.text('Decrypted attachment');
+          $attachmentDownload.attr('href',session.lastDecFile).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
         } else {
           $attachmentView.attr('disabled','disabled');
         }
@@ -1413,9 +1415,8 @@ $('.attachment-radio').bind('click',function(){
           $attachmentProcess.addClass('attachment-encrypt');
           if(session.lastEncFile.length > 0){
             $attachmentView.removeAttr('disabled');
-            $('.attachment-window').find('.window-title').find('span').text('Encrypted attachment');
-            $('.attachment-download').attr('href',session.lastEncFile).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
-            $('.attachment-view').removeAttr('disabled');
+            $attachmentWindowTitleSpan.text('Encrypted attachment');
+            $attachmentDownload.attr('href',session.lastEncFile).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
           } else {
             $attachmentView.attr('disabled','disabled')
           }
@@ -1576,11 +1577,9 @@ $('.open-keybrowser').bind('click',function(){
 
 //Binding for search-box to enable search button
 $('.searchbox-pubkey').keyup(function(){
-	let $this = $(this);
-	keyUpChecker($this,$('.search-pubkey'));
+	keyUpChecker($(this),$('.search-pubkey'));
 }).change(function(){
-	let $this = $(this);
-	keyUpChecker($this,$('.search-pubkey'));
+	keyUpChecker($(this),$('.search-pubkey'));
 })
 
 //Binding for Copy searched key
@@ -1623,7 +1622,7 @@ $('.server-key-pub-import-upload').bind('click',function(){
 $('.server-key-pub-import').change(function(){
 	const $this = $(this);
 	if($this.val() != ''){
-		keyImport($(this));
+		keyImport($this);
 	} else {
 		$('.public-key-upload-filename').text('');
 		$('.server-pub-key-import-label').find('span').text('Select key');
@@ -1796,14 +1795,14 @@ $('.stg-host').change(function(){
 			$stgClear.addClass('active');
 		} else {
 			$stgHostLabel.text('Select steganograph host');
-			$(this).val('');
+			$this.val('');
 			$stgClear.removeClass('active');
 			lipAlert('The imported file is not a valid image to be used as a steganograph host');
 		}
 	} else {
 		$stgHostLabel.text('Select steganograph host');
 		$stgClear.removeClass('active');
-		$(this).val('');
+		$this.val('');
 	}
 })
 

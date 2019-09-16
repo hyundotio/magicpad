@@ -1,10 +1,8 @@
 //Binding for search-box to enable search button
 $('.searchbox-pubkey').keyup(function(){
-	let $this = $(this);
-	keyUpChecker($this,$('.search-pubkey'));
+	keyUpChecker($(this),$('.search-pubkey'));
 }).change(function(){
-	let $this = $(this);
-	keyUpChecker($this,$('.search-pubkey'));
+	keyUpChecker($(this),$('.search-pubkey'));
 })
 
 //Binding for Copy searched key

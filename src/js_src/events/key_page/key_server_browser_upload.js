@@ -24,7 +24,7 @@ $('.server-key-pub-import-upload').bind('click',function(){
 $('.server-key-pub-import').change(function(){
 	const $this = $(this);
 	if($this.val() != ''){
-		keyImport($(this));
+		keyImport($this);
 	} else {
 		$('.public-key-upload-filename').text('');
 		$('.server-pub-key-import-label').find('span').text('Select key');

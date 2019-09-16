@@ -25,14 +25,14 @@ $('.stg-host').change(function(){
 			$stgClear.addClass('active');
 		} else {
 			$stgHostLabel.text('Select steganograph host');
-			$(this).val('');
+			$this.val('');
 			$stgClear.removeClass('active');
 			lipAlert('The imported file is not a valid image to be used as a steganograph host');
 		}
 	} else {
 		$stgHostLabel.text('Select steganograph host');
 		$stgClear.removeClass('active');
-		$(this).val('');
+		$this.val('');
 	}
 })
 
