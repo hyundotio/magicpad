@@ -7,11 +7,11 @@ Using PGP as the main encryption engine, the encryption key generated in MagicPa
 
 ## Why MagicPad...
 
-1. No data collection. Can be used offline. Available as a Chrome offline app, mobile progressive web app, and executables (Windows x64, macOS x64, .deb x64, .rpm x64).
+1. No data collection. Can be used offline. Available as a Chrome offline app, mobile progressive web app, and executables (Windows x64, macOS x64, .deb x64, .rpm x64). No server-side interaction.
 2. Create, upload, and search for PGP keys.
-3. Easy to understand language. You want to read, write, or attach?
+3. Easy to understand language. You want to read, write, or attach a file?
 4. Mobile friendly (Progressive web app). Can be saved to home screen. Tested on Android and iOS.
-5. Hide encrypted messages in images.
+5. Store keys as images as well as hide and reveal encrypted messages in images.
 
 ## Installation
 
