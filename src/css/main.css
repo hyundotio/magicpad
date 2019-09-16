@@ -7,6 +7,14 @@ html, body {
  html {
      -webkit-text-size-adjust: 100%;
 }
+.hidden-label {
+  position:absolute;
+  opacity:0.01;
+  color:#FFF;
+  height:1px;
+  width:1px;
+  overflow:hidden;
+}
 .mp-share {
   clear:both;
   float:none;

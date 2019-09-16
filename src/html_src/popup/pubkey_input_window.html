@@ -2,12 +2,18 @@
 <div class="pubkey-input-window popup">
   <div class="window-title">
     <span>Public key paste</span>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit public key input window"></div>
+    <button class="icon-button popup-exit">
+      <img src="./ui/exit.svg" alt="Exit public key input window">
+    </button>
   </div>
   <div class="popup-contents">
+    <label for="pubkey-input" class="hidden-label">Paste public key here</label>
     <textarea class="pubkey-input" id="pubkey-input" spellcheck="false" placeholder="Paste public key here"></textarea>
     <div class="top-margin-div cf">
-      <button class="button-1 import-pubkey-str" disabled><span>Import key</span><img class="button-icon-img" src="./ui/upload.svg" alt="Import pasted public key"></button>
+      <button class="button-1 import-pubkey-str" disabled>
+        <span>Import key</span>
+        <img class="button-icon-img" src="./ui/upload.svg" alt="Import pasted public key">
+      </button>
     </div>
   </div>
 </div>

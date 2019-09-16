@@ -12,21 +12,35 @@
     </section>
     <div class="checkbox-section cf">
       <div class="sign-toggle checkbox-offset">
-        <input class="encrypt-sign-checkbox styled-checkbox" type="checkbox">&nbsp;&nbsp;Sign message
+        <label for="write-sign-toggle" class="hidden-label">Sign message</label>
+        <input id="write-sign-toggle" class="encrypt-sign-checkbox styled-checkbox" type="checkbox">
+        <span>&nbsp;&nbsp;Sign message</span>
       </div>
       <a href="#" class="clear-steg-host b-link no-link">Clear steganograph host</a>
     </div>
 
     <section class="no-margin-section cf">
       <div class="sign-credentials disabled credentials-box">
-        <h3>Your private key passphrase</h3><input class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+        <h3>Your private key passphrase</h3>
+        <label for="write-passphrase-input" class="hidden-label">Your private key passphrase</label>
+        <input id="write-passphrase-input" class="passphrase-box text-write-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
-          <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+          <label for="write-show-passphrase-toggle" class="hidden-label">Show passphrase</label>
+          <input id="write-show-passphrase-toggle" class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">
+          <span>&nbsp;&nbsp;Show passphrase<span>
+          <br>
         </div>
       </div>
     </section>
     <div class="top-margin-div cf">
-      <button class="button-1 encrypt-message init-disabled" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt message"></button> <button class="button-2 view-message-encrypted view-processed init-disabled" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View encrypted message"></button>
+      <button class="button-1 encrypt-message init-disabled" disabled>
+        <span>Encrypt</span>
+        <img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt message">
+      </button>
+      <button class="button-2 view-message-encrypted view-processed init-disabled" disabled>
+        <span>View output</span>
+        <img class="button-icon-img" src="./ui/popup.svg" alt="View encrypted message">
+      </button>
     </div>
     <div class="mp-share">
       <a href="https://www.magicpost.io/post.php" target="_blank" class="b-link" rel="noopener noreferrer nofollow">Post message to MagicPost anonymously</a>

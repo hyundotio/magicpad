@@ -2,25 +2,48 @@
   <h2>Attach</h2>
     <section class="cf">
       <h3>Your attachment <span class="attachment-filename"></span></h3>
-      <label for="attachment-import" class="label-container cf"><a class="button-2 attachment-import-label no-link" href="#"><span>Select file</span><img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file"></a></label><input class="attachment-import" id="attachment-import" type="file">
-      <div class="attachment-stats"><span class="attachment-size">No file selected</span></div>
+      <label for="attachment-import" class="label-container cf">
+        <a class="button-2 attachment-import-label no-link" href="#">
+          <span>Select file</span>
+          <img class="label-icon-button" src="./ui/selectfile.svg" alt="Select attachment file">
+        </a>
+      </label>
+      <input class="attachment-import" id="attachment-import" type="file">
+      <div class="attachment-stats">
+        <span class="attachment-size">No file selected</span>
+      </div>
     </section>
     <section class="cf">
       <h3>Processing type</h3>
       <div class="attachment-selectors-container">
-        <input type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked> Encrypt
-        &nbsp;&nbsp;&nbsp;<input type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt"> Decrypt
+        <label for="attachment-radio-encrypt" class="hidden-label">Encrypt attachment</label>
+        <input id="attachment-radio-encrypt" type="radio" class="styled-radio attachment-radio" value="encrypt" name="attachment-process-type" checked>
+        <span>Encrypt&nbsp;&nbsp;&nbsp;</span>
+        <label for="attachment-radio-decrypt" class="hidden-label">Decrypt attachment</label>
+        <input id="attachment-radio-decrypt" type="radio" class="styled-radio attachment-radio" name="attachment-process-type" value="decrypt">
+        <span>Decrypt</span>
       </div>
     </section>
     <section class="no-margin-section cf">
       <div class="attachment-credentials credentials-box disabled">
-        <h3>Your private key passphrase</h3><input class="attachment-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
+        <h3>Your private key passphrase</h3>
+        <input class="attachment-passphrase" disabled="disabled" placeholder="Passphrase" spellcheck="false" autocomplete="off" type="password">
         <div class="pw-view-toggler checkbox-offset">
-          <input class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">&nbsp;&nbsp;Show passphrase<br>
+          <label for="attachment-show-passphrase-toggle" class="hidden-label">Show passphrase</label>
+          <input id="attachment-show-passphrase-toggle" class="pw-toggle styled-checkbox" disabled="disabled" name="pw-toggle" type="checkbox">
+          <span>&nbsp;&nbsp;Show passphrase</span>
+          <br>
         </div>
       </div>
     </section>
     <div class="top-margin-div cf">
-      <button class="button-1 attachment-process attachment-encrypt" disabled><span>Encrypt</span><img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt file"></button><button class="button-2 attachment-view init-disabled" disabled><span>View output</span><img class="button-icon-img" src="./ui/popup.svg" alt="View processed file output"></button>
+      <button class="button-1 attachment-process attachment-encrypt" disabled>
+        <span>Encrypt</span>
+        <img class="button-icon-img" src="./ui/encrypt.svg" alt="Encrypt file">
+      </button>
+      <button class="button-2 attachment-view init-disabled" disabled>
+        <span>View output</span>
+        <img class="button-icon-img" src="./ui/popup.svg" alt="View processed file output">
+      </button>
     </div>
 </div>

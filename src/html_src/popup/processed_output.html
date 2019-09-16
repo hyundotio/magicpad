@@ -2,16 +2,24 @@
 <div class="processed-output-window popup">
   <div class="window-title">
     <span>Processed output</span>
-    <div class="popup-expand icon-button"><img src="./ui/expand.svg" alt="Expand processed output window"></div>
-    <div class="icon-button popup-exit"><img src="./ui/exit.svg" alt="Exit processed output window"></div>
+    <button class="popup-expand icon-button">
+      <img src="./ui/expand.svg" alt="Expand processed output window">
+    </button>
+    <button class="icon-button popup-exit">
+      <img src="./ui/exit.svg" alt="Exit processed output window">
+    </button>
   </div>
   <div class="popup-contents">
     <section class="no-margin-section steg-section cf">
       <h3>Steganograph output</h3>
-      <a href="#" class="button-2 steg-msg-download blob-download" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download processed output contents as an image file"></a>
+      <a href="#" class="button-2 steg-msg-download blob-download" target="_blank">
+        <span>Download</span>
+        <img class="button-icon-img" src="./ui/download.svg" alt="Download processed output contents as an image file">
+      </a>
     </section>
     <section class="output-section cf">
       <h3>Text output</h3>
+      <label for="processed-output" class="hidden-label">Text output</label>
       <textarea class="processed-output" id="processed-output" spellcheck="false" readonly="readonly"></textarea>
       <div>
         <span class="copied">Copied</span>
@@ -19,7 +27,14 @@
       </div>
     </section>
     <div class="top-margin-div cf">
-      <button class="button-2 copy-processed"><span>Copy</span><img class="button-icon-img" src="./ui/copy.svg" alt="Copy processed output to clipboard"></button> <a class="button-2 save-processed blob-download" href="#" target="_blank"><span>Download</span><img class="button-icon-img" src="./ui/download.svg" alt="Download processed output as txt file"></a>
+      <button class="button-2 copy-processed">
+        <span>Copy</span>
+        <img class="button-icon-img" src="./ui/copy.svg" alt="Copy processed output to clipboard">
+      </button>
+      <a class="button-2 save-processed blob-download" href="#" target="_blank">
+        <span>Download</span>
+        <img class="button-icon-img" src="./ui/download.svg" alt="Download processed output as txt file">
+      </a>
     </div>
   </div>
 </div>
