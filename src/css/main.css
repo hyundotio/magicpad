@@ -257,7 +257,10 @@ html, body {
  input[type="radio"]:checked:after {
      background-color: #0062ff;
 }
- input[type="checkbox"]:disabled, input[type="checkbox"][disabled], input[type="checkbox"]:disabled:hover, input[type="checkbox"][disabled]:hover, input[type="checkbox"]:disabled:active, input[type="checkbox"][disabled]:active, input[type="checkbox"]:disabled:focus, input[type="checkbox"][disabled]:focus {
+ input[type="checkbox"]:disabled, input[type="checkbox"][disabled],
+ input[type="checkbox"]:disabled:hover, input[type="checkbox"][disabled]:hover,
+ input[type="checkbox"]:disabled:active, input[type="checkbox"][disabled]:active,
+ input[type="checkbox"]:disabled:focus, input[type="checkbox"][disabled]:focus {
      background-color:#f3f3f3;
      border:1px solid #f3f3f3;
      cursor: not-allowed;
