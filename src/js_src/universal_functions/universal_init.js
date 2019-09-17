@@ -9,17 +9,12 @@ const init = function() {
 	}
 	$('input').each(function(){
 		let $this = $(this);
-		if($this.attr('type') == 'radio'){
-			if($this.index() == 0){
-					$this.prop('checked',true);
-			} else {
-					$this.prop('checked',false);
-			}
-		} else {
-			$this.val('').prop('checked',false);
-		}
+		$this.val('').prop('checked',false);
+		$('.attachment-radio').eq(0).prop('checked',true).change();
 	})
 	$('textarea').val('');
+	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
+	recallSession();
 	keyUpChecker($('.pubkey-upload-input'),$('.upload-public-key-paste'));
 	keyUpChecker($('.searchbox-pubkey'),$('.search-pubkey'));
 	keyUpChecker($('.pubkey-input'),$('.import-pubkey-str'));
@@ -27,7 +22,6 @@ const init = function() {
 	writeFormCheck();
 	newKeyFormCheck();
 	attachmentFormcheck();
-	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	setTimeout(function () {
       resizeViewport();
   }, 300);

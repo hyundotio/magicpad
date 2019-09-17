@@ -3,6 +3,8 @@ let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 let session = {
 	privKey: '',
 	pubKey: '',
+	privKeyName:'',
+	pubKeyName:'',
 	generatedPubKey:'',
 	generatedPrivKey:'',
 	generatedRevKey:'',
@@ -20,7 +22,41 @@ let session = {
 	lastEncFileType:'',
 	lastEncFilename:'',
 	keyToUploadFile:'',
-	searchedKey:''
+	searchedKey:'',
+	sessionStore:false
+}
+
+const adjustSession = function(){
+	if(session.sessionStore){
+		window.localStorage.setItem('session',JSON.stringify(session));
+	}
+}
+
+const eraseSession = function(){
+	window.localStorage.setItem('session',null);
+}
+
+const recallSession = function(){
+	if(window.localStorage.getItem('session') != null){
+		if(window.localStorage.getItem('session') != 'null'){
+			session = JSON.parse(window.localStorage.getItem('session'));
+			const $sessionToggle = $('.session-toggle');
+			if(session.sessionStore){
+				$sessionToggle.prop('checked',true).change();
+				let $tempInput = $('<input>');
+				if(session.pubKeyName != ''){
+					$tempInput.val(session.pubKeyName).addClass('key-pub-import');
+					importPubKey('file',session.pubKey,$tempInput);
+				}
+				if(session.privKeyName != ''){
+					$tempInput.val(session.privKeyName).addClass('key-priv-import');
+					importPrivKey(session.privKey,$tempInput)
+				}
+			} else {
+				$sessionToggle.prop('checked',false).change();
+			}
+		}
+	}
 }
 
 //Input key filename when selected
@@ -720,21 +756,24 @@ const keyImportProcess = function($type,result){
 }
 
 //Input key filename when selected
-const writeKeyStatus = function(pasted) {
-	let filename;
-	let pubImport = $('.key-pub-import').val();
- 	const privImport = $('.key-priv-import').val();
+const writeKeyStatus = function($input,pasted) {
 	if(pasted){
-		pubImport = 'pasted key'
+		session.pubKeyName = 'pasted key';
+		$('.public-key-filename').text(' - pasted key');
 	}
-	if (pubImport != '') {
-		filename = getFilename(pubImport);
-		$('.public-key-filename').text(' - ' + filename);
+	if($input != undefined){
+			let inputVal = $input.val();
+			let filename = getFilename(inputVal);
+			if ($input.hasClass('key-pub-import') && inputVal != '') {
+				session.pubKeyName = inputVal;
+				$('.public-key-filename').text(' - ' + filename);
+			}
+			if ($input.hasClass('key-priv-import') && inputVal != '') {
+				session.privKeyName = inputVal;
+				$('.private-key-filename').text(' - ' + filename);
+			}
 	}
-	if (privImport != '') {
-		filename = getFilename($('.key-priv-import').val());
-		$('.private-key-filename').text(' - ' + filename);
-	}
+
 }
 
 //read key file when file is selected (pasted public key, selected public key, selected private key) steganography or plain text
@@ -769,6 +808,7 @@ const importPubkeyStr = function(){
 				throw errorFinder('pubkey');
 			}
 			session.pubKey = pubKeyPaste;
+			adjustSession();
 			return true
 		} catch {
 			lipAlert(e);
@@ -793,7 +833,8 @@ const importPrivKey = function(key,$input) {
 			$('.fingerprint-priv').addClass('active');
 			$('.fingerprint-priv-str').text(session.privKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
 			$('.key-priv-import-label').find('span').text('Reimport key');
-			writeKeyStatus();
+			writeKeyStatus($input,false);
+			adjustSession();
 		} catch(e) {
 			$input.val('');
 			lipAlert(e);
@@ -823,20 +864,16 @@ const importPubKey = function(type,key,$input) {
 			session.pubKeyFingerprint = buf2hex(buffer);
 			$('.fingerprint-pub').addClass('active');
 			$('.fingerprint-pub-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
-			if(type == 'paste'){
-				$pubkeyInputOpenText.text('Repaste key');
-				$keyPubImportLabel.text('Select key');
-			} else {
-				$pubkeyInputOpenText.text('Paste key');
-				$keyPubImportLabel.text('Reimport key');
-			}
+			$pubkeyInputOpenText.text('Paste key');
+			$keyPubImportLabel.text('Reimport key');
 			if($pubkeyInputWindow.hasClass('active')){
-				writeKeyStatus(true);
+				writeKeyStatus(undefined,true);
 				$('.popup-filter').removeClass('active');
 				$pubkeyInputWindow.removeClass('active');
 			} else {
-				writeKeyStatus(false);
+				writeKeyStatus($input,false);
 			}
+			adjustSession();
 	  } catch (e) {
 			if($input) $input.val('');
 	   	lipAlert(e);
@@ -1243,17 +1280,12 @@ const init = function() {
 	}
 	$('input').each(function(){
 		let $this = $(this);
-		if($this.attr('type') == 'radio'){
-			if($this.index() == 0){
-					$this.prop('checked',true);
-			} else {
-					$this.prop('checked',false);
-			}
-		} else {
-			$this.val('').prop('checked',false);
-		}
+		$this.val('').prop('checked',false);
+		$('.attachment-radio').eq(0).prop('checked',true).change();
 	})
 	$('textarea').val('');
+	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
+	recallSession();
 	keyUpChecker($('.pubkey-upload-input'),$('.upload-public-key-paste'));
 	keyUpChecker($('.searchbox-pubkey'),$('.search-pubkey'));
 	keyUpChecker($('.pubkey-input'),$('.import-pubkey-str'));
@@ -1261,7 +1293,6 @@ const init = function() {
 	writeFormCheck();
 	newKeyFormCheck();
 	attachmentFormcheck();
-	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	setTimeout(function () {
       resizeViewport();
   }, 300);
@@ -1669,6 +1700,18 @@ $('.read').keyup(function(e) {
 $('.lip-exit').bind('click', function() {
 	$('.lip').removeClass('active');
 })
+
+//Session toggler
+$('.session-toggle').change(function() {
+	let $this = $(this);
+  if(this.checked){
+    session.sessionStore = true;
+    adjustSession();
+  } else {
+    session.sessionStore = false;
+    eraseSession();
+  }
+});
 
 //Blob button fix for iOS
 $('.blob-download').bind('click',function(e){
