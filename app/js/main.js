@@ -23,11 +23,12 @@ let session = {
 	lastEncFilename:'',
 	keyToUploadFile:'',
 	searchedKey:'',
-	sessionStore:false
+	sessionStore:true
 }
 
 const adjustSession = function(){
 	if(session.sessionStore){
+		session.running = false;
 		window.localStorage.setItem('session',JSON.stringify(session));
 	}
 }
@@ -52,8 +53,6 @@ const recallSession = function(){
 					$tempInput.val(session.privKeyName).addClass('key-priv-import');
 					importPrivKey(session.privKey,$tempInput)
 				}
-			} else {
-				$sessionToggle.prop('checked',false).change();
 			}
 		}
 	}
@@ -1280,9 +1279,11 @@ const init = function() {
 	}
 	$('input').each(function(){
 		let $this = $(this);
-		$this.val('').prop('checked',false);
-		$('.attachment-radio').eq(0).prop('checked',true).change();
+		if($this.attr('type') != 'radio'){
+			$this.val('').prop('checked',false);
+		}
 	})
+	$('.attachment-radio').eq(0).prop('checked',true).change();
 	$('textarea').val('');
 	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	recallSession();

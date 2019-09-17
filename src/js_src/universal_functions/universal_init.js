@@ -9,9 +9,11 @@ const init = function() {
 	}
 	$('input').each(function(){
 		let $this = $(this);
-		$this.val('').prop('checked',false);
-		$('.attachment-radio').eq(0).prop('checked',true).change();
+		if($this.attr('type') != 'radio'){
+			$this.val('').prop('checked',false);
+		}
 	})
+	$('.attachment-radio').eq(0).prop('checked',true).change();
 	$('textarea').val('');
 	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
 	recallSession();
