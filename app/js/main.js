@@ -23,7 +23,7 @@ let session = {
 	lastEncFilename:'',
 	keyToUploadFile:'',
 	searchedKey:'',
-	sessionStore:true
+	sessionStore:false
 }
 
 const adjustSession = function(){
@@ -44,12 +44,13 @@ const recallSession = function(){
 			const $sessionToggle = $('.session-toggle');
 			if(session.sessionStore){
 				$sessionToggle.prop('checked',true).change();
-				let $tempInput = $('<input>');
 				if(session.pubKeyName != ''){
+					let $tempInput = $('<input>');
 					$tempInput.val(session.pubKeyName).addClass('key-pub-import');
 					importPubKey('file',session.pubKey,$tempInput);
 				}
 				if(session.privKeyName != ''){
+					let $tempInput = $('<input>');
 					$tempInput.val(session.privKeyName).addClass('key-priv-import');
 					importPrivKey(session.privKey,$tempInput)
 				}
