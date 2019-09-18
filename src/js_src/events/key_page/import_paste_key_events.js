@@ -12,6 +12,5 @@ $('.pubkey-input').keyup(function(){
 
 //opn pubkey paste
 $('.pubkey-input-open').bind('click',function(){
-	$('.popup-filter').addClass('active');
-	$('.pubkey-input-window').addClass('active');
+	openPopup('.pubkey-input-window');
 })

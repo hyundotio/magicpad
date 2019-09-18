@@ -72,7 +72,6 @@ $('.attachment-process').bind('click',function(){
 //open processed attachment popup
 $('.attachment-view').bind('click',function(){
   if(!$(this).is(':disabled')){
-    $('.popup-filter').addClass('active');
-    $('.attachment-window').addClass('active');
+    openPopup('.attachment-window');
   }
 })

@@ -1,7 +1,6 @@
 //opens new key generation popup
 $('.key-generate-start').bind('click', function(e) {
-	$('.create-key-window').addClass('active')
-	$('.popup-filter').addClass('active');
+	openPopup('.create-key-window');
 })
 
 //new key generation form input checks

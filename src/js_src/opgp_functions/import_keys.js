@@ -122,8 +122,7 @@ const importPubKey = function(type,key,$input) {
 			$keyPubImportLabel.text('Reimport key');
 			if($pubkeyInputWindow.hasClass('active')){
 				writeKeyStatus(undefined,true);
-				$('.popup-filter').removeClass('active');
-				$pubkeyInputWindow.removeClass('active');
+				popupExit();
 			} else {
 				writeKeyStatus($input,false);
 			}

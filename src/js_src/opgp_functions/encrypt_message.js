@@ -11,9 +11,9 @@ const viewEncMsg = function(steg) {
 	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
 	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc))).attr('download', 'encrypted_message.txt');
-	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
-	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
+	$processedOutputWindow.addClass('mono').find('.window-title').find('span').text('Encrypted message');
+	openPopup('.processed-output-window');
 }
 
 //write status to processed-output when key is processed

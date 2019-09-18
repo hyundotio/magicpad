@@ -23,9 +23,9 @@ const encryptAttachment = function(){
 				$('.attachment-download').attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
 				session.running = false;
 				$body.removeClass('loading');
-				$('.popup-filter').addClass('active');
-				$('.attachment-window').addClass('active').find('.window-title').find('span').text('Encrypted attachment');
+				$('.attachment-window').find('.window-title').find('span').text('Encrypted attachment');
 				$('.attachment-view').removeAttr('disabled');
+				openPopup('.attachment-window');
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
@@ -65,9 +65,9 @@ const decryptAttachment = function(){
 				$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
 				session.running = false;
 				$body.removeClass('loading');
-				$('.attachment-window').addClass('active').find('.window-title').find('span').text('Decrypted attachment');
-				$('.popup-filter').addClass('active');
+				$('.attachment-window').find('.window-title').find('span').text('Decrypted attachment');
 				$('.attachment-view').removeAttr('disabled');
+				openPopup('.attachment-window');
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');

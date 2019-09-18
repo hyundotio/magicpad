@@ -44,9 +44,9 @@ const viewDecMsg = function() {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
 	$processedAside.text(session.lastDecStatus);
-	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
 	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data))).attr('download', 'decrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
-	$processedOutputWindow.addClass('active').removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
+	$processedOutputWindow.removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
+	openPopup('.processed-output-window');
 }

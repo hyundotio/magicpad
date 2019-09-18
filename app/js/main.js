@@ -102,9 +102,9 @@ const encryptAttachment = function(){
 				$('.attachment-download').attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
 				session.running = false;
 				$body.removeClass('loading');
-				$('.popup-filter').addClass('active');
-				$('.attachment-window').addClass('active').find('.window-title').find('span').text('Encrypted attachment');
+				$('.attachment-window').find('.window-title').find('span').text('Encrypted attachment');
 				$('.attachment-view').removeAttr('disabled');
+				openPopup('.attachment-window');
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
@@ -144,9 +144,9 @@ const decryptAttachment = function(){
 				$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
 				session.running = false;
 				$body.removeClass('loading');
-				$('.attachment-window').addClass('active').find('.window-title').find('span').text('Decrypted attachment');
-				$('.popup-filter').addClass('active');
+				$('.attachment-window').find('.window-title').find('span').text('Decrypted attachment');
 				$('.attachment-view').removeAttr('disabled');
+				openPopup('.attachment-window');
 			} catch(e) {
 				session.running = false;
 				$body.removeClass('loading');
@@ -542,11 +542,11 @@ const viewDecMsg = function() {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
 	$processedAside.text(session.lastDecStatus);
-	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
 	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data))).attr('download', 'decrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
-	$processedOutputWindow.addClass('active').removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
+	$processedOutputWindow.removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
+	openPopup('.processed-output-window');
 }
 
 //View Encrypted Message
@@ -562,9 +562,9 @@ const viewEncMsg = function(steg) {
 	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
 	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc))).attr('download', 'encrypted_message.txt');
-	$('.popup-filter').addClass('active');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
-	$processedOutputWindow.addClass('active mono').find('.window-title').find('span').text('Encrypted message');
+	$processedOutputWindow.addClass('mono').find('.window-title').find('span').text('Encrypted message');
+	openPopup('.processed-output-window');
 }
 
 //write status to processed-output when key is processed
@@ -868,8 +868,7 @@ const importPubKey = function(type,key,$input) {
 			$keyPubImportLabel.text('Reimport key');
 			if($pubkeyInputWindow.hasClass('active')){
 				writeKeyStatus(undefined,true);
-				$('.popup-filter').removeClass('active');
-				$pubkeyInputWindow.removeClass('active');
+				popupExit();
 			} else {
 				writeKeyStatus($input,false);
 			}
@@ -1320,12 +1319,20 @@ window.addEventListener('offline', function() {
 
 //Exits popup
 const popupExit = function(){
-	if(!$('body').hasClass('popup-uninterrupt')){
+	let $body = $('body');
+	if(!$body.hasClass('popup-uninterrupt')){
+		$body.removeClass('popup-active');
 		$('.popup').removeClass('active');
 		$('.main-nav').removeClass('mobile-active');
 		$('.mobile-menu').removeClass('active');
 		$('.popup-filter').removeClass('active');
 	}
+}
+
+const openPopup = function(className){
+	$('body').addClass('popup-active');
+	$('.popup-filter').addClass('active');
+	$(className).addClass('active');
 }
 
 //Activate Copied alert when user clicks on Copy to clipboard button
@@ -1490,8 +1497,7 @@ $('.attachment-process').bind('click',function(){
 //open processed attachment popup
 $('.attachment-view').bind('click',function(){
   if(!$(this).is(':disabled')){
-    $('.popup-filter').addClass('active');
-    $('.attachment-window').addClass('active');
+    openPopup('.attachment-window');
   }
 })
 
@@ -1531,14 +1537,12 @@ $('.pubkey-input').keyup(function(){
 
 //opn pubkey paste
 $('.pubkey-input-open').bind('click',function(){
-	$('.popup-filter').addClass('active');
-	$('.pubkey-input-window').addClass('active');
+	openPopup('.pubkey-input-window');
 })
 
 //Open steganography key converter popup
 $('.open-keyconverter').bind('click',function(){
-	$('.steg-key-converter-window').addClass('active');
-	$('.popup-filter').addClass('active');
+	openPopup('.steg-key-converter-window');
 });
 
 //Detect steganography imported file
@@ -1554,8 +1558,7 @@ $('.copy-converted').bind('click',function(){
 
 //opens new key generation popup
 $('.key-generate-start').bind('click', function(e) {
-	$('.create-key-window').addClass('active')
-	$('.popup-filter').addClass('active');
+	openPopup('.create-key-window');
 })
 
 //new key generation form input checks
@@ -1596,7 +1599,6 @@ $('.copy-generated-public-key').bind('click',function(e){
 
 //open key servers popup
 $('.open-keybrowser').bind('click',function(){
-	$('.popup-filter').addClass('active');
 	let $keyServerBrowserWindow = $('.key-server-browser-window');
 	let $popupTabContent = $keyServerBrowserWindow.find('.popup-tab-content');
 	let $popupTab = $keyServerBrowserWindow.find('.popup-tabs');
@@ -1605,7 +1607,7 @@ $('.open-keybrowser').bind('click',function(){
 	let tabOpen = $popupTab.find('.active').attr('data-tab');
 	$popupTabContent.find('.popup-tab-page.active').removeClass('active');
 	$popupTabContent.find('.'+tabOpen).addClass('active');
-	$keyServerBrowserWindow.addClass('active');
+	openPopup('.key-server-browser-window');
 })
 
 //Binding for search-box to enable search button

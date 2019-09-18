@@ -1,6 +1,5 @@
 //open key servers popup
 $('.open-keybrowser').bind('click',function(){
-	$('.popup-filter').addClass('active');
 	let $keyServerBrowserWindow = $('.key-server-browser-window');
 	let $popupTabContent = $keyServerBrowserWindow.find('.popup-tab-content');
 	let $popupTab = $keyServerBrowserWindow.find('.popup-tabs');
@@ -9,5 +8,5 @@ $('.open-keybrowser').bind('click',function(){
 	let tabOpen = $popupTab.find('.active').attr('data-tab');
 	$popupTabContent.find('.popup-tab-page.active').removeClass('active');
 	$popupTabContent.find('.'+tabOpen).addClass('active');
-	$keyServerBrowserWindow.addClass('active');
+	openPopup('.key-server-browser-window');
 })

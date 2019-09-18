@@ -1,7 +1,6 @@
 //Open steganography key converter popup
 $('.open-keyconverter').bind('click',function(){
-	$('.steg-key-converter-window').addClass('active');
-	$('.popup-filter').addClass('active');
+	openPopup('.steg-key-converter-window');
 });
 
 //Detect steganography imported file
