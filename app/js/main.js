@@ -1767,12 +1767,13 @@ $('.mobile-menu').bind('click',function(){
 	let $mainNav = $('.main-nav');
 	let $popupFilter = $('.popup-filter');
 	let $this = $(this);
-	popupExit();
 	if($mainNav.hasClass('mobile-active')){
+    popupExit();
 		$this.removeClass('active');
 		$mainNav.removeClass('mobile-active');
 		$popupFilter.removeClass('active');
 	} else {
+    popupExit();
 		$this.addClass('active');
 		$mainNav.addClass('mobile-active');
 		$popupFilter.addClass('active');

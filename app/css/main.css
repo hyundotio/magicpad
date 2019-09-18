@@ -1123,9 +1123,14 @@ html, body {
     }
 }
  @media only screen and (max-width: 512px) {
-     .mobile-menu {
-         display:inline-block;
-    }
+       .mobile-menu {
+            display:inline-block;
+           transition:0.1s opacity ease-out, 0.1s visibility ease-out;
+           padding:0.33em 0.33em 0.33em 0.75em;
+      }
+       .mobile-menu.active {
+           opacity:0.6;
+      }
      .main-nav ul {
          position: fixed;
          top: 3em;
@@ -1149,76 +1154,67 @@ html, body {
          right:initial;
          text-align: inherit;
     }
-}
- @media only screen and (max-width: 420px) {
-     .popup {
-         position:absolute;
-         width:100%;
-         right:0;
-    }
-     .popup.expanded.active {
-         bottom:0;
-    }
-     .popup.expanded {
-         bottom:-38em;
-         right:0;
-         height: 36em;
-         width: 100%;
-         opacity:1;
-    }
-     .popup-expand {
-         display:none;
-    }
-     .public-key-upload-filename, .key-status {
-    }
-     .lip-exit {
-         top:0.5em;
-    }
-     .cursor-loading .mobile-menu, .cursor-loading .mobile-menu.active{
-         visibility: hidden;
-         opacity:0;
-    }
-     .lip {
-         bottom:-5em;
-         height:4.5em;
-         line-height:1.33em;
-    }
-     .button-1, .button-2, .button-9 {
-         min-width:8.5em;
-    }
-     .button-icon-img,.label-icon-button,.select-icon {
-         display:none;
-    }
-     .big-button-third span, .big-button-third-half span {
-         font-size: 1.125em;
-         line-height: 1.3em;
-    }
-     .big-button-third span {
-         margin: -0.2em 0 3.625em 0;
-    }
-     .big-button-third-half span {
-         margin: -0.2em 0 3.625em 0;
-    }
-     .tab.active {
-         font-weight:600;
-    }
-     .tab.active::after {
-         background-color:transparent;
-    }
-     .mobile-menu {
-         transition:0.1s opacity ease-out, 0.1s visibility ease-out;
-         padding:0.33em 0.33em 0.33em 0.75em;
-    }
-     .mobile-menu.active {
-         opacity:0.6;
-    }
-     .tutorial-pages {
-         width:100%;
-    }
-     .fingerprint-str {
-         display:inline-block;
-         max-width:16em;
-    }
+    .popup {
+        position:absolute;
+        width:100%;
+        right:0;
+   }
+    .popup.expanded.active {
+        bottom:0;
+   }
+    .popup.expanded {
+        bottom:-38em;
+        right:0;
+        height: 36em;
+        width: 100%;
+        opacity:1;
+   }
+    .popup-expand {
+        display:none;
+   }
+    .public-key-upload-filename, .key-status {
+   }
+    .lip-exit {
+        top:0.5em;
+   }
+    .cursor-loading .mobile-menu, .cursor-loading .mobile-menu.active{
+        visibility: hidden;
+        opacity:0;
+   }
+    .lip {
+        bottom:-5em;
+        height:4.5em;
+        line-height:1.33em;
+   }
+    .button-1, .button-2, .button-9 {
+        min-width:8.5em;
+   }
+    .button-icon-img,.label-icon-button,.select-icon {
+        display:none;
+   }
+    .big-button-third span, .big-button-third-half span {
+        font-size: 1.125em;
+        line-height: 1.3em;
+   }
+    .big-button-third span {
+        margin: -0.2em 0 3.625em 0;
+   }
+    .big-button-third-half span {
+        margin: -0.2em 0 3.625em 0;
+   }
+    .tab.active {
+        font-weight:600;
+   }
+    .tab.active::after {
+        background-color:transparent;
+   }
+    .tutorial-pages {
+        width:100%;
+   }
+    .fingerprint-str {
+        display:inline-block;
+        max-width:16em;
+   }
 }
  @media only screen and (max-width: 640px) {
      .tutorial-selectors {
