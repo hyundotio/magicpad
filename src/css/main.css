@@ -765,9 +765,6 @@ main {
      float: right;
      transition: 0.5s opacity ease-out;
 }
- .search-results {
-     margin-top:0.75em;
-}
  .search-status {
      color: #8C8C8C;
 }
