@@ -25,9 +25,9 @@ $('.popup-tabs').find('.popup-tab').each(function(){
 		let $this = $(this);
 		let $thisParPar = $this.parent().parent();
 		let $popupTabContent = $thisParPar.parent().find('.popup-tab-content');
-		$thisParPar.find('.active').removeClass('active');
+		$thisParPar.find('.popup-tab').removeClass('active');
 		$this.addClass('active');
-		$popupTabContent.find('.active').removeClass('active');
+		$popupTabContent.find('.popup-tab-page').removeClass('active');
 		$popupTabContent.find('.'+$this.attr('data-tab')).addClass('active');
 	})
 })

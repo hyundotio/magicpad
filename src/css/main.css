@@ -12,6 +12,9 @@ main {
   position: relative;
   min-height: 100%;
 }
+.hidden {
+  display:none;
+}
 .hidden-label {
   position:absolute;
   opacity:0.01;
@@ -856,14 +859,14 @@ main {
      display: table;
      clear: both;
 }
- .downloaded-fingerprint-container a.searched-key-download, .downloaded-fingerprint-container button.searched-key-copy {
+ .downloaded-key-container a.searched-key-download, .downloaded-key-container button.searched-key-copy {
      width:50%;
 }
- .downloaded-fingerprint-container a.searched-key-download-steg {
+ .downloaded-key-container a.searched-key-download-steg {
      width:100%;
      margin-top:1px;
 }
- .downloaded-fingerprint-container {
+ .downloaded-key-container {
      width:100%;
      margin-bottom:0.5em;
 }
@@ -917,7 +920,9 @@ main {
  button:disabled img, button[disabled], .button-2.disabled img, .button-2.disabled {
      opacity: 0.3;
 }
- .button-2.disabled, .button-2.disabled:hover, .button-2.disabled:focus, .button-2.disabled:active, button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover, button:disabled:active, button[disabled]:active, button:disabled:focus, button[disabled]:focus {
+ .button-1.disabled, .button-1.disabled:hover, .button-1.disabled:focus, .button-1.disabled:active,
+ .button-2.disabled, .button-2.disabled:hover, .button-2.disabled:focus, .button-2.disabled:active,
+ button:disabled, button[disabled], button:disabled:hover, button[disabled]:hover, button:disabled:active, button[disabled]:active, button:disabled:focus, button[disabled]:focus {
      cursor: not-allowed;
      background-color: #BEBEBE;
      color: #8C8C8C;
