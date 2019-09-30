@@ -770,7 +770,6 @@ main {
 }
  .search-result{
      transition:0.2s visibility ease-out, 0.2s opacity ease-out;
-     margin-top: 0.5em;
      visibility: hidden;
      opacity:0;
 }
