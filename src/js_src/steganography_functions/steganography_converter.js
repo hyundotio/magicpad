@@ -49,12 +49,22 @@ const convertStegKeyReverse = function($type){
 				if(keyInput.err != undefined || (!testPubKey(retrievedKey) && !testPrivKey(retrievedKey))){
 					throw errorFinder('pubkey');
 				}
+				let keyType = 'public';
+				if(keyInput.keys[0].isPrivate()){
+					keyType = 'private';
+				}
 				createStegKey(pubDataUri,'convert',retrievedKey);
 				$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
 				$('.key-convert-label').find('span').text('Reimport key');
 				const outputStr = "Please download the .png image key below.\n\nKey contents:\n"+retrievedKey;
 				$('.converted-key-output').text(outputStr).val(outputStr).scrollTop(0,0);
-				$('.save-converted').removeClass('disabled').attr('download','convertedKey.png');
+				let fileName;
+				if(keyInput.keys[0].users[0].userId.name){
+					fileName = (keyInput.keys[0].users[0].userId.name).split(' ')[0].toLowerCase().replace(/\s/g, '') + '_' + keyType + '_steg.png';
+				} else {
+					fileName = 'converted_'+keyType+'_steg.png';
+				}
+				$('.save-converted').removeClass('disabled').attr('download',fileName);
 				$('.copy-converted').attr('disabled', 'disabled');
 				$('.converted-aside').text('Key converted.');
 		} catch(e) {
@@ -71,15 +81,28 @@ const convertStegKey = function($type){
 			const imgSrc = await resolveLoadFileURL($type);
 			const img = await resolveImg(imgSrc.result);
 			const retrievedKey = readSteg(img);
+
 			$(img).remove();
 			const keyOutput = await openpgp.key.readArmored(retrievedKey);
 			if(keyOutput.err != undefined || (!testPubKey(retrievedKey) && !testPrivKey(retrievedKey))){
 				throw errorFinder('stegkeyread');
 			}
+			let keyType = 'public';
+			if(keyOutput.keys[0].isPrivate()){
+				keyType = 'private';
+			}
 			$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
 			$('.key-convert-label').find('span').text('Reimport key');
 			$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
-			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey))).attr('download', 'convertedKey.asc');
+			if(keyOutput.keys[0].users[0].userId.name){
+			}
+			let fileName;
+			if(keyOutput.keys[0].users[0].userId.name){
+				fileName = (keyOutput.keys[0].users[0].userId.name).split(' ')[0].toLowerCase().replace(/\s/g, '') + '_' + keyType + '.asc';
+			} else {
+				fileName = 'converted_'+keyType+'.asc';
+			}
+			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename='+fileName+',' + btoa(retrievedKey))).attr('download', fileName);
 			$('.copy-converted').removeAttr('disabled');
 			$('.converted-aside').text('Key converted.');
 		} catch(e) {

@@ -89,7 +89,8 @@ const updateKeyLinks = function(){
 			$('.searched-key-download').attr('href', downloadLink).attr('target','_blank');
 			$('.downloaded-fingerprint').text(fingerprintHex.match(/.{1,4}/g).join(' ').toUpperCase());
 			createStegKey(pubDataUri,'search',session.searchedKey);
-			$('.searched-key-download-steg').attr('download', 'searchedKey_public_steg.png');
+			const fileName = $('.search-result-list').val().toLowerCase().replace(/\s/g, '') + '.png';
+			$('.searched-key-download-steg').attr('download', fileName);
 			$searchedKeyCopy.removeClass('disabled');
 			$searchedKeyDownload.removeClass('disabled');
 			$searchedKeyDownloadSteg.removeClass('disabled');
