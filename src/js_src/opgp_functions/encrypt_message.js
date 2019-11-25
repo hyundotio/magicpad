@@ -43,8 +43,10 @@ const encryptMessage = function(msg, signedToggle) {
 					publicKeys: pbKeyObj
 				}
 				const ciphertext = await openpgp.encrypt(options);
-				encrypted = ciphertext.data.trim();
+				const encrypted = ciphertext.data.trim();
 				session.lastEnc = encrypted;
+				const mpUrl = 'https://www.magicpost.io/post.php?'+'to='+encodeURI(session.pubKeyFingerprint)+'&from='+encodeURI(session.privKeyFingerprint)+'&msg='+encodeURI(session.lastEnc);
+				$('.mp-link').attr('href',mpUrl);
 				if ($stgHost.val().length > 0){
 					const stegSrc = await resolveLoadFileURL($stgHost);
 					const newImg = await resolveImg(stegSrc.result);
