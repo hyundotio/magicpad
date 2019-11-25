@@ -62,6 +62,16 @@ const lookupKey = function(query,server) {
 	main();
 }
 
+const returnServer = function(){
+	let server = $('.search-key-server-list').val();
+	if (location.protocol == "https:") {
+		server = location.protocol + server
+	} else {
+		server = 'http:'+server
+	}
+	return server
+}
+
 const updateKeyLinks = function(){
 	const $searchedKeyDownload = $('.searched-key-download');
 	const $searchedKeyCopy = $('.searched-key-copy');
@@ -69,12 +79,7 @@ const updateKeyLinks = function(){
 	$searchedKeyCopy.addClass('disabled');
 	$searchedKeyDownload.addClass('disabled');
 	$searchedKeyDownloadSteg.addClass('disabled');
-	let server = $('.search-key-server-list').val();
-	if (location.protocol == "https:") {
-		server = location.protocol + server
-	} else {
-		server = 'http:'+server
-	}
+	const server = returnServer();
 	const downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + $('.search-result-list').val();
 	$.ajax({
     url:downloadLink,
@@ -90,5 +95,18 @@ const updateKeyLinks = function(){
 			$searchedKeyDownloadSteg.removeClass('disabled');
     }
   });
+}
 
+const importSearchedKey = function(){
+	const server = returnServer();
+	const keyId = $(".search-result-list option:selected").val();
+	const downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + $('.search-result-list').val();
+	$.ajax({
+    url:downloadLink,
+    success: function (data){
+		 	const $tempInput = $('<input>');
+			$tempInput.val(keyId).addClass('key-pub-import');
+			importPubKey('search',data,$tempInput);
+    }
+  });
 }

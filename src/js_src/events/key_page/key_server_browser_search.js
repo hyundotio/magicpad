@@ -11,6 +11,11 @@ $('.searched-key-copy').bind('click',function(){
 	showCopied($('.pubkeyserver-search').find('.copied'));
 })
 
+//Binding for importing searched key
+$('.searched-key-import').bind('click',function(){
+	importSearchedKey();
+})
+
 //Search for key button
 $('.search-pubkey').bind('click',function(){
 	let $this = $(this);

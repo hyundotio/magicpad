@@ -780,9 +780,7 @@ main {
  .search-result .button-1, .search-result .button-2 {
      margin:0;
 }
- .search-result .button-1:first-of-type {
-     border-right:1px solid #FFF;
-}
+
  .b-link.key-link {
      float: right;
      visibility: hidden;
@@ -855,15 +853,18 @@ main {
      display: table;
      clear: both;
 }
- .downloaded-key-container a.searched-key-download, .downloaded-key-container button.searched-key-copy {
+ .downloaded-key-container a, .downloaded-key-container button{
      width:50%;
 }
- .downloaded-key-container a.searched-key-download-steg {
-     width:100%;
-     margin-top:1px;
+.searched-key-download, .searched-key-import {
+     border-right:1px solid #FFF;
+}
+.searched-key-import, .searched-key-copy {
+      border-top: 1px solid #FFF;
 }
  .downloaded-key-container {
      width:100%;
+     margin-top:1px;
      margin-bottom:0.5em;
 }
  .downloaded-fingerprint {
