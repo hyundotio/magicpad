@@ -5,7 +5,7 @@ $('.open-keyconverter').bind('click',function(){
 
 //Detect steganography imported file
 $('.key-convert').change(function(){
-	convertStegKey($(this));
+	convertKey($(this));
 });
 
 //copy to clipboard - converted

@@ -199,6 +199,10 @@ const errorDict = [
     output: 'The imported file is not a valid image key.'
   },
   {
+    input: 'importExt',
+    output: 'The selected file is not a .png or .asc file.'
+  },
+  {
     input: 'stegkeygen',
     output: 'Failed to create image keys.'
   },
@@ -1211,54 +1215,6 @@ if ("serviceWorker" in navigator && location.protocol == 'https:') {
   }
 }
 
-//convert steganograph to text
-const readSteg = function(img){
-	return steg.decode(img);
-}
-
-//create  steganograph key
-const createStegKey = function(input,type,str){
-	async function main() {
-		try {
-			const loadedImg = await resolveImgCORS(input);
-			const imgCanvas = document.createElement("canvas");
-			let imgContext = imgCanvas.getContext("2d");
-			imgContext.canvas.width = loadedImg.width;
-			imgContext.canvas.height = loadedImg.height;
-			imgContext.drawImage(loadedImg, 0, 0, loadedImg.width, loadedImg.height);
-			imgContext.font = '11px IBM Plex Mono';
-			imgContext.fillStyle = '#0062ff';
-			let imgStr = $('.form-email').val().trunc(35);
-			if(type == 'search'){
-				imgStr = $('.searchbox-pubkey').val().trunc(35);
-			}
-			imgContext.fillText(imgStr, 14, 55);
-			let newImg = await resolveImg(imgCanvas.toDataURL("image/png"));
-			$('body').append($(newImg));
-			if(type == 'public'){
-				createSteg(newImg,$('.key-public-img-download'),str);
-			} else if (type == 'private'){
-				createSteg(newImg,$('.key-private-img-download'),str);
-			} else if (type =='search'){
-				createSteg(newImg,$('.searched-key-download-steg'),str);
-			} else {
-				//createSteg(newImg,$('.key-revoke-steg-download-link'),str);
-			}
-			$(imgCanvas).remove();
-			$(loadedImg).remove();
-			$(newImg).remove();
-		} catch(e) {
-			lipAlert(e);
-		}
-	}
-	main();
-}
-
-//createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
-const createSteg = function(img,$dest,str){
-	$dest.attr('href',dataURItoBlobURL(steg.encode(str, img)));
-}
-
 //Convert steganograph to message
 const convertStegMsg = function($type){
 	async function main() {
@@ -1285,6 +1241,46 @@ const convertStegMsg = function($type){
 	main();
 }
 
+const convertKey = function($el){
+	async function main() {
+		try {
+			const selectedFile = await resolveLoadFileURL($el); //reuse function to get url
+			if($.inArray(selectedFile.file['type'], ['image/png']) > -1){
+				convertStegKey($el);
+			} else {
+				convertStegKeyReverse($el);
+			}
+		} catch(e) {
+			lipAlert(errorFinder('keyimportfail'));
+		}
+	}
+	main();
+}
+
+//convert key string to steg
+const convertStegKeyReverse = function($type){
+	async function main() {
+		try {
+				const retrievedKey = await resolveLoadFileText($type);
+				const keyInput = await openpgp.key.readArmored(retrievedKey);
+				if(keyInput.err != undefined || (!testPubKey(retrievedKey) && !testPrivKey(retrievedKey))){
+					throw errorFinder('pubkey');
+				}
+				createStegKey(pubDataUri,'convert',retrievedKey);
+				$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
+				$('.key-convert-label').find('span').text('Reimport key');
+				const outputStr = "Please download the .png image key below.\n\nKey contents:\n"+retrievedKey;
+				$('.converted-key-output').text(outputStr).val(outputStr).scrollTop(0,0);
+				$('.save-converted').removeClass('disabled').attr('download','convertedKey.png');
+				$('.copy-converted').attr('disabled', 'disabled');
+				$('.converted-aside').text('Key converted.');
+		} catch(e) {
+			lipAlert(errorFinder('pubkey'));
+		}
+	}
+	main();
+}
+
 //covnert steganograph key to string
 const convertStegKey = function($type){
 	async function main() {
@@ -1298,7 +1294,7 @@ const convertStegKey = function($type){
 				throw errorFinder('stegkeyread');
 			}
 			$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
-			$('.key-convert-label').find('span').text('Reimport image');
+			$('.key-convert-label').find('span').text('Reimport key');
 			$('.converted-key-output').text(retrievedKey).val(retrievedKey).scrollTop(0,0);
 			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(retrievedKey))).attr('download', 'convertedKey.asc');
 			$('.copy-converted').removeAttr('disabled');
@@ -1309,6 +1305,59 @@ const convertStegKey = function($type){
 		}
 	}
 	main();
+}
+
+//convert steganograph to text
+const readSteg = function(img){
+	return steg.decode(img);
+}
+
+//create  steganograph key
+const createStegKey = function(input,type,str){
+	async function main() {
+		try {
+			const keyInit = await openpgp.key.readArmored(str);
+			const loadedImg = await resolveImgCORS(input);
+			const imgCanvas = document.createElement("canvas");
+			let imgContext = imgCanvas.getContext("2d");
+			imgContext.canvas.width = loadedImg.width;
+			imgContext.canvas.height = loadedImg.height;
+			imgContext.drawImage(loadedImg, 0, 0, loadedImg.width, loadedImg.height);
+			imgContext.font = '11px IBM Plex Mono';
+			imgContext.fillStyle = '#0062ff';
+			let imgStr;
+			if(keyInit.keys[0].users[0].userId.email){
+				imgStr = (keyInit.keys[0].users[0].userId.email).trunc(35);
+			} else {
+				imgStr = 'Converted key'
+			}
+			imgContext.fillText(imgStr, 14, 55);
+			let newImg = await resolveImg(imgCanvas.toDataURL("image/png"));
+			$('body').append($(newImg));
+			if(type == 'public'){
+				createSteg(newImg,$('.key-public-img-download'),str);
+			} else if (type == 'private'){
+				createSteg(newImg,$('.key-private-img-download'),str);
+			} else if (type =='search'){
+				createSteg(newImg,$('.searched-key-download-steg'),str);
+			} else if (type =='convert'){
+				createSteg(newImg,$('.save-converted'),str);
+			}else {
+				//createSteg(newImg,$('.key-revoke-steg-download-link'),str);
+			}
+			$(imgCanvas).remove();
+			$(loadedImg).remove();
+			$(newImg).remove();
+		} catch(e) {
+			lipAlert(e);
+		}
+	}
+	main();
+}
+
+//createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
+const createSteg = function(img,$dest,str){
+	$dest.attr('href',dataURItoBlobURL(steg.encode(str, img)));
 }
 
 //Alert notification
@@ -1615,7 +1664,7 @@ $('.open-keyconverter').bind('click',function(){
 
 //Detect steganography imported file
 $('.key-convert').change(function(){
-	convertStegKey($(this));
+	convertKey($(this));
 });
 
 //copy to clipboard - converted

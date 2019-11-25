@@ -1,29 +1,29 @@
 
 <div class="steg-key-converter-window popup">
   <div class="window-title">
-    <span>Convert image key</span>
+    <span>Convert key</span>
     <button class="icon-button popup-exit">
       <img src="./ui/exit.svg" alt="Exit image key conversion window">
     </button>
   </div>
   <div class="popup-contents">
     <section class="no-margin-section cf">
-      <h3>Image key for conversion<span class="convert-filename"></span></h3>
+      <h3>Key for conversion<span class="convert-filename"></span></h3>
       <label for="key-convert" class="label-container cf">
         <a class="button-1 key-convert-label no-link" href="#">
-          <span>Import image</span>
+          <span>Import key</span>
           <img class="label-icon-button" src="./ui/selectfile.svg" alt="Select public key image file for import">
         </a>
       </label>
-      <input accept=".png" class="key-convert" id="key-convert" type="file">
+      <input accept=".asc,.png" class="key-convert" id="key-convert" type="file">
     </section>
     <section class="cf">
       <h3>Converted key output</h3>
       <label for="converted-key-output" class="hidden-label">Converted key output</label>
-      <textarea id="converted-key-output" class="converted-key-output" readonly="readonly" placeholder="No steganograph imported"></textarea>
+      <textarea id="converted-key-output" class="converted-key-output" readonly="readonly" placeholder="No .asc or .png key imported"></textarea>
       <div>
         <span class="copied">Copied</span>
-        <div class="converted-aside">No image imported.</div>
+        <div class="converted-aside">No key imported.</div>
       </div>
     </section>
     <div class="top-margin-div cf">
@@ -33,7 +33,7 @@
       </button>
       <a class="button-2 save-converted disabled blob-download" href="#" target="_blank">
         <span>Download</span>
-        <img class="button-icon-img" src="./ui/download.svg" alt="Download converted key output as .asc file">
+        <img class="button-icon-img" src="./ui/download.svg" alt="Download converted key file">
       </a>
     </div>
   </div>

@@ -40,6 +40,10 @@ const errorDict = [
     output: 'The imported file is not a valid image key.'
   },
   {
+    input: 'importExt',
+    output: 'The selected file is not a .png or .asc file.'
+  },
+  {
     input: 'stegkeygen',
     output: 'Failed to create image keys.'
   },
