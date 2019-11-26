@@ -13,6 +13,9 @@ Using PGP as the main encryption engine, the encryption key generated in MagicPa
 4. Mobile friendly (Progressive web app). Can be saved to home screen. Tested on Android and iOS.
 5. Store keys as images as well as hide and reveal encrypted messages in images.
 
+## Changelog
+[Changelog link](https://github.com/hyundotio/magicpad/blob/master/changelog.md)
+
 ## Installation
 
 You can run MagicPad four ways:
