@@ -73,12 +73,8 @@ const returnServer = function(){
 }
 
 const updateKeyLinks = function(){
-	const $searchedKeyDownload = $('.searched-key-download');
-	const $searchedKeyCopy = $('.searched-key-copy');
-	const $searchedKeyDownloadSteg = $('.searched-key-download-steg');
-	$searchedKeyCopy.addClass('disabled');
-	$searchedKeyDownload.addClass('disabled');
-	$searchedKeyDownloadSteg.addClass('disabled');
+	const $searchedKeyActions = $('.searched-key-action');
+	$searchedKeyActions.addClass('disabled');
 	const server = returnServer();
 	const downloadLink = server + '/pks/lookup?op=get&options=mr&search=0x' + $('.search-result-list').val();
 	$.ajax({
@@ -86,14 +82,12 @@ const updateKeyLinks = function(){
     success: function (data){
 			session.searchedKey = data;
 			const fingerprintHex = $(".search-result-list option:selected").attr('data-fingerprint');
+			const fileName = $('.search-result-list').val().toLowerCase().replace(/\s/g, '') + '.png';
+			createStegKey(pubDataUri,'search',session.searchedKey);
 			$('.searched-key-download').attr('href', downloadLink).attr('target','_blank');
 			$('.downloaded-fingerprint').text(fingerprintHex.match(/.{1,4}/g).join(' ').toUpperCase());
-			createStegKey(pubDataUri,'search',session.searchedKey);
-			const fileName = $('.search-result-list').val().toLowerCase().replace(/\s/g, '') + '.png';
 			$('.searched-key-download-steg').attr('download', fileName);
-			$searchedKeyCopy.removeClass('disabled');
-			$searchedKeyDownload.removeClass('disabled');
-			$searchedKeyDownloadSteg.removeClass('disabled');
+			$searchedKeyActions.removeClass('disabled');
     }
   });
 }
@@ -106,8 +100,8 @@ const importSearchedKey = function(){
     url:downloadLink,
     success: function (data){
 		 	const $tempInput = $('<input>');
-			$tempInput.val(keyId).addClass('key-pub-import');
 			importPubKey('search',data,$tempInput);
+			$tempInput.val(keyId).addClass('key-pub-import');
     }
   });
 }
