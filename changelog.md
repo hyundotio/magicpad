@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.2 Hotfix 5] - 2019-11-26
+## [1.0.2 Hotfix 5-6] - 2019-11-26
 
 ### Changed
 - Added Hotfix version on About page.
