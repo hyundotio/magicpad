@@ -39,11 +39,15 @@ const generateKeys = function() {
 //output key status + download links when keys are generated
 const keyReady = function() {
 	let formName = $('.form-name').val().split(' ')[0].toLowerCase().replace(/\s/g, '');
+	let $keyPublicDownload = $('.key-public-download');
+	let $keyPrivateDownload = $('.key-private-download');
+	revokeBlob($keyPrivateDownload.attr('href'));
+	revokeBlob($keyPublicDownload.attr('href'));
 	$('.key-public-img-download').attr('download',formName+'_pub_steg.png');
 	$('.key-private-img-download').attr('download',formName+'_priv_steg.png');
-	$('.key-public-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey))).attr('download', formName+'_public.asc');
-	$('.key-private-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey))).attr('download', formName+'_private.asc');
-	$('.key-rev-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey))).attr('download', formName+'_revoke.asc');
+	$keyPublicDownload.attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey))).attr('download', formName+'_public.asc');
+	$keyPrivateDownload.attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey))).attr('download', formName+'_private.asc');
+	//$('.key-rev-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey))).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
@@ -53,10 +57,22 @@ const keyReady = function() {
 	session.running = false;
 }
 
+//import generated privKey
+const importGeneratedPrivKey = function(filename){
+	let $tempInput = $('<input>');
+	$tempInput.val(filename).addClass('key-priv-import');
+	importPrivKey(session.generatedPrivKey,$tempInput);
+	$tempInput.remove();
+}
+
 //Reset key generation form
 const newKeyReset = function() {
 	let $createKeyWindow = $('.create-key-window');
 	let $keyNewForm = $('.key-new-form');
+	let $keyNewDone = $('.key-new-done');
+	$keyNewDone.find('.blob-download').each(function(){
+		revokeBlob($(this).attr('href'));
+	})
 	$('.key-generate-start').text('Create new private and public key set +');
 	$createKeyWindow.find('.window-title').find('span').text('New key set');
 	$createKeyWindow.find('a').each(function() {
@@ -65,6 +81,6 @@ const newKeyReset = function() {
 	$('.create-key-progress').removeClass('active');
 	$keyNewForm.removeClass('next-page').find('input').val('');
 	$keyNewForm.find('.pw-toggle').prop('checked',false).change();
-	$('.key-new-done').removeClass('active');
+	$keyNewDone.removeClass('active');
 	$('.key-generate').attr('disabled', 'disabled');
 }

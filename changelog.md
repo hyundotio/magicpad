@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2 Hotfix 7] - 2019-12-11
+
+### Changed
+- Every file (such as keys, messages, attachments) are deleted when new versions are generated. (Ex: Generate key, reset form <- Original key is removed not just from session but from memory).
+- iOS fix for downloading steg key from server browser.
+- Ability to import private key from key generator popup at the same time when downloading.
+
 ## [1.0.2 Hotfix 5-6] - 2019-11-26
 
 ### Changed

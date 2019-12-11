@@ -13,6 +13,8 @@ let session = {
 	running: false,
 	lastDec: '',
 	lastEnc: '',
+	lastDecSave: '',
+	lastEncSave: '',
 	lastDecStatus: '',
 	lastEncStatus: '',
 	lastEncPaste: '',
@@ -21,6 +23,7 @@ let session = {
 	lastDecFilename:'',
 	lastEncFileType:'',
 	lastEncFilename:'',
+	lastConverted:'',
 	keyToUploadFile:'',
 	searchedKey:'',
 	sessionStore:false
@@ -48,11 +51,13 @@ const recallSession = function(){
 					let $tempInput = $('<input>');
 					$tempInput.val(session.pubKeyName).addClass('key-pub-import');
 					importPubKey('file',session.pubKey,$tempInput);
+					$tempInput.remove();
 				}
 				if(session.privKeyName != ''){
 					let $tempInput = $('<input>');
 					$tempInput.val(session.privKeyName).addClass('key-priv-import');
-					importPrivKey(session.privKey,$tempInput)
+					importPrivKey(session.privKey,$tempInput);
+					$tempInput.remove();
 				}
 			}
 		}
@@ -91,15 +96,18 @@ const encryptAttachment = function(){
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader)),
 						publicKeys: pbKeyObj
 				};
+				const $attachmentDownload = $('.attachment-download');
+				revokeBlob(session.lastEncFilename);
 				const ciphertext = await openpgp.encrypt(options);
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
 				const url = URL.createObjectURL(blob);
+
 				session.lastEncFile = url;
 				session.lastEncFilename = 'encrypted_' + getFilename($('.attachment-import').val());
 				session.lastEncFileSigned = false;
-				$('.attachment-download').attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
+				$attachmentDownload.attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
 				session.running = false;
 				$body.removeClass('loading');
 				$('.attachment-window').find('.window-title').find('span').text('Encrypted attachment');
@@ -134,6 +142,8 @@ const decryptAttachment = function(){
 					privateKeys: [privKeyObj],
 					format: 'binary'
 				}
+				const $attachmentDownload = $('.attachment-download');
+				revokeBlob(session.lastDecFilename);
 				const plaintext = await openpgp.decrypt(options);
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
@@ -141,7 +151,7 @@ const decryptAttachment = function(){
 				const url = window.URL.createObjectURL(blob);
 				session.lastDecFile = url;
 				session.lastDecFilename = 'decrypted_' + getFilename($attachmentImport.val());
-				$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
+				$attachmentDownload.attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
 				session.running = false;
 				$body.removeClass('loading');
 				$('.attachment-window').find('.window-title').find('span').text('Decrypted attachment');
@@ -512,8 +522,9 @@ const importSearchedKey = function(){
     url:downloadLink,
     success: function (data){
 		 	const $tempInput = $('<input>');
-			importPubKey('search',data,$tempInput);
 			$tempInput.val(keyId).addClass('key-pub-import');
+			importPubKey('search',data,$tempInput);
+			$tempInput.remove();
     }
   });
 }
@@ -582,7 +593,9 @@ const decryptMessage = function() {
 				}
 				const plaintext = (await openpgp.decrypt(options));
 				const $processedAside = $('.processed-aside');
+				revokeBlob(session.lastDecSave);
 				session.lastDec = plaintext;
+				session.lastDecSave = dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data));
 				session.running = false;
 				if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 					verifySignature();
@@ -608,9 +621,10 @@ const decryptMessage = function() {
 const viewDecMsg = function() {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
+	let $saveProcessed = $('.save-processed');
 	$processedAside.text(session.lastDecStatus);
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
-	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data))).attr('download', 'decrypted_message.txt');
+	$saveProcessed.removeClass('hidden').attr('href', session.lastDecSave).attr('download', 'decrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
 	openPopup('.processed-output-window');
@@ -620,6 +634,7 @@ const viewDecMsg = function() {
 const viewEncMsg = function(steg) {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
+	let $saveProcessed = $('.save-processed');
 	$processedAside.text(session.lastEncStatus);
 	if(steg){
 		$('.steg-msg-download').attr('download', 'encrypted_steg_message.png')
@@ -628,7 +643,7 @@ const viewEncMsg = function(steg) {
 		$processedOutputWindow.removeClass('steg');
 	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
-	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc))).attr('download', 'encrypted_message.txt');
+	$saveProcessed.removeClass('hidden').attr('href', session.lastEncSave).attr('download', 'encrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('mono').find('.window-title').find('span').text('Encrypted message');
 	openPopup('.processed-output-window');
@@ -662,9 +677,12 @@ const encryptMessage = function(msg, signedToggle) {
 				}
 				const ciphertext = await openpgp.encrypt(options);
 				const encrypted = ciphertext.data.trim();
+				revokeBlob(session.lastEncSave);
 				session.lastEnc = encrypted;
+				session.lastEncSave = dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc));
 				const mpUrl = 'https://www.magicpost.io/post.php?'+'to='+encodeURI(session.pubKeyFingerprint)+'&from='+encodeURI(session.privKeyFingerprint)+'&msg='+encodeURI(session.lastEnc);
 				$('.mp-link').attr('href',mpUrl);
+				const $stegMsgDownload = $('.steg-msg-download');
 				if ($stgHost.val().length > 0){
 					const stegSrc = await resolveLoadFileURL($stgHost);
 					const newImg = await resolveImg(stegSrc.result);
@@ -717,7 +735,7 @@ const encryptMessage = function(msg, signedToggle) {
 					imgContext.drawImage(newImg, 0, 0, imgWidth, imgHeight);
 					const imgInfom = imgCanvas.toDataURL("image/jpeg", 1.0);
 					const imgConvert = await resolveImg(imgInfom);
-					createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
+					createSteg(imgConvert,$stegMsgDownload,session.lastEnc);
 					$(imgCanvas).remove();
 					$(newImg).remove();
 					$(imgConvert).remove();
@@ -726,6 +744,7 @@ const encryptMessage = function(msg, signedToggle) {
 					$body.removeClass('loading');
 					viewEncMsg(true);
 				} else {
+					revokeBlob($stegMsgDownload.attr('href'));
 					encryptStatus(signedToggle);
 					session.running = false;
 					$body.removeClass('loading');
@@ -783,11 +802,15 @@ const generateKeys = function() {
 //output key status + download links when keys are generated
 const keyReady = function() {
 	let formName = $('.form-name').val().split(' ')[0].toLowerCase().replace(/\s/g, '');
+	let $keyPublicDownload = $('.key-public-download');
+	let $keyPrivateDownload = $('.key-private-download');
+	revokeBlob($keyPrivateDownload.attr('href'));
+	revokeBlob($keyPublicDownload.attr('href'));
 	$('.key-public-img-download').attr('download',formName+'_pub_steg.png');
 	$('.key-private-img-download').attr('download',formName+'_priv_steg.png');
-	$('.key-public-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey))).attr('download', formName+'_public.asc');
-	$('.key-private-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey))).attr('download', formName+'_private.asc');
-	$('.key-rev-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey))).attr('download', formName+'_revoke.asc');
+	$keyPublicDownload.attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_public.asc,' + btoa(session.generatedPubKey))).attr('download', formName+'_public.asc');
+	$keyPrivateDownload.attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_private.asc,' + btoa(session.generatedPrivKey))).attr('download', formName+'_private.asc');
+	//$('.key-rev-download').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;name='+formName+'_revoke.asc,' + btoa(session.generatedRevKey))).attr('download', formName+'_revoke.asc');
 	$('.key-new-done').addClass('active');
 	$('.key-new-form').addClass('next-page');
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
@@ -797,10 +820,22 @@ const keyReady = function() {
 	session.running = false;
 }
 
+//import generated privKey
+const importGeneratedPrivKey = function(filename){
+	let $tempInput = $('<input>');
+	$tempInput.val(filename).addClass('key-priv-import');
+	importPrivKey(session.generatedPrivKey,$tempInput);
+	$tempInput.remove();
+}
+
 //Reset key generation form
 const newKeyReset = function() {
 	let $createKeyWindow = $('.create-key-window');
 	let $keyNewForm = $('.key-new-form');
+	let $keyNewDone = $('.key-new-done');
+	$keyNewDone.find('.blob-download').each(function(){
+		revokeBlob($(this).attr('href'));
+	})
 	$('.key-generate-start').text('Create new private and public key set +');
 	$createKeyWindow.find('.window-title').find('span').text('New key set');
 	$createKeyWindow.find('a').each(function() {
@@ -809,7 +844,7 @@ const newKeyReset = function() {
 	$('.create-key-progress').removeClass('active');
 	$keyNewForm.removeClass('next-page').find('input').val('');
 	$keyNewForm.find('.pw-toggle').prop('checked',false).change();
-	$('.key-new-done').removeClass('active');
+	$keyNewDone.removeClass('active');
 	$('.key-generate').attr('disabled', 'disabled');
 }
 
@@ -1316,7 +1351,9 @@ const convertStegKey = function($type){
 			} else {
 				fileName = 'converted_'+keyType+'.asc';
 			}
-			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename='+fileName+',' + btoa(retrievedKey))).attr('download', fileName);
+			let $saveConverted = $('.save-converted');
+			revokeBlob($saveConverted.attr('href'));
+			$saveConverted.removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename='+fileName+',' + btoa(retrievedKey))).attr('download', fileName);
 			$('.copy-converted').removeAttr('disabled');
 			$('.converted-aside').text('Key converted.');
 		} catch(e) {
@@ -1377,6 +1414,7 @@ const createStegKey = function(input,type,str){
 
 //createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
 const createSteg = function(img,$dest,str){
+	revokeBlob($dest.attr('href'));
 	$dest.attr('href',dataURItoBlobURL(steg.encode(str, img)));
 }
 
@@ -1405,6 +1443,12 @@ const dataURItoBlobURL = function(dataURI) {
     return url;
 }
 
+const revokeBlob = function(blobURL){
+  if(blobURL.search('blob') > -1){
+    window.URL.revokeObjectURL(blobURL);
+  }
+}
+
 //initialize application
 const init = function() {
 	window.URL = window.URL || window.webkitURL;
@@ -1416,7 +1460,7 @@ const init = function() {
 	}
 	$('input').each(function(){
 		let $this = $(this);
-		if($this.attr('type') != 'radio'){
+		if(!$this.hasClass('reset-ignore')){
 			$this.val('').prop('checked',false);
 		}
 	})
@@ -1710,6 +1754,14 @@ $('.key-new-form').find('input').each(function() {
 //Reset key generation form
 $('.key-generate-reset').bind('click', function(e) {
 	newKeyReset();
+})
+
+//Import key along with download
+$('.key-private-download').bind('click',function(){
+	let thisFilename = $(this).attr('download');
+	if($('.key-new-done-import-toggle').is(':checked')){
+		importGeneratedPrivKey(thisFilename);
+	}
 })
 
 //start key generation + key form check

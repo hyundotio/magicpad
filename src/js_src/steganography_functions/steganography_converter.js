@@ -102,7 +102,9 @@ const convertStegKey = function($type){
 			} else {
 				fileName = 'converted_'+keyType+'.asc';
 			}
-			$('.save-converted').removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename='+fileName+',' + btoa(retrievedKey))).attr('download', fileName);
+			let $saveConverted = $('.save-converted');
+			revokeBlob($saveConverted.attr('href'));
+			$saveConverted.removeClass('disabled').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename='+fileName+',' + btoa(retrievedKey))).attr('download', fileName);
 			$('.copy-converted').removeAttr('disabled');
 			$('.converted-aside').text('Key converted.');
 		} catch(e) {

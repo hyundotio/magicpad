@@ -17,6 +17,14 @@ $('.key-generate-reset').bind('click', function(e) {
 	newKeyReset();
 })
 
+//Import key along with download
+$('.key-private-download').bind('click',function(){
+	let thisFilename = $(this).attr('download');
+	if($('.key-new-done-import-toggle').is(':checked')){
+		importGeneratedPrivKey(thisFilename);
+	}
+})
+
 //start key generation + key form check
 $('.key-generate').bind('click', function(e) {
 	let $this = $(this);

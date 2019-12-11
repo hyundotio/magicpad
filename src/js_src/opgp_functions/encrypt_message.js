@@ -2,6 +2,7 @@
 const viewEncMsg = function(steg) {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
+	let $saveProcessed = $('.save-processed');
 	$processedAside.text(session.lastEncStatus);
 	if(steg){
 		$('.steg-msg-download').attr('download', 'encrypted_steg_message.png')
@@ -10,7 +11,7 @@ const viewEncMsg = function(steg) {
 		$processedOutputWindow.removeClass('steg');
 	}
 	$processedOutputWindow.find('.processed-output').text(session.lastEnc).val(session.lastEnc);
-	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc))).attr('download', 'encrypted_message.txt');
+	$saveProcessed.removeClass('hidden').attr('href', session.lastEncSave).attr('download', 'encrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.addClass('mono').find('.window-title').find('span').text('Encrypted message');
 	openPopup('.processed-output-window');
@@ -44,9 +45,12 @@ const encryptMessage = function(msg, signedToggle) {
 				}
 				const ciphertext = await openpgp.encrypt(options);
 				const encrypted = ciphertext.data.trim();
+				revokeBlob(session.lastEncSave);
 				session.lastEnc = encrypted;
+				session.lastEncSave = dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc));
 				const mpUrl = 'https://www.magicpost.io/post.php?'+'to='+encodeURI(session.pubKeyFingerprint)+'&from='+encodeURI(session.privKeyFingerprint)+'&msg='+encodeURI(session.lastEnc);
 				$('.mp-link').attr('href',mpUrl);
+				const $stegMsgDownload = $('.steg-msg-download');
 				if ($stgHost.val().length > 0){
 					const stegSrc = await resolveLoadFileURL($stgHost);
 					const newImg = await resolveImg(stegSrc.result);
@@ -99,7 +103,7 @@ const encryptMessage = function(msg, signedToggle) {
 					imgContext.drawImage(newImg, 0, 0, imgWidth, imgHeight);
 					const imgInfom = imgCanvas.toDataURL("image/jpeg", 1.0);
 					const imgConvert = await resolveImg(imgInfom);
-					createSteg(imgConvert,$('.steg-msg-download'),session.lastEnc);
+					createSteg(imgConvert,$stegMsgDownload,session.lastEnc);
 					$(imgCanvas).remove();
 					$(newImg).remove();
 					$(imgConvert).remove();
@@ -108,6 +112,7 @@ const encryptMessage = function(msg, signedToggle) {
 					$body.removeClass('loading');
 					viewEncMsg(true);
 				} else {
+					revokeBlob($stegMsgDownload.attr('href'));
 					encryptStatus(signedToggle);
 					session.running = false;
 					$body.removeClass('loading');

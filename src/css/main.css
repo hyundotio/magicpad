@@ -423,7 +423,7 @@ main {
      border-bottom:1px solid transparent;
 }
  a.big-button-third-half {
-     height: 11em;
+     height: 10em;
      width: 50%;
      margin:0;
      margin-right:0;
@@ -441,7 +441,7 @@ main {
  .big-button-third span, .big-button-third-half span {
      font-size: 1.5em;
      line-height: 1.25em;
-     margin: -0.25em 0 2.125em 0;
+     margin: -0.25em 0 1.5em 0;
      display: block;
 }
  .big-button-third img, .big-button-third-half img {
@@ -449,7 +449,7 @@ main {
 }
  a.big-button-third {
      font-weight: 300;
-     height: 11em;
+     height: 10em;
      width: 100%;
      padding: 1em;
      border-bottom: 1px solid #FFF;
@@ -475,6 +475,10 @@ main {
      opacity: 0;
      visibility: hidden;
      transition: visibility 0.2s ease-out, opacity 0.2s ease-out;
+}
+.key-new-done-import {
+    padding: 1em;
+    clear: both;
 }
  .tab::after, .popup-tab::after {
      content: ' ';
@@ -1204,10 +1208,10 @@ main {
         line-height: 1.3em;
    }
     .big-button-third span {
-        margin: -0.2em 0 3.625em 0;
+        margin: -0.2em 0 2.625em 0;
    }
     .big-button-third-half span {
-        margin: -0.2em 0 3.625em 0;
+        margin: -0.2em 0 2.625em 0;
    }
     .tab.active {
         font-weight:600;

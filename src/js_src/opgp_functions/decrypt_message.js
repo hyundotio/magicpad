@@ -17,7 +17,9 @@ const decryptMessage = function() {
 				}
 				const plaintext = (await openpgp.decrypt(options));
 				const $processedAside = $('.processed-aside');
+				revokeBlob(session.lastDecSave);
 				session.lastDec = plaintext;
+				session.lastDecSave = dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data));
 				session.running = false;
 				if ((session.lastDec.data).search('-----BEGIN PGP SIGNATURE-----') != -1) {
 					verifySignature();
@@ -43,9 +45,10 @@ const decryptMessage = function() {
 const viewDecMsg = function() {
 	let $processedAside = $('.processed-aside');
 	let $processedOutputWindow = $('.processed-output-window');
+	let $saveProcessed = $('.save-processed');
 	$processedAside.text(session.lastDecStatus);
 	$processedOutputWindow.find('.processed-output').text(session.lastDec.data).val(session.lastDec.data);
-	$('.save-processed').removeClass('hidden').attr('href', dataURItoBlobURL('data:application/octet-stream;base64;filename=decrypted_message.txt,' + btoa(session.lastDec.data))).attr('download', 'decrypted_message.txt');
+	$saveProcessed.removeClass('hidden').attr('href', session.lastDecSave).attr('download', 'decrypted_message.txt');
 	$processedOutputWindow.find('textarea').scrollTop(0,0);
 	$processedOutputWindow.removeClass('mono steg').find('.window-title').find('span').text('Decrypted message');
 	openPopup('.processed-output-window');

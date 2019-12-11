@@ -100,8 +100,9 @@ const importSearchedKey = function(){
     url:downloadLink,
     success: function (data){
 		 	const $tempInput = $('<input>');
-			importPubKey('search',data,$tempInput);
 			$tempInput.val(keyId).addClass('key-pub-import');
+			importPubKey('search',data,$tempInput);
+			$tempInput.remove();
     }
   });
 }

@@ -48,5 +48,6 @@ const createStegKey = function(input,type,str){
 
 //createSteg($('steghost')[0],$('processed-img-download-link'),encryptedMessageStr);
 const createSteg = function(img,$dest,str){
+	revokeBlob($dest.attr('href'));
 	$dest.attr('href',dataURItoBlobURL(steg.encode(str, img)));
 }

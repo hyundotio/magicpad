@@ -9,7 +9,7 @@ const init = function() {
 	}
 	$('input').each(function(){
 		let $this = $(this);
-		if($this.attr('type') != 'radio'){
+		if(!$this.hasClass('reset-ignore')){
 			$this.val('').prop('checked',false);
 		}
 	})

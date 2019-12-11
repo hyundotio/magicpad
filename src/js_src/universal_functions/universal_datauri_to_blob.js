@@ -17,3 +17,9 @@ const dataURItoBlobURL = function(dataURI) {
     let url = window.URL.createObjectURL(blob);
     return url;
 }
+
+const revokeBlob = function(blobURL){
+  if(blobURL.search('blob') > -1){
+    window.URL.revokeObjectURL(blobURL);
+  }
+}

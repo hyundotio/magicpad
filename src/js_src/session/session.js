@@ -13,6 +13,8 @@ let session = {
 	running: false,
 	lastDec: '',
 	lastEnc: '',
+	lastDecSave: '',
+	lastEncSave: '',
 	lastDecStatus: '',
 	lastEncStatus: '',
 	lastEncPaste: '',
@@ -21,6 +23,7 @@ let session = {
 	lastDecFilename:'',
 	lastEncFileType:'',
 	lastEncFilename:'',
+	lastConverted:'',
 	keyToUploadFile:'',
 	searchedKey:'',
 	sessionStore:false
@@ -48,11 +51,13 @@ const recallSession = function(){
 					let $tempInput = $('<input>');
 					$tempInput.val(session.pubKeyName).addClass('key-pub-import');
 					importPubKey('file',session.pubKey,$tempInput);
+					$tempInput.remove();
 				}
 				if(session.privKeyName != ''){
 					let $tempInput = $('<input>');
 					$tempInput.val(session.privKeyName).addClass('key-priv-import');
-					importPrivKey(session.privKey,$tempInput)
+					importPrivKey(session.privKey,$tempInput);
+					$tempInput.remove();
 				}
 			}
 		}

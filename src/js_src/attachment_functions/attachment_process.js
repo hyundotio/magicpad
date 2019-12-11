@@ -12,15 +12,18 @@ const encryptAttachment = function(){
 						message: openpgp.message.fromBinary(new Uint8Array(fileReader)),
 						publicKeys: pbKeyObj
 				};
+				const $attachmentDownload = $('.attachment-download');
+				revokeBlob(session.lastEncFilename);
 				const ciphertext = await openpgp.encrypt(options);
 				const blob = new Blob([ciphertext.data], {
 					type: 'application/octet-stream'
 				});
 				const url = URL.createObjectURL(blob);
+
 				session.lastEncFile = url;
 				session.lastEncFilename = 'encrypted_' + getFilename($('.attachment-import').val());
 				session.lastEncFileSigned = false;
-				$('.attachment-download').attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
+				$attachmentDownload.attr('href',url).attr('download',session.lastEncFilename).find('span').html('Download<br>encrypted file');
 				session.running = false;
 				$body.removeClass('loading');
 				$('.attachment-window').find('.window-title').find('span').text('Encrypted attachment');
@@ -55,6 +58,8 @@ const decryptAttachment = function(){
 					privateKeys: [privKeyObj],
 					format: 'binary'
 				}
+				const $attachmentDownload = $('.attachment-download');
+				revokeBlob(session.lastDecFilename);
 				const plaintext = await openpgp.decrypt(options);
 				const blob = new Blob([plaintext.data], {
 					type: 'application/octet-stream'
@@ -62,7 +67,7 @@ const decryptAttachment = function(){
 				const url = window.URL.createObjectURL(blob);
 				session.lastDecFile = url;
 				session.lastDecFilename = 'decrypted_' + getFilename($attachmentImport.val());
-				$('.attachment-download').attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
+				$attachmentDownload.attr('href',url).attr('download',session.lastDecFilename).find('span').html('Download<br>decrypted file');
 				session.running = false;
 				$body.removeClass('loading');
 				$('.attachment-window').find('.window-title').find('span').text('Decrypted attachment');
