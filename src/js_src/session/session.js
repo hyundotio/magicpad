@@ -1,6 +1,6 @@
 let iOS = !!navigator.platform && /iPad|iPhone|iPod/.test(navigator.platform);
 
-let session = {
+const sessionModel = {
 	privKey: '',
 	pubKey: '',
 	privKeyName:'',
@@ -29,6 +29,8 @@ let session = {
 	sessionStore:false
 }
 
+let session = JSON.parse(JSON.stringify(sessionModel));
+
 const adjustSession = function(){
 	if(session.sessionStore){
 		session.running = false;
@@ -44,6 +46,12 @@ const recallSession = function(){
 	if(window.localStorage.getItem('session') != null){
 		if(window.localStorage.getItem('session') != 'null'){
 			session = JSON.parse(window.localStorage.getItem('session'));
+			Object.keys(sessionModel).forEach(function(key){
+				if (!(key in session)){
+					session[key] = '';
+				}
+			})
+			//session = JSON.parse(window.localStorage.getItem('session'));
 			const $sessionToggle = $('.session-toggle');
 			if(session.sessionStore){
 				$sessionToggle.prop('checked',true).change();

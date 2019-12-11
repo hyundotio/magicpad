@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+
+## [1.0.2 Hotfix 8] - 2019-12-11
+
+### Changed
+- Updated how session model for saved sessions is handle.
+
 ## [1.0.2 Hotfix 7] - 2019-12-11
 
 ### Changed

@@ -19,7 +19,9 @@ const dataURItoBlobURL = function(dataURI) {
 }
 
 const revokeBlob = function(blobURL){
-  if(blobURL.search('blob') > -1){
-    window.URL.revokeObjectURL(blobURL);
+  if(blobURL != undefined){
+    if(blobURL.search('blob') > -1){
+      window.URL.revokeObjectURL(blobURL);
+    }
   }
 }
