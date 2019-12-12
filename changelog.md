@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2 Hotfix 9] - 2019-12-11
+
+### Changed
+- Background color changed for checkbox area in key generation popup.
 
 ## [1.0.2 Hotfix 8] - 2019-12-11
 
