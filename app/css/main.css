@@ -479,6 +479,7 @@ main {
 .key-new-done-import {
     padding: 1em;
     clear: both;
+    background-color:#F5F5F5;
 }
  .tab::after, .popup-tab::after {
      content: ' ';
