@@ -477,7 +477,7 @@ main {
      transition: visibility 0.2s ease-out, opacity 0.2s ease-out;
 }
 .key-new-done-import {
-    padding: 1em;
+    padding: 1em 1em 1.25em 1em;
     clear: both;
     background-color:#F5F5F5;
 }
