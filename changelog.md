@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.2 Hotfix 10] - 2019-12-13
+
+### Changed
+- Security update: Remove unused session data when quitting. 
+
 ## [1.0.2 Hotfix 9] - 2019-12-11
 
 ### Changed

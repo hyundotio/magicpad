@@ -42,6 +42,30 @@ const eraseSession = function(){
 	window.localStorage.setItem('session',null);
 }
 
+window.onbeforeunload = function(){
+	if(session.sessionStore){
+		session.generatedPubKey = '';
+		session.generatedPrivKey = '';
+		session.generatedRevKey = '';
+		session.lastDec = '';
+		session.lastEnc = '';
+		session.lastDecSave = '';
+		session.lastEncSave = '';
+		session.lastDecStatus = '';
+		session.lastEncStatus = '';
+		session.lastEncPaste = '';
+		session.lastEncFile = '';
+		session.lastDecFile = '';
+		session.lastDecFilename = '';
+		session.lastEncFileType = '';
+		session.lastEncFilename = '';
+		session.lastConverted = '';
+		session.keyToUploadFile = '';
+		session.searchedKey = '';
+		adjustSession();
+	}
+};
+
 const recallSession = function(){
 	if(window.localStorage.getItem('session') != null){
 		if(window.localStorage.getItem('session') != 'null'){

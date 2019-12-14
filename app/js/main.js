@@ -42,6 +42,30 @@ const eraseSession = function(){
 	window.localStorage.setItem('session',null);
 }
 
+window.onbeforeunload = function(){
+	if(session.sessionStore){
+		session.generatedPubKey = '';
+		session.generatedPrivKey = '';
+		session.generatedRevKey = '';
+		session.lastDec = '';
+		session.lastEnc = '';
+		session.lastDecSave = '';
+		session.lastEncSave = '';
+		session.lastDecStatus = '';
+		session.lastEncStatus = '';
+		session.lastEncPaste = '';
+		session.lastEncFile = '';
+		session.lastDecFile = '';
+		session.lastDecFilename = '';
+		session.lastEncFileType = '';
+		session.lastEncFilename = '';
+		session.lastConverted = '';
+		session.keyToUploadFile = '';
+		session.searchedKey = '';
+		adjustSession();
+	}
+};
+
 const recallSession = function(){
 	if(window.localStorage.getItem('session') != null){
 		if(window.localStorage.getItem('session') != 'null'){
@@ -771,6 +795,9 @@ const encryptMessage = function(msg, signedToggle) {
 
 //Generate keys
 const generateKeys = function() {
+	const $formName = $('.form-name');
+	const $formEmail = $('.form-email');
+	const $formPassphrase = $('.form-passphrase');
 	if (!session.running) {
 		session.running = true;
 		let $body = $('body');
@@ -778,11 +805,11 @@ const generateKeys = function() {
 		$body.addClass('cursor-loading popup-uninterrupt');
 		const options = {
 			userIds: [{
-				name: ($('.form-name').val()),
-				email: ($('.form-email').val())
+				name: ($formName.val()),
+				email: ($formEmail.val())
 			}],
 			numBits: 4096,
-			passphrase: ($('.form-passphrase').val())
+			passphrase: ($formPassphrase.val())
 		}
 		async function main() {
 			try {
@@ -790,6 +817,9 @@ const generateKeys = function() {
 				if(generateKey.err != undefined){
 					throw errorFinder('genkey');
 				}
+				$formName.val('');
+				$formEmail.val('');
+				$formPassphrase.val('');
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
 				session.generatedPubKey = generateKey.publicKeyArmored.trim();
 				session.generatedRevKey = generateKey.revocationCertificate.trim();
@@ -841,6 +871,9 @@ const newKeyReset = function() {
 	let $createKeyWindow = $('.create-key-window');
 	let $keyNewForm = $('.key-new-form');
 	let $keyNewDone = $('.key-new-done');
+	session.generatedPrivKey = '';
+	session.generatedPubKey = '';
+	session.generatedRevKey = '';
 	$keyNewDone.find('.blob-download').each(function(){
 		revokeBlob($(this).attr('href'));
 	})
