@@ -817,7 +817,6 @@ const generateKeys = function() {
 				if(generateKey.err != undefined){
 					throw errorFinder('genkey');
 				}
-				$formName.val('');
 				$formEmail.val('');
 				$formPassphrase.val('');
 				session.generatedPrivKey = generateKey.privateKeyArmored.trim();
@@ -839,9 +838,11 @@ const generateKeys = function() {
 
 //output key status + download links when keys are generated
 const keyReady = function() {
-	let formName = $('.form-name').val().split(' ')[0].toLowerCase().replace(/\s/g, '');
+	const $formName = $('.form-name');
+	let formName = $formName.val().split(' ')[0].toLowerCase().replace(/\s/g, '');
 	let $keyPublicDownload = $('.key-public-download');
 	let $keyPrivateDownload = $('.key-private-download');
+	$formName.val('');
 	revokeBlob($keyPrivateDownload.attr('href'));
 	revokeBlob($keyPublicDownload.attr('href'));
 	$('.key-public-img-download').attr('download',formName+'_pub_steg.png');
