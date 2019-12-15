@@ -2,10 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2019-12-15
+
+### Changed
+- Added "Paste new key" under Key server browser. The user now can bring a newly generated public key directly into the text field for upload. This removes an additional click or two. Did not implement paste from clipboard for potential privacy issues rather import from session object that contains newly generated key.
+- Version 1.0.3 first release. Hotfixes 1.0.2 (security and UX) constitute a new version.
+
 ## [1.0.2 Hotfix 10] - 2019-12-13
 
 ### Changed
-- Security update: Remove unused session data when quitting. 
+- Security update: Remove unused session data when quitting.
 
 ## [1.0.2 Hotfix 9] - 2019-12-11
 

@@ -393,6 +393,20 @@ main {
      width: 100%;
      display: none;
 }
+.upload-pasted-header {
+  width: auto;
+  float: left;
+}
+.pubkey-paste-button {
+  height: auto;
+  float: right;
+  padding-bottom: 0.5em;
+  line-height: 1em;
+  display:none;
+}
+.pubkey-paste-button.active {
+  display:block;
+}
  .pubkey-input-window textarea {
      height:26em;
 }

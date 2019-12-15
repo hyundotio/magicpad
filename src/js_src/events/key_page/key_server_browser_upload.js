@@ -31,3 +31,8 @@ $('.server-key-pub-import').change(function(){
 		$('.server-key-pub-import-upload').attr('disabled','disabled');
 	}
 })
+
+//Paste new key to clipboard
+$('.pubkey-paste-button').bind('click',function(){
+	$('.pubkey-upload-input').val(session.generatedPubKey).trigger('change');
+})

@@ -3,7 +3,7 @@ $('.open-keybrowser').bind('click',function(){
 	let $keyServerBrowserWindow = $('.key-server-browser-window');
 	let $popupTabContent = $keyServerBrowserWindow.find('.popup-tab-content');
 	let $popupTab = $keyServerBrowserWindow.find('.popup-tabs');
-	let $activePopupTab = $popupTabContent.find('.active');
+	let $activePopupTab = $popupTabContent.children('.active');
 	if($activePopupTab.length == 0){
 		$popupTab.find('.active').removeClass('active');
 		$popupTab.find('.popup-tab').eq(0).addClass('active');

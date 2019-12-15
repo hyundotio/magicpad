@@ -855,6 +855,7 @@ const keyReady = function() {
 	$('.create-key-progress').removeClass('active').find('span').text('Keys generated');
 	$('.key-generate-start').text('Download generated keys');
 	$('.create-key-window').addClass('active').find('.window-title').find('span').text('Generated keys');
+	$('.pubkey-paste-button').addClass('active');
 	$('body').removeClass('cursor-loading popup-uninterrupt');
 	session.running = false;
 }
@@ -878,6 +879,7 @@ const newKeyReset = function() {
 	$keyNewDone.find('.blob-download').each(function(){
 		revokeBlob($(this).attr('href'));
 	})
+	$('.pubkey-paste-button').removeClass('active');
 	$('.key-generate-start').text('Create new private and public key set +');
 	$createKeyWindow.find('.window-title').find('span').text('New key set');
 	$createKeyWindow.find('a').each(function() {
@@ -1835,7 +1837,7 @@ $('.open-keybrowser').bind('click',function(){
 	let $keyServerBrowserWindow = $('.key-server-browser-window');
 	let $popupTabContent = $keyServerBrowserWindow.find('.popup-tab-content');
 	let $popupTab = $keyServerBrowserWindow.find('.popup-tabs');
-	let $activePopupTab = $popupTabContent.find('.active');
+	let $activePopupTab = $popupTabContent.children('.active');
 	if($activePopupTab.length == 0){
 		$popupTab.find('.active').removeClass('active');
 		$popupTab.find('.popup-tab').eq(0).addClass('active');
@@ -1908,6 +1910,11 @@ $('.server-key-pub-import').change(function(){
 		$('.server-pub-key-import-label').find('span').text('Select key');
 		$('.server-key-pub-import-upload').attr('disabled','disabled');
 	}
+})
+
+//Paste new key to clipboard
+$('.pubkey-paste-button').bind('click',function(){
+	$('.pubkey-upload-input').val(session.generatedPubKey).trigger('change');
 })
 
 //Copy to clipboard button
