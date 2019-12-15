@@ -23,7 +23,7 @@ main {
   width:1px;
   overflow:hidden;
 }
-.mp-share {
+.mp-share, .mp-search {
   clear:both;
   float:none;
   margin-top:0.5em;

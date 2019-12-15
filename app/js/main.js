@@ -978,8 +978,10 @@ const importPrivKey = function(key,$input) {
 			session.privKey = key;
 			const buffer = new Uint8Array(pvKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			session.privKeyFingerprint = buf2hex(buffer);
+			const matchedFingerprint = session.privKeyFingerprint.match(/.{1,4}/g);
 			$('.fingerprint-priv').addClass('active');
-			$('.fingerprint-priv-str').text(session.privKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
+			$('.mp-link-search').attr('href','https://magicpost.io/search.php?search='+(matchedFingerprint.join('+').toUpperCase()));
+			$('.fingerprint-priv-str').text(matchedFingerprint.join(' ').toUpperCase());
 			$('.key-priv-import-label').find('span').text('Reimport key');
 			writeKeyStatus($input,false);
 			adjustSession();
@@ -1010,8 +1012,9 @@ const importPubKey = function(type,key,$input) {
 			session.pubKey = pubKey;
 			const buffer = new Uint8Array(pubKeyOutput.keys[0].primaryKey.fingerprint).buffer;
 			session.pubKeyFingerprint = buf2hex(buffer);
+			const matchedFingerprint = session.pubKeyFingerprint.match(/.{1,4}/g);
 			$('.fingerprint-pub').addClass('active');
-			$('.fingerprint-pub-str').text(session.pubKeyFingerprint.match(/.{1,4}/g).join(' ').toUpperCase());
+			$('.fingerprint-pub-str').text(matchedFingerprint.join(' ').toUpperCase());
 			$pubkeyInputOpenText.text('Paste key');
 			$keyPubImportLabel.text('Reimport key');
 			if($pubkeyInputWindow.hasClass('active')){

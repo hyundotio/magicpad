@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3 Hotfix 1] - 2019-12-15
+
+### Changed
+- Ability to search for messages in MagicPost in "Read" section by private key (your) fingerprint. Goes to homepage if no private key is imported.
+
 ## [1.0.3] - 2019-12-15
 
 ### Changed
