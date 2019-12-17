@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3 Hotfix 2] - 2019-12-16
+
+### Changed
+- Updated logos and icons
+- Fixed a bug where key converter will only use public key reference image.
+
 ## [1.0.3 Hotfix 1] - 2019-12-15
 
 ### Changed

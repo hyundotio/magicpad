@@ -1345,11 +1345,15 @@ const convertStegKeyReverse = function($type){
 				if(keyInput.err != undefined || (!testPubKey(retrievedKey) && !testPrivKey(retrievedKey))){
 					throw errorFinder('pubkey');
 				}
-				let keyType = 'public';
+				let keyType;
 				if(keyInput.keys[0].isPrivate()){
 					keyType = 'private';
+					createStegKey(pvDataUri,'convert',retrievedKey);
+				} else {
+					keyType = 'public';
+					createStegKey(pubDataUri,'convert',retrievedKey);
 				}
-				createStegKey(pubDataUri,'convert',retrievedKey);
+
 				$('.convert-filename').text(' - ' + getFilename($('.key-convert').val()));
 				$('.key-convert-label').find('span').text('Reimport key');
 				const outputStr = "Please download the .png image key below.\n\nKey contents:\n"+retrievedKey;
