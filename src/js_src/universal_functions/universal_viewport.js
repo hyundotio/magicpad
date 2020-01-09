@@ -1,6 +1,6 @@
 const resizeViewport = function() {
-	const viewheight = $(window).height();
-	const viewwidth = $(window).width();
+	const viewheight = $(window).outerHeight();
+	const viewwidth = $(window).outerWidth();
 	const viewport = document.querySelector("meta[name=viewport]");
 	viewport.setAttribute("content", "height=" + viewheight + "px, width=" + viewwidth + "px, initial-scale=1.0");
 }

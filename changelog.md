@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3 Hotfix 2A] - 2020-01-09
+
+### Changed (Effects only web versions)
+- Fixed a bug where changing iOS orientation will not follow the device's width and height.
+
 ## [1.0.3 Hotfix 2] - 2019-12-16
 
 ### Changed
