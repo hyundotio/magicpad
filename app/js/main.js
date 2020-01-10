@@ -1294,6 +1294,21 @@ if ("serviceWorker" in navigator && location.protocol == 'https:') {
   }
 }
 
+const checkReadImport = function(){
+  if($('.read').hasClass('active')){
+    let msgIdx;
+    const hashLoc = window.location.hash.split('/');
+    for (let i = 0; i < hashLoc.length; i++) {
+      if (hashLoc[i] === 'read'){
+        msgIdx = i + 1;
+      }
+    }
+    if(hashLoc[msgIdx].substr(0,31) === '-----BEGIN%20PGP%20MESSAGE-----'){
+      $('#read-textarea').val(decodeURIComponent(hashLoc[msgIdx]));
+    }
+  }
+}
+
 //Convert steganograph to message
 const convertStegMsg = function($type){
 	async function main() {
@@ -1503,14 +1518,7 @@ const revokeBlob = function(blobURL){
 }
 
 //initialize application
-const init = function() {
-	window.URL = window.URL || window.webkitURL;
-	let $onlineFlag = $('.online-flag');
-	if (window.navigator.onLine) {
-		$onlineFlag.addClass('active');
-	} else {
-		$onlineFlag.removeClass('active');
-	}
+const resetFields = function() {
 	$('input').each(function(){
 		let $this = $(this);
 		if(!$this.hasClass('reset-ignore')){
@@ -1520,6 +1528,17 @@ const init = function() {
 	$('.attachment-radio').eq(0).prop('checked',true).change();
 	$('textarea').val('');
 	$('.init-disabled').attr('disabled','disabled').removeClass('init-disabled');
+}
+const init = function() {
+	window.URL = window.URL || window.webkitURL;
+	let $onlineFlag = $('.online-flag');
+	if (window.navigator.onLine) {
+		$onlineFlag.addClass('active');
+	} else {
+		$onlineFlag.removeClass('active');
+	}
+	resetFields();
+	checkReadImport();
 	recallSession();
 	keyUpChecker($('.pubkey-upload-input'),$('.upload-public-key-paste'));
 	keyUpChecker($('.searchbox-pubkey'),$('.search-pubkey'));
@@ -1599,7 +1618,6 @@ const loadPage = function(hashLoc){
     })
     $tabWindow.removeClass('active');
     $nextPage.addClass('active');
-
     for (let i = 0; i < formChecker.length; i++){
       if(formChecker[i].type == hashLoc[1]){
         formChecker[i].runCheck();

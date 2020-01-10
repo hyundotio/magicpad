@@ -20,7 +20,6 @@ const loadPage = function(hashLoc){
     })
     $tabWindow.removeClass('active');
     $nextPage.addClass('active');
-
     for (let i = 0; i < formChecker.length; i++){
       if(formChecker[i].type == hashLoc[1]){
         formChecker[i].runCheck();

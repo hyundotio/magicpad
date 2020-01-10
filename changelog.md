@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3 Hotfix 2B] - 2020-01-09
+
+### Changed (Effects only web versions)
+- Added the ability to import from MagicPost to MagicPad in the "Read" page.
+
 ## [1.0.3 Hotfix 2A] - 2020-01-09
 
 ### Changed (Effects only web versions)
