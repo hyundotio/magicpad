@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3 Hotfix 2C] - 2020-01-09
+
+### Changed (Effects only web versions)
+- Fixed a bug when posting to MagicPost from "Write" page.
+
 ## [1.0.3 Hotfix 2B] - 2020-01-09
 
 ### Changed (Effects only web versions)

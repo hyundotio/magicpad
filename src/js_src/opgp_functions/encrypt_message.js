@@ -48,7 +48,7 @@ const encryptMessage = function(msg, signedToggle) {
 				revokeBlob(session.lastEncSave);
 				session.lastEnc = encrypted;
 				session.lastEncSave = dataURItoBlobURL('data:application/octet-stream;base64;filename=encrypted_message.txt,' + btoa(session.lastEnc));
-				const mpUrl = 'https://www.magicpost.io/post.php?'+'to='+encodeURI(session.pubKeyFingerprint)+'&from='+encodeURI(session.privKeyFingerprint)+'&msg='+encodeURI(session.lastEnc);
+				const mpUrl = 'https://www.magicpost.io/post.php?'+'to='+encodeURIComponent(session.pubKeyFingerprint)+'&from='+encodeURIComponent(session.privKeyFingerprint)+'&msg='+encodeURIComponent(session.lastEnc);
 				$('.mp-link').attr('href',mpUrl);
 				const $stegMsgDownload = $('.steg-msg-download');
 				if ($stgHost.val().length > 0){
