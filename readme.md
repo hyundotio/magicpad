@@ -1,4 +1,4 @@
-# MagicPad v1.0.3 Hotfix 2C
+# MagicPad v1.0.4
 
 MagicPad is an OpenPGP encryption / decryption tool for beginners to handle text messages, files, as well as embed and extract encrypted messages from images. It is designed to be run standalone via the browser or as an executable (Electron).
 Using PGP as the main encryption engine, the encryption key generated in MagicPad are powerful 4096-bit keys.
@@ -54,13 +54,13 @@ If you want to host your own MagicPad PWA, you must edit the `"start_url"` prope
 ## Packages
 
 Software used:
-1. Node.js
+1. [Node.js](https://nodejs.org)
 2. url, path, fs-extra, ncp, and jsdom packages
-3. Electron, Electron Context Menu, and Electron builder
-4. Openpgp.js
-5. Steganography.js
-6. jQuery
-7. Font and design styling by IBM
+3. [Electron](https://electronjs.org/), [Electron Context Menu](https://github.com/sindresorhus/electron-context-menu), and [Electron builder](https://www.electron.build/)
+4. [Openpgp.js](https://github.com/openpgpjs/openpgpjs)
+5. [Steganography.js](https://github.com/petereigenschink/steganography.js/)
+6. [jQuery](https://jquery.com/)
+7. [Font and design styling by IBM](https://www.ibm.com/design/language/)
 
 ## Contributing
 

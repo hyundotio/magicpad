@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4] - 2020-17-09
+
+### Changed
+- Web version changes moved to executables.
+- OpenPGP updated to commit 94a04ea
+
 ## [1.0.3 Hotfix 2C] - 2020-01-09
 
 ### Changed (Effects only web versions)
