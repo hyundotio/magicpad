@@ -2,7 +2,7 @@
 
 All notable changes to this project will be documented in this file.
 
-## [1.0.4] - 2020-17-09
+## [1.0.4] - 2020-01-17
 
 ### Changed
 - Web version changes moved to executables.
