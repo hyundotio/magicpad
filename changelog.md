@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.4 Hotfix 1] - 2020-02-09
+
+### Changed
+- OpenPGP updated to 4.9.0 (2020-02-02 Release, Commit: 93c5bed by twiss)
+
 ## [1.0.4] - 2020-01-17
 
 ### Changed
