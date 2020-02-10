@@ -8,6 +8,8 @@ contextMenu({
     prepend: (defaultActions, params, browserWindow) => []
 });
 
+app.allowRendererProcessReuse = true;
+
 app.on('ready',function(){
   mainWindow = new BrowserWindow({
     minHeight:594,

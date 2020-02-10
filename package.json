@@ -8,15 +8,14 @@
   },
   "devDependencies": {
     "electron": "^8.0.0",
-    "electron-builder": "^20.44.4",
-    "electron-context-menu": "^0.16.0",
+    "electron-builder": "^22.3.2",
     "electron-notarize": "^0.2.1"
   },
   "preferGlobal": true,
   "scripts": {
     "start": "node build_index.js && electron .",
     "buildwebapp": "node build_magicpad_index.js",
-    "dist": "build"
+    "dist": "electron-builder build"
   },
   "keywords": [
     "openpgp",
@@ -81,6 +80,7 @@
   },
   "homepage": "https://github.com/hyundotio/magicpad#readme",
   "dependencies": {
+    "electron-context-menu": "^0.16.0",
     "fs-extra": "^8.1.0",
     "jquery": "^3.4.1",
     "jsdom": "^15.1.1",
