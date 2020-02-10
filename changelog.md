@@ -1,6 +1,10 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.0.5 Installer Update] - 2020-02-10
+
+### Changed
+- Fixed a bug on Mac distro code
 
 ## [1.0.5] - 2020-02-09
 
