@@ -1,6 +1,6 @@
 {
   "name": "magicpad",
-  "version": "1.0.4-1",
+  "version": "1.0.5",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "devDependencies": {
     "electron": "^5.0.6",
-    "electron-builder": "^20.41.0"
+    "electron-builder": "^20.44.4",
+    "electron-notarize": "^0.2.1"
   },
   "preferGlobal": true,
   "scripts": {
@@ -21,24 +22,30 @@
     "encryption",
     "messaging"
   ],
-  "author": "Hyun Kyu Seo <hi@hyun.io>",
+  "author": "Hyun Kyu Seo <hyunkseo@icloud.com>",
   "license": "MIT",
   "optionalDependencies": {},
   "build": {
     "productName": "MagicPad",
-    "appId": "scripter.MagicPad",
+    "appId": "io.magicpad.magicpadmacos",
+    "afterSign": "./notarize.js",
     "mac": {
       "icon": "./src/icons_src/icons/icons.icns",
+      "hardenedRuntime": true,
+      "provisioningProfile":"./embedded.provisionprofile",
+      "entitlements": "./src/mac_build/entitlements.mac.inherit.plist",
       "category": "public.app-category.productivity",
       "target": [
+        "pkg",
         "zip"
-      ]
+      ],
+      "type": "distribution"
     },
     "linux": {
       "executableName": "MagicPad",
       "icon": "./src/icons_src/icons/icons.icns",
       "category": "Utility",
-      "description": "Text encryption tool",
+      "description": "Text and file encryption tool.",
       "packageCategory": "Utility",
       "target": [
         "deb",

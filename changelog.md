@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.5] - 2020-02-09
+
+### Changed
+- Added guide to create signed executables.
+
 ## [1.0.4 Hotfix 1] - 2020-02-09
 
 ### Changed

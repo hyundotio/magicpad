@@ -1,4 +1,4 @@
-# MagicPad v1.0.4 Hotfix 1
+# MagicPad v1.0.5
 
 MagicPad is an OpenPGP encryption / decryption tool for beginners to handle text messages, files, as well as embed and extract encrypted messages from images. It is designed to be run standalone via the browser or as an executable (Electron).
 Using PGP as the main encryption engine, the encryption key generated in MagicPad are powerful 4096-bit keys.
@@ -46,6 +46,40 @@ In the build procedure, the following happens:
 3. `index.html` is saved to `./app`.
 4. All other files are static in `./app` and are not altered.
 5. Electron executable is created in a `./dist` folder.
+
+## Authoring executables
+
+1. You need all of the Apple Developer certificates from the Apple Developer Program.
+2. Create a Mac App provision profile in the Apple Developer website, download it, and name it as `embedded.provisionprofile` and place it in root.
+3. Edit your `~/.bash_profile.rc` i.e. `nano ~/.bash_profile.rc` to include these parameters:
+```
+export CSC_LINK=FULL_LOCATION_TO_YOUR_APPLE_DEV_P12_CERT
+export CSC_KEY_PASSWORD=CERT_PASSWORD
+export CSC_NAME="NAME_OF_YOUR_CERT"
+export CSC_IDENTITY_AUTO_DISCOVERY=false
+export CSC_KEYCHAIN=login
+export appleId=YOUR_APPLE_ID
+export appleIdPassword=YOUR_APPLE_ID_PASSWORD_OR_ONETIME_PASSWORD
+```
+then run `source ~/.bash_profile` to refresh.
+4. Go to `./src/mac_build/entitlements.mas.plist` and replace application name to yours from Apple Developer website. You may have to replace the application name in `package.json` as well as the `appId` variable in `notarize.js`.
+5. There is a bug in `electron-osx-sign` module and you need to go to `./node_modules/electron-osx-sign/sign.js` then comment out this block:
+```
+if (opts.platform === 'darwin' && opts['gatekeeper-assess'] !== false) {
+  promise = promise
+    .then(function () {
+      debuglog('Verifying Gatekeeper acceptance for darwin platform...')
+      return execFileAsync('spctl', [
+        '--assess',
+        '--type', 'execute',
+        '--verbose',
+        '--ignore-cache',
+        '--no-cache',
+        opts.app
+      ])
+    })
+}
+```
 
 ## PWA Config
 
