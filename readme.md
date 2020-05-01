@@ -1,4 +1,4 @@
-# MagicPad v1.0.5
+# MagicPad v1.0.6
 
 MagicPad is an OpenPGP encryption / decryption tool for beginners to handle text messages, files, as well as embed and extract encrypted messages from images. It is designed to be run standalone via the browser or as an executable (Electron).
 Using PGP as the main encryption engine, the encryption key generated in MagicPad are powerful 4096-bit keys.

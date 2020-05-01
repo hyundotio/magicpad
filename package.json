@@ -1,14 +1,14 @@
 {
   "name": "magicpad",
-  "version": "1.0.5-1",
+  "version": "1.0.6",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "bin": {
     "magicpad": "magicpad.sh"
   },
   "devDependencies": {
-    "electron": "^8.0.0",
-    "electron-builder": "^22.3.2",
+    "electron": "^8.2.5",
+    "electron-builder": "^22.6.0",
     "electron-notarize": "^0.2.1"
   },
   "preferGlobal": true,
@@ -80,11 +80,14 @@
   },
   "homepage": "https://github.com/hyundotio/magicpad#readme",
   "dependencies": {
+    "bufferutil": "^4.0.1",
+    "canvas": "^2.6.1",
     "electron-context-menu": "^0.16.0",
     "fs-extra": "^8.1.0",
-    "jquery": "^3.4.1",
-    "jsdom": "^15.1.1",
+    "jquery": "^3.5.0",
+    "jsdom": "^15.2.1",
     "ncp": "^2.0.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "utf-8-validate": "^5.0.2"
   }
 }

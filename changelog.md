@@ -1,6 +1,13 @@
 # Changelog
 
 All notable changes to this project will be documented in this file.
+## [1.0.6 Security Update] - 2020-05-01
+
+### Changed
+- Updated jQuery to 3.5.0
+- OpenPGP updated to 4.10.4 (2020-04-22 Release, Commit: 2c6cbc4 by twiss)
+- Updated Node packages for security updates
+
 ## [1.0.5 Installer Update] - 2020-02-10
 
 ### Changed
