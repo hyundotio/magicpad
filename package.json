@@ -1,21 +1,15 @@
 {
   "name": "magicpad",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Easy to use OpenPGP client.",
   "main": "app.js",
   "bin": {
     "magicpad": "magicpad.sh"
   },
-  "devDependencies": {
-    "electron": "^8.2.5",
-    "electron-builder": "^22.6.0",
-    "electron-notarize": "^0.2.1"
-  },
   "preferGlobal": true,
   "scripts": {
-    "start": "node build_index.js && electron .",
-    "buildwebapp": "node build_magicpad_index.js",
-    "dist": "electron-builder build"
+    "start": "node build_index.js",
+    "buildwebapp": "node build_magicpad_index.js"
   },
   "keywords": [
     "openpgp",
@@ -82,7 +76,6 @@
   "dependencies": {
     "bufferutil": "^4.0.1",
     "canvas": "^2.6.1",
-    "electron-context-menu": "^0.16.0",
     "fs-extra": "^8.1.0",
     "jquery": "^3.5.0",
     "jsdom": "^15.2.1",

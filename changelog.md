@@ -1,6 +1,15 @@
 # Changelog
-
 All notable changes to this project will be documented in this file.
+
+## [1.0.7 Transitional Update] - 2020-10-21
+
+### Changed
+- Removed minor vulnerabilities from 2 node packages.
+- Updated OpenPGP to 4.10.8
+- Updated jQuery to 3.5.1
+- Removed key-server.io from server browser.
+- Removed executables from release pipeline.
+
 ## [1.0.6 Security Update] - 2020-05-01
 
 ### Changed
